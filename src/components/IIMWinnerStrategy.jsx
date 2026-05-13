@@ -90,14 +90,14 @@ export default function IIMWinnerStrategy() {
   }, []);
 
   return (
-    <section className="py-10 lg:py-12 px-6 lg:px-12 bg-[#F8FAFC]">
+    <section className="py-10 lg:py-12 px-4 sm:px-6 lg:px-12 bg-[#F8FAFC]">
       <div className="max-w-[1280px] mx-auto">
         {/* Outer card */}
         <div className="bg-white rounded-[32px] border border-slate-100 shadow-[0_8px_48px_-12px_rgba(0,0,0,0.07)] overflow-hidden">
           <div className="grid lg:grid-cols-[42%_58%] min-h-[500px]">
 
             {/* ── LEFT COLUMN ── */}
-            <div className="p-6 lg:p-8 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
+            <div className="p-5 sm:p-6 lg:p-8 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 mb-6 w-fit">
                 <Sparkles size={13} className="text-indigo-500" />
@@ -141,123 +141,135 @@ export default function IIMWinnerStrategy() {
               </div>
             </div>
 
-            {/* ── RIGHT GRAPH ── */}
-            <div className="p-5 lg:p-6 flex flex-col gap-3">
-              {/* Graph header */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-[15px] font-bold text-slate-900">Most Repeated Topics vs Difficulty Level</h3>
-                  <div className="flex items-center gap-4 mt-2">
-                    <span className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-                      <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block" />Most Repeated (High Priority)
-                    </span>
-                    <span className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-                      <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />Less Repeated (Low Priority)
-                    </span>
-                  </div>
-                </div>
-                {/* Analyzing badge */}
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200">
-                  <motion.span
-                    animate={{ opacity: analyzing ? 1 : 0.3, scale: analyzing ? 1 : 0.8 }}
-                    transition={{ duration: 0.4 }}
-                    className="w-2 h-2 rounded-full bg-emerald-500 inline-block"
-                  />
-                  <span className="text-[11px] font-semibold text-slate-600">Analyzing...</span>
-                </div>
+            {/* ── RIGHT GRAPH — mobile: horizontal scroll ── */}
+            <div className="relative">
+              {/* Mobile: fade-right edge to signal scrollability */}
+              <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-20 lg:hidden rounded-r-[32px]" />
+
+              {/* Mobile: swipe hint */}
+              <div className="flex items-center justify-end gap-1 px-4 pt-3 pb-0 lg:hidden">
+                <span className="text-[10px] font-semibold text-slate-400 tracking-wide">Swipe to explore</span>
+                <span className="text-[10px] text-slate-400">→</span>
               </div>
 
-              {/* Graph area */}
-              <div className="flex flex-1 gap-2">
-                {/* Y-axis label */}
-                <div className="flex flex-col items-center justify-between py-2 shrink-0">
-                  <span className="text-[10px] font-bold text-slate-400 tracking-wider">High</span>
-                  <span className="text-[10px] font-bold text-slate-500 [writing-mode:vertical-rl] rotate-180 tracking-widest">Difficulty Level</span>
-                  <span className="text-[10px] font-bold text-slate-400 tracking-wider">Low</span>
-                </div>
+              {/* Scroll container — only horizontal on mobile */}
+              <div
+                className="overflow-x-auto overflow-y-hidden lg:overflow-visible"
+                style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {/* Inner content — min-width on mobile to preserve desktop layout */}
+                <div className="p-5 lg:p-6 flex flex-col gap-3 min-w-[780px] lg:min-w-0">
+                  {/* Graph header */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-[15px] font-bold text-slate-900">Most Repeated Topics vs Difficulty Level</h3>
+                      <div className="flex items-center gap-4 mt-2">
+                        <span className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+                          <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block" />Most Repeated (High Priority)
+                        </span>
+                        <span className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+                          <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />Less Repeated (Low Priority)
+                        </span>
+                      </div>
+                    </div>
+                    {/* Analyzing badge */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200">
+                      <motion.span
+                        animate={{ opacity: analyzing ? 1 : 0.3, scale: analyzing ? 1 : 0.8 }}
+                        transition={{ duration: 0.4 }}
+                        className="w-2 h-2 rounded-full bg-emerald-500 inline-block"
+                      />
+                      <span className="text-[11px] font-semibold text-slate-600">Analyzing...</span>
+                    </div>
+                  </div>
 
-                {/* Main graph */}
-                <div className="flex-1 flex flex-col gap-1.5">
-                  {/* 2×2 quadrant grid with floating pills */}
-                  <div className="flex-1 relative rounded-[20px] overflow-hidden border border-slate-200 bg-[#FAFBFF]">
-                    {/* Subtle center glow */}
-                    <motion.div
-                      animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-indigo-100/60 blur-2xl pointer-events-none z-0"
-                    />
+                  {/* Graph area */}
+                  <div className="flex flex-1 gap-2">
+                    {/* Y-axis label */}
+                    <div className="flex flex-col items-center justify-between py-2 shrink-0">
+                      <span className="text-[10px] font-bold text-slate-400 tracking-wider">High</span>
+                      <span className="text-[10px] font-bold text-slate-500 [writing-mode:vertical-rl] rotate-180 tracking-widest">Difficulty Level</span>
+                      <span className="text-[10px] font-bold text-slate-400 tracking-wider">Low</span>
+                    </div>
 
-                    {/* Quadrant grid */}
-                    <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 z-0">
-                      {QUADS.map(q => (
-                        <div key={q.key} className={`${q.bg} border ${q.border} relative p-3`}>
-                          <div className={`flex items-center gap-1 ${q.color}`}>
-                            <span className="text-[10px] font-black tracking-widest">{q.label}</span>
-                          </div>
-                          <p className="text-[9px] font-semibold text-slate-500 mt-0.5">{q.sub1}</p>
-                          <p className="text-[9px] text-slate-400">{q.sub2}</p>
+                    {/* Main graph */}
+                    <div className="flex-1 flex flex-col gap-1.5">
+                      {/* 2×2 quadrant grid with floating pills */}
+                      <div className="flex-1 relative rounded-[20px] overflow-hidden border border-slate-200 bg-[#FAFBFF]" style={{ minHeight: 300 }}>
+                        {/* Subtle center glow */}
+                        <motion.div
+                          animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
+                          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-indigo-100/60 blur-2xl pointer-events-none z-0"
+                        />
+                        {/* Quadrant grid */}
+                        <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 z-0">
+                          {QUADS.map(q => (
+                            <div key={q.key} className={`${q.bg} border ${q.border} relative p-3`}>
+                              <div className={`flex items-center gap-1 ${q.color}`}>
+                                <span className="text-[10px] font-black tracking-widest">{q.label}</span>
+                              </div>
+                              <p className="text-[9px] font-semibold text-slate-500 mt-0.5">{q.sub1}</p>
+                              <p className="text-[9px] text-slate-400">{q.sub2}</p>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                        {/* Center dividers */}
+                        <div className="absolute inset-0 z-10 pointer-events-none">
+                          <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-200" />
+                          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200" />
+                        </div>
+                        {/* Center brain */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+                          <Brain size={18} className="text-indigo-400" />
+                        </div>
+                        {/* Animated topic pills */}
+                        {topics.map(topic => (
+                          <motion.div
+                            key={topic.id}
+                            animate={{ left: `${topic.x}%`, top: `${topic.y}%` }}
+                            transition={{ type: "spring", stiffness: 55, damping: 22 }}
+                            whileHover={{ scale: 1.08, zIndex: 50 }}
+                            className={`absolute z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full shadow-sm text-[10px] font-semibold cursor-default select-none ${PILL_STYLE[topic.zone]}`}
+                            style={{ transform: "translate(-50%, -50%)" }}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                              topic.zone === "focus" ? "bg-white/70" :
+                              topic.zone === "careful" ? "bg-amber-400" :
+                              topic.zone === "skip" ? "bg-red-400" : "bg-slate-400"
+                            }`} />
+                            {topic.name}
+                          </motion.div>
+                        ))}
+                      </div>
+                      {/* X-axis */}
+                      <div className="flex items-center justify-between px-1">
+                        <span className="text-[10px] font-bold text-slate-400">Low</span>
+                        <span className="text-[11px] font-bold text-slate-600 tracking-wider">Most Repeated →</span>
+                        <span className="text-[10px] font-bold text-slate-400">High</span>
+                      </div>
                     </div>
-
-                    {/* Center dividers */}
-                    <div className="absolute inset-0 z-10 pointer-events-none">
-                      <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-200" />
-                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200" />
-                    </div>
-
-                    {/* Center brain */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
-                      <Brain size={18} className="text-indigo-400" />
-                    </div>
-
-                    {/* ── Animated topic pills ── */}
-                    {topics.map(topic => (
-                      <motion.div
-                        key={topic.id}
-                        animate={{ left: `${topic.x}%`, top: `${topic.y}%` }}
-                        transition={{ type: "spring", stiffness: 55, damping: 22 }}
-                        whileHover={{ scale: 1.08, zIndex: 50 }}
-                        className={`absolute z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full shadow-sm text-[10px] font-semibold cursor-default select-none ${PILL_STYLE[topic.zone]}`}
-                        style={{ transform: "translate(-50%, -50%)" }}
-                      >
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                          topic.zone === "focus" ? "bg-white/70" :
-                          topic.zone === "careful" ? "bg-amber-400" :
-                          topic.zone === "skip" ? "bg-red-400" : "bg-slate-400"
-                        }`} />
-                        {topic.name}
-                      </motion.div>
-                    ))}
                   </div>
 
-                  {/* X-axis */}
-                  <div className="flex items-center justify-between px-1">
-                    <span className="text-[10px] font-bold text-slate-400">Low</span>
-                    <span className="text-[11px] font-bold text-slate-600 tracking-wider">Most Repeated →</span>
-                    <span className="text-[10px] font-bold text-slate-400">High</span>
+                  {/* Bottom insight bar */}
+                  <div className="relative rounded-2xl overflow-hidden bg-indigo-50 border border-indigo-100 px-5 py-3.5 flex items-center gap-3">
+                    <motion.div
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+                    />
+                    <div className="w-8 h-8 rounded-xl bg-[#5B4DFF] flex items-center justify-center shrink-0">
+                      <Sparkles size={14} className="text-white" />
+                    </div>
+                    <p className="text-[13px] text-slate-700 font-medium leading-snug">
+                      <span className="font-bold text-slate-900">IIM Winner Formula: </span>
+                      <span className="text-indigo-600 font-bold">Focus High Priority</span>
+                      {" + "}
+                      <span className="text-indigo-600 font-bold">Smart Skipping</span>
+                      {" = Maximum Score"}
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              {/* Bottom insight bar */}
-              <div className="relative rounded-2xl overflow-hidden bg-indigo-50 border border-indigo-100 px-5 py-3.5 flex items-center gap-3">
-                {/* Shimmer */}
-                <motion.div
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
-                />
-                <div className="w-8 h-8 rounded-xl bg-[#5B4DFF] flex items-center justify-center shrink-0">
-                  <Sparkles size={14} className="text-white" />
-                </div>
-                <p className="text-[13px] text-slate-700 font-medium leading-snug">
-                  <span className="font-bold text-slate-900">IIM Winner Formula: </span>
-                  <span className="text-indigo-600 font-bold">Focus High Priority</span>
-                  {" + "}
-                  <span className="text-indigo-600 font-bold">Smart Skipping</span>
-                  {" = Maximum Score"}
-                </p>
               </div>
             </div>
           </div>

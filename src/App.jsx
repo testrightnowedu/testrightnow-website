@@ -24,8 +24,14 @@ import JourneySection from "./components/JourneySection";
 import PhoneMockup from "./components/PhoneMockup";
 
 function App() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   return (
-    <div className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-hidden">
+    <div
+      className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-hidden transition-opacity duration-500"
+      style={{ opacity: mounted ? 1 : 0 }}
+    >
       <Navbar />
 
       {/* FIRST VIEWPORT */}
@@ -287,54 +293,37 @@ function HeroSection() {
 function CredibilitySection() {
   return (
     <section className="w-full z-30">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="bg-[#0B0F19] rounded-[24px] p-6 lg:px-10 lg:py-7 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden border border-slate-800/60"
+        className="bg-[#0B0F19] rounded-[20px] lg:rounded-[24px] px-5 py-5 sm:p-6 lg:px-10 lg:py-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-8 shadow-2xl relative overflow-hidden border border-slate-800/60"
       >
-        {/* Glow */}
         <div className="absolute top-0 left-0 w-[400px] h-full bg-gradient-to-r from-indigo-500/10 to-transparent pointer-events-none" />
-        
-        {/* Left Content */}
         <div className="max-w-[460px] relative z-10">
-          <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-amber-400/90 uppercase mb-3">
-            <Sparkles size={14} className="text-amber-400" />
+          <div className="flex items-center gap-2 text-[10px] font-bold tracking-wider text-amber-400/90 uppercase mb-2">
+            <Sparkles size={12} className="text-amber-400" />
             Built by Top CAT Performers
           </div>
-          <h3 className="text-[22px] lg:text-[26px] font-bold text-white leading-[1.1] tracking-tight">
+          <h3 className="text-[17px] sm:text-[20px] lg:text-[26px] font-bold text-white leading-[1.15] tracking-tight">
             We Cracked CAT Without Coaching. Now We Help You.
           </h3>
-          <p className="mt-3 text-[14px] text-slate-400 leading-relaxed font-medium">
+          <p className="mt-2 text-[12px] sm:text-[14px] text-slate-400 leading-relaxed font-medium">
             We know what it takes. Because we've been there.
           </p>
         </div>
-
-        {/* Right IIM Cards */}
-        <div className="flex items-center gap-3 lg:gap-4 relative z-10 w-full md:w-auto">
-          {/* IIM Indore */}
-          <div className="flex-1 md:w-[160px] lg:w-[190px] h-[80px] lg:h-[96px] rounded-[16px] overflow-hidden relative group border border-white/5 shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
-            <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
-              <div className="w-8 h-8 rounded-full bg-white/10 mb-1.5 flex items-center justify-center border border-white/5">
-                <span className="text-white/80 text-[10px] font-bold">IIM</span>
+        <div className="flex items-center gap-3 relative z-10 w-full md:w-auto">
+          {["IIM Indore", "IIM Ahmedabad"].map(name => (
+            <div key={name} className="flex-1 md:w-[140px] lg:w-[180px] h-[64px] lg:h-[88px] rounded-[14px] overflow-hidden relative group border border-white/5 shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
+                <div className="w-7 h-7 rounded-full bg-white/10 mb-1 flex items-center justify-center border border-white/5">
+                  <span className="text-white/80 text-[9px] font-bold">IIM</span>
+                </div>
+                <span className="text-white text-[11px] font-bold tracking-wide">{name}</span>
               </div>
-              <span className="text-white text-[12px] font-bold tracking-wide">IIM Indore</span>
             </div>
-          </div>
-
-          {/* IIM Ahmedabad */}
-          <div className="flex-1 md:w-[160px] lg:w-[190px] h-[80px] lg:h-[96px] rounded-[16px] overflow-hidden relative group border border-white/5 shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
-            <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
-              <div className="w-8 h-8 rounded-full bg-white/10 mb-1.5 flex items-center justify-center border border-white/5">
-                <span className="text-white/80 text-[10px] font-bold">IIM</span>
-              </div>
-              <span className="text-white text-[12px] font-bold tracking-wide">IIM Ahmedabad</span>
-            </div>
-          </div>
+          ))}
         </div>
       </motion.div>
     </section>
