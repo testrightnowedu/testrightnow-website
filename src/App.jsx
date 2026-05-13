@@ -1,0 +1,557 @@
+import {
+  ArrowRight,
+  Brain,
+  Target,
+  Clock3,
+  BookOpen,
+  Trophy,
+  BarChart3,
+  ChevronRight,
+  Zap,
+  TrendingUp,
+  Sparkles,
+  Briefcase,
+  Clock,
+  Calendar,
+  ShieldCheck,
+  ExternalLink,
+} from "lucide-react";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import IIMWinnerStrategy from "./components/IIMWinnerStrategy";
+import JourneySection from "./components/JourneySection";
+import PhoneMockup from "./components/PhoneMockup";
+
+function App() {
+  return (
+    <div className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-hidden">
+      <Navbar />
+
+      {/* FIRST VIEWPORT */}
+      <div className="h-screen min-h-[768px] flex flex-col relative">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-[20%] right-[-5%] w-[600px] h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[10%] left-[-5%] w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
+        </div>
+        <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col justify-between pt-10 lg:pt-12 pb-4 lg:pb-6 z-10 relative px-6 lg:px-12">
+          <HeroSection />
+          <CredibilitySection />
+        </main>
+      </div>
+
+      {/* SCROLLABLE SECTIONS */}
+      <div id="guided-learning" style={{ scrollMarginTop: "72px" }}>
+        <WorkingProfessionalsSection />
+      </div>
+      <div id="how-it-works" style={{ scrollMarginTop: "72px" }}>
+        <IIMWinnerStrategy />
+        <JourneySection />
+      </div>
+      <div id="features" style={{ scrollMarginTop: "72px" }}>
+        <PlatformFeaturesSection />
+      </div>
+      <div id="pricing" style={{ scrollMarginTop: "72px" }}>
+        <FinalCTASection />
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+const NAV_LINKS = [
+  { label: "Features",        id: "features"        },
+  { label: "Guided Learning", id: "guided-learning"  },
+  { label: "How It Works",    id: "how-it-works"     },
+  { label: "Pricing",         id: "pricing"          },
+];
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+}
+
+function Navbar() {
+  const [active, setActive] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Shadow on scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Active section via IntersectionObserver
+  useEffect(() => {
+    const observers = [];
+    NAV_LINKS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActive(id); },
+        { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  const handleNav = (id) => {
+    scrollTo(id);
+    setMenuOpen(false);
+  };
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 h-14 transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_2px_16px_rgba(0,0,0,0.06)]" : ""
+      }`}
+    >
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
+        {/* LOGO */}
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-200">
+            <Zap className="text-white fill-white" size={16} />
+          </div>
+          <span className="text-[18px] font-bold tracking-tight text-slate-900">TestRightNow</span>
+        </button>
+
+        {/* DESKTOP NAV */}
+        <nav className="hidden lg:flex items-center gap-7">
+          {NAV_LINKS.map(({ label, id }) => {
+            const isActive = active === id;
+            return (
+              <button
+                key={id}
+                onClick={() => handleNav(id)}
+                className={`relative text-[13px] font-medium transition-colors duration-200 group ${
+                  isActive ? "text-indigo-600 font-semibold" : "text-slate-600 hover:text-indigo-600"
+                }`}
+              >
+                {label}
+                {/* animated underline */}
+                <span
+                  className={`absolute -bottom-0.5 left-0 h-[1.5px] bg-indigo-500 rounded-full transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* ACTIONS */}
+        <div className="flex items-center gap-3">
+          <button className="hidden sm:block text-[13px] font-semibold text-slate-700 hover:text-slate-900 px-3 transition-colors">
+            Log in
+          </button>
+          <button
+            onClick={() => handleNav("pricing")}
+            className="h-9 px-5 rounded-xl bg-[#5B4DFF] text-white text-[13px] font-semibold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
+          >
+            Start Practicing
+          </button>
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            className="lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px] ml-1"
+            aria-label="Toggle menu"
+          >
+            <motion.span animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="block w-5 h-[1.5px] bg-slate-800 rounded-full origin-center transition-transform" />
+            <motion.span animate={{ opacity: menuOpen ? 0 : 1 }} className="block w-5 h-[1.5px] bg-slate-800 rounded-full" />
+            <motion.span animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }} className="block w-5 h-[1.5px] bg-slate-800 rounded-full origin-center transition-transform" />
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden absolute top-14 left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-slate-100 shadow-lg px-6 pb-5 pt-4 flex flex-col gap-1 z-50"
+          >
+            {NAV_LINKS.map(({ label, id }, i) => (
+              <motion.button
+                key={id}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                onClick={() => handleNav(id)}
+                className={`text-left py-3 px-2 text-[15px] font-medium border-b border-slate-50 last:border-0 transition-colors ${
+                  active === id ? "text-indigo-600 font-semibold" : "text-slate-700 hover:text-indigo-600"
+                }`}
+              >
+                {label}
+              </motion.button>
+            ))}
+            <button
+              onClick={() => { handleNav("pricing"); }}
+              className="mt-3 h-11 rounded-xl bg-[#5B4DFF] text-white text-[14px] font-bold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
+            >
+              Start Practicing
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+const HERO_FEATURES = [
+  { Icon: BookOpen,   title: "Guided Learning",  text: "Follow a structured path designed by toppers." },
+  { Icon: Brain,      title: "Smart Practice",   text: "Practice smart with AI powered insights." },
+  { Icon: TrendingUp, title: "Track Progress",   text: "Analyze performance and improve every day." },
+  { Icon: Trophy,     title: "Earn Rewards",     text: "Get self motivating rewards that keep you going." },
+];
+
+function HeroSection() {
+  return (
+    <section className="flex-1 flex items-center relative w-full">
+      <div className="w-full grid lg:grid-cols-2 items-center gap-6 lg:gap-10">
+
+        {/* LEFT CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.75, ease: "easeOut" }}
+          className="max-w-[500px]"
+        >
+          {/* Badge */}
+          <motion.div
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/80 border border-indigo-100/80 shadow-[0_4px_16px_rgba(91,77,255,0.08)] backdrop-blur-sm mb-4"
+          >
+            <div className="w-6 h-6 rounded-lg bg-indigo-50 flex items-center justify-center">
+              <Trophy size={11} className="text-indigo-500" />
+            </div>
+            <span className="text-[10.5px] font-semibold text-slate-600 leading-snug">
+              Built by{" "}
+              <span className="font-bold text-[#5B4DFF]">IIM Indore &amp; IIM Ahmedabad</span>
+              {" "}Crackers Who Cracked in{" "}
+              <span className="font-bold text-[#5B4DFF]">First Attempt.</span>
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <h1 className="text-[30px] sm:text-[38px] xl:text-[46px] font-extrabold leading-[1.06] tracking-[-0.03em] text-slate-900">
+            Everything You Need<br />to Crack CAT.<br />
+            <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">
+              In One Smart App.
+            </span>
+          </h1>
+
+          {/* Subtext */}
+          <p className="mt-3 text-[14px] xl:text-[15px] leading-[1.6] text-slate-500 max-w-[420px]">
+            Self-study, done right. Structured paths, daily practice, smart analytics and rewards to help you crack CAT.
+          </p>
+
+          {/* Feature list */}
+          <div className="flex flex-col gap-2.5 mt-4">
+            {HERO_FEATURES.map(({ Icon, title, text }) => (
+              <div key={title} className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                  <Icon size={14} />
+                </div>
+                <div>
+                  <p className="text-[12.5px] font-bold text-slate-900 leading-none">{title}</p>
+                  <p className="text-[11.5px] text-slate-400 mt-0.5">{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-6">
+            <button className="h-11 px-7 rounded-2xl bg-[#5B4DFF] text-white text-[13.5px] font-bold flex items-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group">
+              Start Your Journey
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* RIGHT — PHONE MOCKUP */}
+        <PhoneMockup />
+      </div>
+    </section>
+  );
+}
+
+
+function CredibilitySection() {
+  return (
+    <section className="w-full z-30">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="bg-[#0B0F19] rounded-[24px] p-6 lg:px-10 lg:py-7 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden border border-slate-800/60"
+      >
+        {/* Glow */}
+        <div className="absolute top-0 left-0 w-[400px] h-full bg-gradient-to-r from-indigo-500/10 to-transparent pointer-events-none" />
+        
+        {/* Left Content */}
+        <div className="max-w-[460px] relative z-10">
+          <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-amber-400/90 uppercase mb-3">
+            <Sparkles size={14} className="text-amber-400" />
+            Built by Top CAT Performers
+          </div>
+          <h3 className="text-[22px] lg:text-[26px] font-bold text-white leading-[1.1] tracking-tight">
+            We Cracked CAT Without Coaching. Now We Help You.
+          </h3>
+          <p className="mt-3 text-[14px] text-slate-400 leading-relaxed font-medium">
+            We know what it takes. Because we've been there.
+          </p>
+        </div>
+
+        {/* Right IIM Cards */}
+        <div className="flex items-center gap-3 lg:gap-4 relative z-10 w-full md:w-auto">
+          {/* IIM Indore */}
+          <div className="flex-1 md:w-[160px] lg:w-[190px] h-[80px] lg:h-[96px] rounded-[16px] overflow-hidden relative group border border-white/5 shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
+            <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
+              <div className="w-8 h-8 rounded-full bg-white/10 mb-1.5 flex items-center justify-center border border-white/5">
+                <span className="text-white/80 text-[10px] font-bold">IIM</span>
+              </div>
+              <span className="text-white text-[12px] font-bold tracking-wide">IIM Indore</span>
+            </div>
+          </div>
+
+          {/* IIM Ahmedabad */}
+          <div className="flex-1 md:w-[160px] lg:w-[190px] h-[80px] lg:h-[96px] rounded-[16px] overflow-hidden relative group border border-white/5 shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
+            <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
+              <div className="w-8 h-8 rounded-full bg-white/10 mb-1.5 flex items-center justify-center border border-white/5">
+                <span className="text-white/80 text-[10px] font-bold">IIM</span>
+              </div>
+              <span className="text-white text-[12px] font-bold tracking-wide">IIM Ahmedabad</span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function FloatingCard({ className, icon, title, sub, delay = 0 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 + delay, duration: 0.8 }}
+      className={`absolute z-30 hidden lg:flex items-center gap-3 p-3 rounded-[20px] bg-white/80 backdrop-blur-md border border-white shadow-[0_12px_30px_rgba(0,0,0,0.06)] ${className}`}
+    >
+      <motion.div
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: delay }}
+        className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center"
+      >
+        {icon}
+      </motion.div>
+      <div>
+        <div className="text-[13px] font-bold text-slate-900 leading-none">{title}</div>
+        <div className="text-[11px] text-slate-500 mt-0.5 font-medium">{sub}</div>
+      </div>
+    </motion.div>
+  );
+}
+
+function RoadmapStep({ number, title, status }) {
+  const isCompleted = status === "completed";
+  const isActive = status === "active";
+  
+  return (
+    <div className={`flex items-center gap-3 p-2.5 rounded-[14px] border transition-all ${
+      isActive ? "bg-indigo-500/10 border-indigo-500/20" : "bg-white/5 border-white/[0.03]"
+    }`}>
+      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] ${
+        isCompleted ? "bg-emerald-500 text-white" : 
+        isActive ? "bg-indigo-500 text-white shadow-[0_0_10px_rgba(91,77,255,0.4)]" : 
+        "bg-white/10 text-white/20"
+      }`}>
+        {isCompleted ? "✓" : number}
+      </div>
+      <div className="flex-1">
+        <div className={`text-[12px] font-bold leading-none ${isActive ? "text-white" : "text-white/80"}`}>{title}</div>
+      </div>
+      {isActive && <ChevronRight className="text-indigo-400" size={14} />}
+    </div>
+  );
+}
+
+function WorkingProfessionalsSection() {
+  return (
+    <section className="py-12 lg:py-16 px-6 lg:px-12">
+      <div className="max-w-[1280px] mx-auto">
+        <div className="bg-white rounded-[28px] p-6 lg:p-10 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[200px] bg-indigo-50/60 rounded-full blur-3xl pointer-events-none" />
+          <div className="text-center relative z-10 mb-8">
+            <h2 className="text-[22px] lg:text-[30px] font-bold text-slate-900 tracking-tight leading-[1.2]">
+              Not Everyone Has Time for Full-Time Coaching.<br />
+              <span className="text-[#5B4DFF]">Come with us.</span>
+            </h2>
+            <p className="mt-3 text-[14px] lg:text-[15px] text-slate-500 font-medium max-w-[480px] mx-auto">
+              We'll guide you. You just need a few hours a day and the consistency.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8 relative z-10">
+            {[
+              { icon: <Briefcase size={20} />, title: "Working or busy?", sub: "We get it." },
+              { icon: <Clock size={20} />, title: "No time for coaching?", sub: "We guide you." },
+              { icon: <Calendar size={20} />, title: "Spend a few hours comfortably.", sub: null },
+              { icon: <ShieldCheck size={20} />, title: "Be consistent,", sub: "we'll take care of the rest." },
+            ].map(({ icon, title, sub }, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">{icon}</div>
+                <div className="pt-0.5">
+                  <p className="text-[14px] font-bold text-slate-900 leading-snug">{title}</p>
+                  {sub && <p className="text-[13px] text-slate-500 mt-0.5">{sub}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function PlatformFeaturesSection() {
+  const features = [
+    { icon: <BookOpen size={22} />, title: "Guided Learning", sub: "Personalized path for every aspirant." },
+    { icon: <Clock3 size={22} />, title: "Time Trap Detection", sub: "We help you identify time-consuming traps." },
+    { icon: <Brain size={22} />, title: "Smart Skipping", sub: "Skip hard, focus on high-value questions." },
+    { icon: <TrendingUp size={22} />, title: "Gamified Learning", sub: "Missions, streaks and challenges." },
+    { icon: <Trophy size={22} />, title: "Self Rewards", sub: "Earn points, unlock badges and reward consistency." },
+  ];
+  return (
+    <section className="py-12 lg:py-16 px-6 lg:px-12">
+      <div className="max-w-[1280px] mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-[22px] lg:text-[30px] font-bold text-slate-900 tracking-tight">
+            More Than Practice.{" "}
+            <span className="text-[#5B4DFF]">A Smarter Preparation System.</span>
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {features.map(({ icon, title, sub }, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white p-5 rounded-[20px] border border-slate-100 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.05)] flex flex-col gap-3 group"
+            >
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:bg-[#5B4DFF] group-hover:text-white transition-colors duration-300">
+                {icon}
+              </div>
+              <div>
+                <h3 className="text-[14px] font-bold text-slate-900">{title}</h3>
+                <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">{sub}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTASection() {
+  return (
+    <section className="px-6 lg:px-12 pb-12">
+      <div className="max-w-[1280px] mx-auto">
+        <div className="relative rounded-[28px] overflow-hidden shadow-[0_20px_60px_-10px_rgba(91,77,255,0.35)]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#2B1A80] via-[#5B4DFF] to-[#7C6CFF]" />
+          <div className="absolute -top-32 -right-16 w-[400px] h-[400px] bg-white/10 rounded-full blur-[80px] pointer-events-none" />
+          <div className="relative z-10 px-8 py-10 lg:px-14 lg:py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                <Trophy size={32} className="text-amber-400 fill-amber-400" />
+              </div>
+              <div>
+                <h2 className="text-[26px] lg:text-[36px] font-bold text-white leading-[1.1] tracking-tight">
+                  Your Dream IIM Is Possible.<br />
+                  <span className="text-white/80 text-[18px] lg:text-[22px] font-semibold">We'll Help You Get There.</span>
+                </h2>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+              <button className="h-13 px-8 py-3.5 rounded-2xl bg-white text-[#5B4DFF] text-[15px] font-bold shadow-lg hover:scale-[1.02] transition-all flex items-center gap-2">
+                Start Practicing Now <ArrowRight size={17} />
+              </button>
+              <button className="h-13 px-8 py-3.5 rounded-2xl bg-transparent border border-white/30 text-white text-[15px] font-semibold hover:bg-white/10 transition-all">
+                See Guided Path
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-[#070B14] pt-10 pb-6 px-6 lg:px-12 border-t border-white/5">
+      <div className="max-w-[1280px] mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 mb-8">
+          <div className="col-span-2 lg:col-span-2">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <Zap className="text-white fill-white" size={15} />
+              </div>
+              <span className="text-[17px] font-bold text-white">TestRightNow</span>
+            </div>
+            <p className="text-[14px] text-slate-400 leading-relaxed max-w-[260px]">A smarter way to crack CAT. Focus on strategy. Get 99+ percentile.</p>
+          </div>
+          {[
+            { heading: "Product", links: ["Features", "Guided Learning", "Pricing"] },
+            { heading: "Company", links: ["About Us", "Contact Us"] },
+            { heading: "Resources", links: ["CAT Guide", "Preparation Strategy", "Blog"] },
+          ].map(({ heading, links }) => (
+            <div key={heading}>
+              <h4 className="text-[11px] font-bold text-white tracking-widest uppercase mb-4">{heading}</h4>
+              <div className="flex flex-col gap-3">
+                {links.map(l => <a key={l} href="#" className="text-[13px] text-slate-400 hover:text-white transition-colors">{l}</a>)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="pt-6 border-t border-white/[0.07] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[13px] text-slate-500">© 2024 TestRightNow. All rights reserved.</p>
+          <div className="flex items-center gap-2 text-slate-400">
+            <span className="text-[13px] mr-2 text-slate-500">Connect with us</span>
+            {/* Twitter/X */}
+            <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-slate-400 hover:text-white">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.264 5.634L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+            </a>
+            {/* Instagram */}
+            <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-slate-400 hover:text-white">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            {/* YouTube */}
+            <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-slate-400 hover:text-white">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            {/* LinkedIn */}
+            <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-slate-400 hover:text-white">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default App;
