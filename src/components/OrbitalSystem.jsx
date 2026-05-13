@@ -29,12 +29,12 @@ const CARD_POOL = [
   { Icon: MessageCircle, label:"Coaching",       sub:"Psychology",       accent:"#BE185D", iconBg:"#FDF2F8" },
 ];
 
-/* ── Desktop orbit slots ─────────────────────────────────────── */
+/* ── Desktop orbit slots (Widened to encircle phone + desktop) ── */
 const ORBITS_DESKTOP = [
-  { orbitRx:255, orbitRy:55,  orbitRot:0,   speed:28, startDeg:195, waveAmp:4, waveFq:0.55 },
-  { orbitRx:195, orbitRy:148, orbitRot:22,  speed:22, startDeg:152, waveAmp:6, waveFq:0.40 },
-  { orbitRx:260, orbitRy:48,  orbitRot:-20, speed:32, startDeg:348, waveAmp:3, waveFq:0.65 },
-  { orbitRx:210, orbitRy:135, orbitRot:-32, speed:24, startDeg:30,  waveAmp:5, waveFq:0.48 },
+  { orbitRx:340, orbitRy:85,  orbitRot:0,   speed:32, startDeg:195, waveAmp:4, waveFq:0.55 },
+  { orbitRx:280, orbitRy:185, orbitRot:22,  speed:26, startDeg:152, waveAmp:6, waveFq:0.40 },
+  { orbitRx:360, orbitRy:75,  orbitRot:-20, speed:38, startDeg:348, waveAmp:3, waveFq:0.65 },
+  { orbitRx:310, orbitRy:165, orbitRot:-32, speed:28, startDeg:30,  waveAmp:5, waveFq:0.48 },
 ];
 
 /* ── Mobile orbit slots (smaller radii, slower) ──────────────── */
@@ -115,7 +115,6 @@ function OrbitalCard({ orbit, card, cardKey, isMobile }) {
         scale, zIndex, opacity:depthOp, rotateZ:tiltZ,
         translateX:"-50%", translateY:"-50%",
         willChange:"transform",
-        filter: useTransform(blur, b => `blur(${b}px)`),
       }}
     >
       <motion.div className="absolute inset-0 rounded-[18px] pointer-events-none"
@@ -184,9 +183,9 @@ export default function OrbitalSystem() {
   const orbits = isMobile ? ORBITS_MOBILE : ORBITS_DESKTOP;
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute inset-0 pointer-events-none z-10">
       {SPHERES.map((s,i) => <PurpleSphere key={i} {...s}/>)}
-      <div style={{ position:"absolute", top:"50%", left:"50%", width:0, height:0, pointerEvents:"auto" }}>
+      <div className="absolute top-1/2 left-1/2 w-0 h-0 pointer-events-auto lg:ml-[40px]">
         {orbits.map((orbit, i) => (
           <OrbitalCard
             key={i}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, AtSign, Send, Play } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const footerLinks = {
   'Product': ['Features', 'Guided Learning', 'Pricing', 'How It Works'],
@@ -25,14 +26,9 @@ export default function Footer() {
             <motion.a
               href="#"
               whileHover={{ scale: 1.02 }}
-              className="inline-flex items-center gap-2 mb-5"
+              className="inline-flex items-center mb-5"
             >
-              <div className="w-8 h-8 rounded-full bg-[#5B4DFF] flex items-center justify-center">
-                <span className="text-white font-black text-[10px]">💡</span>
-              </div>
-              <span className="font-bold text-white text-[20px] tracking-tight">
-                Test<span className="text-white font-medium">RightNow</span>
-              </span>
+              <img src={logo} alt="TestRightNow" className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain" style={{ filter: "brightness(0) invert(1)", transform: "scale(1.35)", transformOrigin: "left center" }} />
             </motion.a>
             <p className="text-slate-400 text-[14px] leading-relaxed max-w-[240px]">
               A smarter way to crack CAT.

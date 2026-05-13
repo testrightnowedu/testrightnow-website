@@ -19,9 +19,11 @@ import {
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "./assets/logo.png";
 import IIMWinnerStrategy from "./components/IIMWinnerStrategy";
 import JourneySection from "./components/JourneySection";
 import PhoneMockup from "./components/PhoneMockup";
+import CrossPlatformSection from "./components/CrossPlatformSection";
 
 function App() {
   const [mounted, setMounted] = useState(false);
@@ -29,7 +31,7 @@ function App() {
 
   return (
     <div
-      className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-hidden transition-opacity duration-500"
+      className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-clip transition-opacity duration-500"
       style={{ opacity: mounted ? 1 : 0 }}
     >
       <Navbar />
@@ -40,24 +42,25 @@ function App() {
           <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
           <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
         </div>
-        <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-6 lg:pt-10 pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
+        <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-[100px] lg:pt-[140px] pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
           <HeroSection />
           <CredibilitySection />
         </main>
       </div>
 
       {/* SCROLLABLE SECTIONS */}
-      <div id="guided-learning" style={{ scrollMarginTop: "72px" }}>
+      <div id="guided-learning" style={{ scrollMarginTop: "120px" }}>
         <WorkingProfessionalsSection />
       </div>
-      <div id="how-it-works" style={{ scrollMarginTop: "72px" }}>
+      <div id="how-it-works" style={{ scrollMarginTop: "120px" }}>
         <IIMWinnerStrategy />
         <JourneySection />
       </div>
-      <div id="features" style={{ scrollMarginTop: "72px" }}>
+      <CrossPlatformSection />
+      <div id="features" style={{ scrollMarginTop: "120px" }}>
         <PlatformFeaturesSection />
       </div>
-      <div id="pricing" style={{ scrollMarginTop: "72px" }}>
+      <div id="pricing" style={{ scrollMarginTop: "120px" }}>
         <FinalCTASection />
       </div>
       <Footer />
@@ -112,17 +115,14 @@ function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 h-14 transition-shadow duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 h-20 lg:h-24 transition-shadow duration-300 ${
         scrolled ? "shadow-[0_2px_16px_rgba(0,0,0,0.06)]" : ""
       }`}
     >
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
         {/* LOGO */}
-        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-200">
-            <Zap className="text-white fill-white" size={16} />
-          </div>
-          <span className="text-[18px] font-bold tracking-tight text-slate-900">TestRightNow</span>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center">
+          <img src={logo} alt="TestRightNow" className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain drop-shadow-sm" style={{ transform: "scale(1.45)", transformOrigin: "left center" }} />
         </button>
 
         {/* DESKTOP NAV */}
@@ -220,7 +220,7 @@ const HERO_FEATURES = [
 function HeroSection() {
   return (
     <section className="flex-1 flex items-center relative w-full py-4 lg:py-0">
-      <div className="w-full grid lg:grid-cols-2 items-center gap-4 lg:gap-10">
+      <div className="w-full grid lg:grid-cols-[38%_62%] items-center gap-4 lg:gap-6">
 
         {/* LEFT CONTENT — centered on mobile */}
         <motion.div
@@ -494,11 +494,8 @@ function Footer() {
       <div className="max-w-[1280px] mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6 mb-8">
           <div className="col-span-2 lg:col-span-2">
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Zap className="text-white fill-white" size={15} />
-              </div>
-              <span className="text-[17px] font-bold text-white">TestRightNow</span>
+            <div className="flex items-center mb-6">
+              <img src={logo} alt="TestRightNow" className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain" style={{ filter: "brightness(0) invert(1)", transform: "scale(1.35)", transformOrigin: "left center" }} />
             </div>
             <p className="text-[14px] text-slate-400 leading-relaxed max-w-[260px]">A smarter way to crack CAT. Focus on strategy. Get 99+ percentile.</p>
           </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Brain } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logo from '../assets/logo.png';
+
 
 const navLinks = [
   { name: 'Features', href: '#features' },
@@ -25,25 +27,24 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100'
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled
+        ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100'
+        : 'bg-transparent'
+        }`}
     >
-      <div className="container h-[80px] flex items-center justify-between">
+      <div className="container h-[90px] lg:h-[110px] flex items-center justify-between">
         {/* Logo */}
         <motion.a
           href="#"
-          className="flex items-center gap-3 group flex-shrink-0"
+          className="flex items-center group flex-shrink-0"
           whileHover={{ scale: 1.01 }}
         >
-          <div className="w-10 h-10 rounded-full bg-[#5B4DFF] flex items-center justify-center shadow-[0_4px_16px_rgba(91,77,255,0.25)]">
-            <Brain size={20} className="text-white" />
-          </div>
-          <span className="font-black text-[#0F172A] text-2xl tracking-tighter whitespace-nowrap">
-            TestRightNow
-          </span>
+          <img
+            src={logo}
+            alt="TestRightNow"
+            className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain drop-shadow-sm"
+            style={{ transform: "scale(1.45)", transformOrigin: "left center" }}
+          />
         </motion.a>
 
         {/* Desktop Nav */}
