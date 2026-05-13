@@ -29,12 +29,12 @@ function App() {
       <Navbar />
 
       {/* FIRST VIEWPORT */}
-      <div className="h-screen min-h-[768px] flex flex-col relative">
+      <div className="min-h-screen flex flex-col relative">
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-          <div className="absolute top-[20%] right-[-5%] w-[600px] h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[10%] left-[-5%] w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
+          <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
         </div>
-        <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col justify-between pt-10 lg:pt-12 pb-4 lg:pb-6 z-10 relative px-6 lg:px-12">
+        <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-6 lg:pt-10 pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
           <HeroSection />
           <CredibilitySection />
         </main>
@@ -213,35 +213,34 @@ const HERO_FEATURES = [
 
 function HeroSection() {
   return (
-    <section className="flex-1 flex items-center relative w-full">
-      <div className="w-full grid lg:grid-cols-2 items-center gap-6 lg:gap-10">
+    <section className="flex-1 flex items-center relative w-full py-4 lg:py-0">
+      <div className="w-full grid lg:grid-cols-2 items-center gap-4 lg:gap-10">
 
-        {/* LEFT CONTENT */}
+        {/* LEFT CONTENT — centered on mobile */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.75, ease: "easeOut" }}
-          className="max-w-[500px]"
+          className="max-w-[500px] mx-auto lg:mx-0 text-center lg:text-left"
         >
           {/* Badge */}
           <motion.div
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/80 border border-indigo-100/80 shadow-[0_4px_16px_rgba(91,77,255,0.08)] backdrop-blur-sm mb-4"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/80 border border-indigo-100/80 shadow-[0_4px_16px_rgba(91,77,255,0.08)] backdrop-blur-sm mb-3"
           >
-            <div className="w-6 h-6 rounded-lg bg-indigo-50 flex items-center justify-center">
-              <Trophy size={11} className="text-indigo-500" />
+            <div className="w-5 h-5 rounded-lg bg-indigo-50 flex items-center justify-center">
+              <Trophy size={10} className="text-indigo-500" />
             </div>
-            <span className="text-[10.5px] font-semibold text-slate-600 leading-snug">
+            <span className="text-[10px] sm:text-[10.5px] font-semibold text-slate-600 leading-snug">
               Built by{" "}
               <span className="font-bold text-[#5B4DFF]">IIM Indore &amp; IIM Ahmedabad</span>
-              {" "}Crackers Who Cracked in{" "}
-              <span className="font-bold text-[#5B4DFF]">First Attempt.</span>
+              {" "}Crackers
             </span>
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-[30px] sm:text-[38px] xl:text-[46px] font-extrabold leading-[1.06] tracking-[-0.03em] text-slate-900">
+          <h1 className="text-[26px] sm:text-[34px] xl:text-[46px] font-extrabold leading-[1.08] tracking-[-0.03em] text-slate-900">
             Everything You Need<br />to Crack CAT.<br />
             <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">
               In One Smart App.
@@ -249,28 +248,28 @@ function HeroSection() {
           </h1>
 
           {/* Subtext */}
-          <p className="mt-3 text-[14px] xl:text-[15px] leading-[1.6] text-slate-500 max-w-[420px]">
+          <p className="mt-2 sm:mt-3 text-[13px] sm:text-[14px] xl:text-[15px] leading-[1.6] text-slate-500 max-w-[420px] mx-auto lg:mx-0">
             Self-study, done right. Structured paths, daily practice, smart analytics and rewards to help you crack CAT.
           </p>
 
-          {/* Feature list */}
-          <div className="flex flex-col gap-2.5 mt-4">
+          {/* Feature list — hidden on mobile, visible sm+ */}
+          <div className="hidden sm:flex flex-col gap-2 mt-4">
             {HERO_FEATURES.map(({ Icon, title, text }) => (
               <div key={title} className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                  <Icon size={14} />
+                <div className="w-7 h-7 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                  <Icon size={13} />
                 </div>
                 <div>
-                  <p className="text-[12.5px] font-bold text-slate-900 leading-none">{title}</p>
-                  <p className="text-[11.5px] text-slate-400 mt-0.5">{text}</p>
+                  <p className="text-[12px] font-bold text-slate-900 leading-none">{title}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">{text}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* CTA */}
-          <div className="mt-6">
-            <button className="h-11 px-7 rounded-2xl bg-[#5B4DFF] text-white text-[13.5px] font-bold flex items-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group">
+          <div className="mt-5 flex justify-center lg:justify-start">
+            <button className="h-12 px-8 rounded-2xl bg-[#5B4DFF] text-white text-[14px] font-bold flex items-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group">
               Start Your Journey
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -390,20 +389,20 @@ function RoadmapStep({ number, title, status }) {
 
 function WorkingProfessionalsSection() {
   return (
-    <section className="py-12 lg:py-16 px-6 lg:px-12">
+    <section className="py-10 lg:py-16 px-4 sm:px-6 lg:px-12">
       <div className="max-w-[1280px] mx-auto">
-        <div className="bg-white rounded-[28px] p-6 lg:p-10 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden">
+        <div className="bg-white rounded-[24px] lg:rounded-[28px] p-5 sm:p-6 lg:p-10 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[200px] bg-indigo-50/60 rounded-full blur-3xl pointer-events-none" />
-          <div className="text-center relative z-10 mb-8">
-            <h2 className="text-[22px] lg:text-[30px] font-bold text-slate-900 tracking-tight leading-[1.2]">
-              Not Everyone Has Time for Full-Time Coaching.<br />
-              <span className="text-[#5B4DFF]">Come with us.</span>
+          <div className="text-center relative z-10 mb-6 lg:mb-8">
+            <h2 className="text-[20px] sm:text-[24px] lg:text-[30px] font-bold text-slate-900 tracking-tight leading-[1.2]">
+              Not Everyone Has Time for Full-Time Coaching.<br className="hidden sm:block" />
+              {" "}<span className="text-[#5B4DFF]">Come with us.</span>
             </h2>
-            <p className="mt-3 text-[14px] lg:text-[15px] text-slate-500 font-medium max-w-[480px] mx-auto">
+            <p className="mt-2 text-[13px] lg:text-[15px] text-slate-500 font-medium max-w-[480px] mx-auto">
               We'll guide you. You just need a few hours a day and the consistency.
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 relative z-10">
             {[
               { icon: <Briefcase size={20} />, title: "Working or busy?", sub: "We get it." },
               { icon: <Clock size={20} />, title: "No time for coaching?", sub: "We guide you." },
@@ -435,15 +434,15 @@ function PlatformFeaturesSection() {
     { icon: <Trophy size={22} />, title: "Self Rewards", sub: "Earn points, unlock badges and reward consistency." },
   ];
   return (
-    <section className="py-12 lg:py-16 px-6 lg:px-12">
+    <section className="py-10 lg:py-16 px-4 sm:px-6 lg:px-12">
       <div className="max-w-[1280px] mx-auto">
-        <div className="text-center mb-10">
-          <h2 className="text-[22px] lg:text-[30px] font-bold text-slate-900 tracking-tight">
+        <div className="text-center mb-6 lg:mb-10">
+          <h2 className="text-[20px] sm:text-[24px] lg:text-[30px] font-bold text-slate-900 tracking-tight">
             More Than Practice.{" "}
             <span className="text-[#5B4DFF]">A Smarter Preparation System.</span>
           </h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
           {features.map(({ icon, title, sub }, i) => (
             <motion.div
               key={i}
@@ -468,28 +467,28 @@ function PlatformFeaturesSection() {
 
 function FinalCTASection() {
   return (
-    <section className="px-6 lg:px-12 pb-12">
+    <section className="px-4 sm:px-6 lg:px-12 pb-10 lg:pb-12">
       <div className="max-w-[1280px] mx-auto">
-        <div className="relative rounded-[28px] overflow-hidden shadow-[0_20px_60px_-10px_rgba(91,77,255,0.35)]">
+        <div className="relative rounded-[24px] lg:rounded-[28px] overflow-hidden shadow-[0_20px_60px_-10px_rgba(91,77,255,0.35)]">
           <div className="absolute inset-0 bg-gradient-to-r from-[#2B1A80] via-[#5B4DFF] to-[#7C6CFF]" />
           <div className="absolute -top-32 -right-16 w-[400px] h-[400px] bg-white/10 rounded-full blur-[80px] pointer-events-none" />
-          <div className="relative z-10 px-8 py-10 lg:px-14 lg:py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
-                <Trophy size={32} className="text-amber-400 fill-amber-400" />
+          <div className="relative z-10 px-6 py-8 sm:px-8 sm:py-10 lg:px-14 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                <Trophy size={28} className="text-amber-400 fill-amber-400" />
               </div>
               <div>
-                <h2 className="text-[26px] lg:text-[36px] font-bold text-white leading-[1.1] tracking-tight">
+                <h2 className="text-[22px] sm:text-[26px] lg:text-[36px] font-bold text-white leading-[1.1] tracking-tight">
                   Your Dream IIM Is Possible.<br />
-                  <span className="text-white/80 text-[18px] lg:text-[22px] font-semibold">We'll Help You Get There.</span>
+                  <span className="text-white/80 text-[16px] sm:text-[18px] lg:text-[22px] font-semibold">We'll Help You Get There.</span>
                 </h2>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 shrink-0">
-              <button className="h-13 px-8 py-3.5 rounded-2xl bg-white text-[#5B4DFF] text-[15px] font-bold shadow-lg hover:scale-[1.02] transition-all flex items-center gap-2">
-                Start Practicing Now <ArrowRight size={17} />
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
+              <button className="h-12 px-6 rounded-2xl bg-white text-[#5B4DFF] text-[14px] sm:text-[15px] font-bold shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+                Start Practicing Now <ArrowRight size={16} />
               </button>
-              <button className="h-13 px-8 py-3.5 rounded-2xl bg-transparent border border-white/30 text-white text-[15px] font-semibold hover:bg-white/10 transition-all">
+              <button className="h-12 px-6 rounded-2xl bg-transparent border border-white/30 text-white text-[14px] sm:text-[15px] font-semibold hover:bg-white/10 transition-all">
                 See Guided Path
               </button>
             </div>
@@ -502,9 +501,9 @@ function FinalCTASection() {
 
 function Footer() {
   return (
-    <footer className="bg-[#070B14] pt-10 pb-6 px-6 lg:px-12 border-t border-white/5">
+    <footer className="bg-[#070B14] pt-8 lg:pt-10 pb-6 px-4 sm:px-6 lg:px-12 border-t border-white/5">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6 mb-8">
           <div className="col-span-2 lg:col-span-2">
             <div className="flex items-center gap-2.5 mb-3">
               <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">

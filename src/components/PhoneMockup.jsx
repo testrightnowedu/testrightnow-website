@@ -79,14 +79,15 @@ export default function PhoneMockup() {
   const onMouseLeave=()=>setMouseOffset({x:0,y:0});
 
   return (
-    <div
-      ref={containerRef}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      className="relative flex justify-center items-center h-full select-none min-h-[460px]"
-
-      style={{ perspective:"1200px" }}
-    >
+    <div className="relative flex justify-center items-center h-full select-none min-h-[300px] sm:min-h-[380px] lg:min-h-[460px]">
+      {/* Scale wrapper for responsive sizing */}
+      <div
+        ref={containerRef}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        className="scale-[0.52] sm:scale-[0.68] md:scale-[0.82] lg:scale-100 origin-center"
+        style={{ perspective:"1200px" }}
+      >
       {/* ── Atmospheric haze behind phone ── */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Outer bloom */}
@@ -287,6 +288,7 @@ export default function PhoneMockup() {
           </div>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 }
