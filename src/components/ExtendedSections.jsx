@@ -551,10 +551,787 @@ export function HowItWorksPage() {
 }
 
 // --- PAGE: /features ---
+// --- INTERACTIVE SUB-COMPONENTS FOR 14 FEATURES ---
+
+// 1. Guided Learning
+function GuidedLearningWidget() {
+  const [activeStep, setActiveStep] = useState(0);
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 4);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  const steps = [
+    { label: "Phase 1: Arithmetic Core", sub: "Mastering percentages & ratio speeds" },
+    { label: "Section 12: Ratio & Percentage Sprints", sub: "Interactive 45-minute daily lesson" },
+    { label: "Activity 3: Active Recall Quiz", sub: "Confirming >80% conceptual retention" },
+    { label: "Next Action: Linear System Unlocked", sub: "System automatically maps the next optimal lesson" }
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 relative overflow-hidden h-72 flex flex-col justify-between shadow-2xl">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none" />
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest">System Path Progress</span>
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+      </div>
+      <div className="space-y-4 my-auto relative z-10">
+        {steps.map((step, idx) => {
+          const isActive = idx === activeStep;
+          const isCompleted = idx < activeStep;
+          return (
+            <div key={idx} className="flex items-center gap-3 transition-all duration-500">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center border text-[10px] font-black shrink-0 transition-all duration-500 ${
+                isActive ? "bg-[#5B4DFF] border-[#5B4DFF] text-white scale-110 shadow-[0_0_12px_rgba(91,77,255,0.6)]" :
+                isCompleted ? "bg-emerald-500 border-emerald-500 text-white" :
+                "bg-slate-900 border-slate-800 text-slate-500"
+              }`}>
+                {isCompleted ? <Check size={10} strokeWidth={3} /> : idx + 1}
+              </div>
+              <div className="text-left">
+                <h4 className={`text-xs font-bold transition-colors duration-500 ${isActive ? "text-white animate-pulse" : isCompleted ? "text-slate-300" : "text-slate-600"}`}>
+                  {step.label}
+                </h4>
+                {isActive && (
+                  <motion.p initial={{ opacity: 0, y: -2 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-slate-400">
+                    {step.sub}
+                  </motion.p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="text-[9px] text-slate-500 italic text-left border-t border-slate-800/85 pt-2">
+        *Paths represent sequential progress loops. Next lessons scale automatically based on error analytics.
+      </div>
+    </div>
+  );
+}
+
+// 2. Topic Tests
+function TopicTestsWidget() {
+  const [mastered, setMastered] = useState([0, 1]);
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setMastered((prev) => {
+        if (prev.length >= 8) return [0, 1];
+        return [...prev, prev.length];
+      });
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const topics = [
+    "Percentages", "Ratios", "SI & CI", "Time & Work",
+    "Equations", "Sequences", "Arrangements", "Logical Grids"
+  ];
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg">
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest">Concept Mastery Map</span>
+      <div className="grid grid-cols-2 gap-3 my-auto">
+        {topics.map((topic, idx) => {
+          const isMastered = mastered.includes(idx);
+          return (
+            <div key={idx} className={`p-3 rounded-xl border text-center transition-all duration-500 flex items-center justify-between ${
+              isMastered ? "bg-emerald-50/50 border-emerald-200 text-emerald-800 shadow-sm" : "bg-slate-50 border-slate-100 text-slate-400"
+            }`}>
+              <span className="text-[11px] font-bold">{topic}</span>
+              {isMastered ? (
+                <span className="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_8px_rgba(16,185,129,0.5)]">
+                  <Check size={8} strokeWidth={4} />
+                </span>
+              ) : (
+                <span className="w-2 h-2 rounded-full bg-slate-200 animate-pulse" />
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="text-[9px] text-slate-500 text-center">
+        Nodes illuminate as accuracy levels remain above 80% across quizzes.
+      </div>
+    </div>
+  );
+}
+
+// 3. Section Tests
+function SectionTestsWidget() {
+  const [timeLeft, setTimeLeft] = useState(2400); // 40 mins
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 2400));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="bg-[#070B14] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent pointer-events-none" />
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest">Active Slot Simulator</span>
+        <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 text-[9px] font-extrabold uppercase border border-rose-500/30 border-rose-500/30">
+          T-minus Time
+        </span>
+      </div>
+      
+      <div className="flex items-center justify-around my-auto">
+        <div className="text-center">
+          <div className="text-3xl font-mono font-black text-white tracking-widest drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]">
+            {formatTime(timeLeft)}
+          </div>
+          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block mt-1">Section Timer</span>
+        </div>
+
+        <div className="relative w-20 h-20">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path className="text-slate-800" strokeWidth="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path className="text-[#5B4DFF]" strokeDasharray="60, 100" strokeWidth="3" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-xs font-black text-white">14/24</span>
+            <span className="text-[7px] text-slate-400 uppercase font-black">Solved</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 border-t border-slate-800/80 pt-3 text-center">
+        <div>
+          <span className="text-[8px] text-slate-500 font-extrabold uppercase block">Accuracy</span>
+          <span className="text-[11px] font-bold text-emerald-400">85.7%</span>
+        </div>
+        <div>
+          <span className="text-[8px] text-slate-500 font-extrabold uppercase block">Pace Indicator</span>
+          <span className="text-[11px] font-bold text-[#9B8FFF]">Optimal</span>
+        </div>
+        <div>
+          <span className="text-[8px] text-slate-500 font-extrabold uppercase block">Sim Target</span>
+          <span className="text-[11px] font-bold text-white">99%ile</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 4. Mock Tests
+function MockTestsWidget() {
+  const [activeSlot, setActiveSlot] = useState(0);
+
+  const slots = [
+    { va: "98.5%ile", lr: "96.4%ile", qa: "98.8%ile", overall: "99.1%ile" },
+    { va: "97.1%ile", lr: "97.9%ile", qa: "96.5%ile", overall: "98.4%ile" },
+    { va: "99.2%ile", lr: "95.1%ile", qa: "99.4%ile", overall: "99.3%ile" }
+  ];
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg relative">
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest block mb-2">Simulated Slot Dashboard</span>
+      
+      <div className="flex gap-1.5 justify-center mb-2">
+        {slots.map((slot, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveSlot(i)}
+            className={`px-2.5 py-1 rounded-lg text-[9px] font-black transition-all ${
+              activeSlot === i ? "bg-[#5B4DFF] text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+            }`}
+          >
+            Slot {String.fromCharCode(65 + i)}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 my-auto bg-slate-50 p-3 rounded-2xl border border-slate-100">
+        <div>
+          <span className="text-[8px] font-bold uppercase text-slate-400 block">VARC Percentile</span>
+          <span className="text-xs font-black text-slate-900">{slots[activeSlot].va}</span>
+        </div>
+        <div>
+          <span className="text-[8px] font-bold uppercase text-slate-400 block">DILR Percentile</span>
+          <span className="text-xs font-black text-slate-900">{slots[activeSlot].lr}</span>
+        </div>
+        <div>
+          <span className="text-[8px] font-bold uppercase text-slate-400 block">QA Percentile</span>
+          <span className="text-xs font-black text-slate-900">{slots[activeSlot].qa}</span>
+        </div>
+        <div>
+          <span className="text-[8px] font-black uppercase text-[#5B4DFF] block">Projected Overall</span>
+          <span className="text-xs font-black text-[#5B4DFF]">{slots[activeSlot].overall}</span>
+        </div>
+      </div>
+
+      <div className="h-10 mt-1">
+        <svg className="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="gradientMock" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#5B4DFF" stopOpacity="0.2"/>
+              <stop offset="100%" stopColor="#5B4DFF" stopOpacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,18 C20,10 40,15 60,5 C80,12 90,3 100,10 L100,20 L0,20 Z" fill="url(#gradientMock)" />
+          <path d="M0,18 C20,10 40,15 60,5 C80,12 90,3 100,10" fill="none" stroke="#5B4DFF" strokeWidth="1.5" />
+          <circle cx="60" cy="5" r="2" fill="#5B4DFF" className="animate-ping" />
+          <circle cx="60" cy="5" r="1.5" fill="#5B4DFF" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// 5. Performance Analytics
+function PerformanceAnalyticsWidget() {
+  const categories = [
+    { name: "Quant Arithmetic", status: "Strong", pct: 92, color: "bg-emerald-500" },
+    { name: "VARC Passages", status: "Optimal", pct: 85, color: "bg-emerald-400" },
+    { name: "DILR Matrix Arrangements", status: "Attention Needed", pct: 58, color: "bg-amber-500" }
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl text-left">
+      <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest block mb-1">Apple-Quality Pace &amp; Weakness Tracker</span>
+      
+      <div className="space-y-3 my-auto">
+        {categories.map((cat, idx) => (
+          <div key={idx} className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-[11px] font-bold text-white">{cat.name}</span>
+              <span className="text-[9px] font-extrabold text-slate-400">{cat.status} ({cat.pct}%)</span>
+            </div>
+            <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/80">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: `${cat.pct}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className={`h-full ${cat.color} rounded-full`}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-900/80 flex items-center gap-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0" />
+        <span className="text-[9px] text-slate-400 italic">
+          *Pace Insight: Speed is optimal in Arithmetic (45s/q), but DILR matrix setups exceed safe averages (165s/q).
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// 6. Revision Engine
+function RevisionEngineWidget() {
+  const [retention, setRetention] = useState(65);
+  const [boosted, setBoosted] = useState(false);
+
+  const handleBoost = () => {
+    setRetention(100);
+    setBoosted(true);
+    setTimeout(() => setBoosted(false), 2000);
+  };
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg text-center relative overflow-hidden">
+      {boosted && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-[#5B4DFF]/5 flex items-center justify-center pointer-events-none z-10"
+        >
+          <div className="bg-[#5B4DFF] text-white px-4 py-2 rounded-2xl shadow-xl text-xs font-black flex items-center gap-1.5">
+            <Zap size={12} className="fill-current" /> Concept Memory Recharged!
+          </div>
+        </motion.div>
+      )}
+
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest block">Spaced Retention Timeline</span>
+      
+      <div className="my-auto space-y-4">
+        <div className="flex items-center justify-center gap-4">
+          <div className="text-3xl font-black text-slate-900 tracking-tight">{retention}%</div>
+          <div className="text-left">
+            <span className="text-[9px] font-extrabold uppercase text-slate-400 block">Memory Strength</span>
+            <span className="text-[10px] font-bold text-slate-600">Interval Status: {retention === 100 ? "Secured" : "Decaying"}</span>
+          </div>
+        </div>
+
+        <div className="h-12 relative flex items-end">
+          <svg className="w-full h-full" viewBox="0 0 100 30" preserveAspectRatio="none">
+            <path d={`M0,5 Q50,${25 - (retention - 65) * 0.5} 100,28`} fill="none" stroke="#E2E8F0" strokeWidth="2" strokeDasharray="3,3" />
+            <path d={`M0,5 Q50,${25 - (retention - 65) * 0.5} ${retention},${28 - (retention - 65) * 0.2}`} fill="none" stroke="#5B4DFF" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx={retention} cy={28 - (retention - 65) * 0.2} r="3" fill="#5B4DFF" />
+          </svg>
+        </div>
+
+        <button
+          onClick={handleBoost}
+          className="mx-auto px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm flex items-center gap-2 group"
+        >
+          <RefreshCw size={12} className="group-hover:rotate-180 transition-transform duration-500" /> Trigger Active Recall Review
+        </button>
+      </div>
+
+      <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">
+        *Spaced Repetition reset loop: Interval schedules at 1, 3, and 7-day decays.
+      </span>
+    </div>
+  );
+}
+
+// 7. Adaptive Reinforcement
+function AdaptiveReinforcementWidget() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 5);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const flow = [
+    { name: "Practice Slot", desc: "Algebra Sprint Quiz in Progress" },
+    { name: "Deficit Flagged", desc: "System tags accuracy drop (< 60% on Sequences)" },
+    { name: "Remedial Branch", desc: "Auxiliary basic Sequences drills auto-generated" },
+    { name: "Skill Patched", desc: "Sequences accuracy benchmark restored to 90%" },
+    { name: "Path Re-entry", desc: "Main curriculum roadmap unlocked successfully" }
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl text-left relative">
+      <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest block mb-2">Dynamic Error Loop Flow</span>
+
+      <div className="space-y-3.5 my-auto relative z-10">
+        {flow.map((node, i) => {
+          const isActive = i === activeStep;
+          return (
+            <div key={i} className={`flex items-center gap-3 transition-opacity duration-500 ${isActive ? "opacity-100 scale-102" : "opacity-30"}`}>
+              <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold border shrink-0 ${
+                isActive ? "bg-[#5B4DFF] border-[#5B4DFF] text-white animate-pulse" : "bg-slate-900 border-slate-800 text-slate-500"
+              }`}>
+                {i + 1}
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">{node.name}</h4>
+                {isActive && <span className="text-[9px] text-slate-400 block mt-0.5">{node.desc}</span>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <span className="text-[8px] text-slate-500 italic">
+        *Remedial drills isolate exactly what you failed, preventing backlog pile-up.
+      </span>
+    </div>
+  );
+}
+
+// 8. Progress Tracking
+function ProgressTrackingWidget() {
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg text-center">
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest block">Strategic Milestones Hub</span>
+      
+      <div className="flex justify-around items-center my-auto">
+        <div className="relative w-20 h-20">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path className="text-slate-100" strokeWidth="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path className="text-[#5B4DFF]" strokeDasharray="72, 100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-sm font-black text-slate-900">72%</span>
+            <span className="text-[7px] text-slate-400 uppercase font-black">Syllabus</span>
+          </div>
+        </div>
+
+        <div className="text-left space-y-2.5">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black">1</div>
+            <div>
+              <span className="text-[9px] font-bold text-slate-800 block leading-tight">Qualifiers Phase</span>
+              <span className="text-[7px] font-extrabold uppercase text-emerald-500">100% Completed</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black">2</div>
+            <div>
+              <span className="text-[9px] font-bold text-slate-800 block leading-tight">Contenders Phase</span>
+              <span className="text-[7px] font-extrabold uppercase text-indigo-500">80% In Progress</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-[9px] text-slate-400 font-black">3</div>
+            <div>
+              <span className="text-[9px] font-bold text-slate-400 block leading-tight">Elite Phase</span>
+              <span className="text-[7px] font-extrabold uppercase text-slate-400">Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-[9px] text-slate-500">
+        Phase advancement requires meeting minimum accuracy targets in all core categories.
+      </div>
+    </div>
+  );
+}
+
+// 9. Rewards System
+function RewardsSystemWidget() {
+  const [activeBadge, setActiveBadge] = useState(null);
+
+  const badges = [
+    { title: "Trap Breaker", desc: "Identify and skip 5 time traps in under 15 seconds.", icon: ShieldCheck, color: "text-[#9B8FFF] bg-purple-500/10 border-purple-500/20" },
+    { title: "Streak Titan", desc: "Maintain a study streak for 15 consecutive days.", icon: Flame, color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
+    { title: "Accuracy Guru", desc: "Achieve >90% accuracy on a full Sectional Test.", icon: Award, color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" }
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl text-center relative overflow-hidden">
+      <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest block">Premium Achievement Pane</span>
+      
+      <div className="my-auto space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="text-left">
+            <span className="text-[8px] font-black text-[#9B8FFF] uppercase block">Current Rank</span>
+            <span className="text-xs font-black text-white">Level 18 — Contender</span>
+          </div>
+          <div className="text-right">
+            <span className="text-[8px] font-bold text-slate-400 block">Current XP</span>
+            <span className="text-xs font-bold text-slate-300">7,240 / 10,000</span>
+          </div>
+        </div>
+        
+        <div className="h-2 bg-slate-900 border border-slate-800/80 rounded-full overflow-hidden">
+          <motion.div initial={{ width: 0 }} whileInView={{ width: "72.4%" }} className="h-full bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] rounded-full" />
+        </div>
+
+        <div className="flex justify-center gap-3">
+          {badges.map((badge, idx) => {
+            const Icon = badge.icon;
+            const isActive = activeBadge === idx;
+            return (
+              <button
+                key={idx}
+                onClick={() => setActiveBadge(isActive ? null : idx)}
+                className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-all ${badge.color} ${
+                  isActive ? "scale-110 shadow-[0_0_12px_rgba(91,77,255,0.4)] animate-pulse" : "hover:scale-105"
+                }`}
+              >
+                <Icon size={18} />
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence>
+          {activeBadge !== null && (
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              className="p-2.5 rounded-xl bg-slate-950 border border-slate-900 text-left"
+            >
+              <h5 className="text-[10px] font-black text-white">{badges[activeBadge].title}</h5>
+              <p className="text-[9px] text-slate-400 mt-0.5 leading-relaxed">{badges[activeBadge].desc}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <span className="text-[8px] text-slate-500">
+        *Rewards act as momentum loops to maintain daily practice routines.
+      </span>
+    </div>
+  );
+}
+
+// 10. Mission System
+function MissionSystemWidget() {
+  const [completed, setCompleted] = useState([false, false, false]);
+
+  const toggleTask = (index) => {
+    setCompleted((prev) => {
+      const next = [...prev];
+      next[index] = !next[index];
+      return next;
+    });
+  };
+
+  const completedCount = completed.filter(Boolean).length;
+  const progressPercent = Math.round((completedCount / completed.length) * 100);
+
+  const missions = [
+    "Syllabus: Solve CI Multipliers Assignment (15m)",
+    "Strategy: Complete 5 Quad-4 skipping exercises (10m)",
+    "Revision: Correct 4 yesterday's mistakes in Error Book (15m)"
+  ];
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg text-left">
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest">Today's Daily Checklist</span>
+        <span className="px-2 py-0.5 rounded bg-indigo-50 border border-indigo-100 text-[9px] font-black text-[#5B4DFF]">
+          {progressPercent}% Complete
+        </span>
+      </div>
+
+      <div className="space-y-2.5 my-auto">
+        {missions.map((mission, idx) => {
+          const isDone = completed[idx];
+          return (
+            <button
+              key={idx}
+              onClick={() => toggleTask(idx)}
+              className="w-full flex items-center gap-3 p-2 rounded-xl border border-slate-100/50 hover:bg-slate-50 transition-colors text-left"
+            >
+              <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                isDone ? "bg-emerald-500 border-emerald-500 text-white" : "border-slate-300 bg-white"
+              }`}>
+                {isDone && <Check size={10} strokeWidth={4} />}
+              </div>
+              <span className={`text-[11px] font-bold transition-all ${isDone ? "text-slate-400 line-through" : "text-slate-800"}`}>
+                {mission}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="h-1 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40">
+        <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${progressPercent}%` }} />
+      </div>
+    </div>
+  );
+}
+
+// 11. Streak System
+function StreakSystemWidget() {
+  const cells = [
+    4, 4, 3, 0, 4, 3, 4,
+    4, 4, 2, 4, 4, 0, 4,
+    4, 3, 4, 4, 4, 4, 3,
+    4, 4, 4, 4, 3, 4, 4
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl text-center">
+      <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest block">Habit Consistency Chain</span>
+
+      <div className="my-auto space-y-4">
+        <div className="flex justify-center items-center gap-2.5">
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center animate-bounce">
+            <Flame size={20} className="fill-current" />
+          </div>
+          <div className="text-left">
+            <div className="text-2xl font-black text-white tracking-tight">18 Days Active</div>
+            <span className="text-[9px] font-bold text-slate-400 uppercase">Streak Momentum Active</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-7 gap-1.5 justify-center max-w-[160px] mx-auto">
+          {cells.map((level, i) => {
+            let color = "bg-slate-900 border-slate-800/80";
+            if (level === 2) color = "bg-purple-900/40 border-purple-800/20";
+            if (level === 3) color = "bg-purple-700/60 border-purple-600/30";
+            if (level === 4) color = "bg-[#5B4DFF] border-[#5B4DFF]/50 shadow-[0_0_8px_rgba(91,77,255,0.4)]";
+            return (
+              <div
+                key={i}
+                className={`w-4 h-4 rounded-sm border ${color} transition-all duration-300`}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <span className="text-[8px] text-slate-500">
+        *Calendar logs consecutive study completions. Missing a day resets active streak bonuses.
+      </span>
+    </div>
+  );
+}
+
+// 12. Smart Skipping
+function SmartSkippingWidget() {
+  const [selectedQuestion, setSelectedQuestion] = useState(0);
+
+  const questions = [
+    { quad: "Quadrant 1: Attempt First", desc: "High Yield & Easy. Solve immediately to secure initial marks.", border: "border-emerald-500 bg-emerald-500/10 text-emerald-400" },
+    { quad: "Quadrant 2: Attempt Carefully", desc: "High Yield but Hard. Attempt after securing all easy marks.", border: "border-amber-500 bg-amber-500/10 text-amber-400" },
+    { quad: "Quadrant 3: Optional", desc: "Low Frequency & Easy. Attempt at the end of sections to boost score.", border: "border-indigo-500 bg-indigo-500/10 text-indigo-400" },
+    { quad: "Quadrant 4: Skip Immediately", desc: "Low Yield & Hard. Examiner trap designed to waste time. Skip under 15 seconds.", border: "border-rose-500 bg-rose-500/10 text-rose-400" }
+  ];
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg text-left">
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest block mb-2">Priority Matrix Selector</span>
+
+      <div className="flex gap-1 justify-center mb-2">
+        {questions.map((q, i) => (
+          <button
+            key={i}
+            onClick={() => setSelectedQuestion(i)}
+            className={`px-2 py-1 rounded-lg text-[9px] font-black transition-all ${
+              selectedQuestion === i ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+            }`}
+          >
+            Q{i + 1}
+          </button>
+        ))}
+      </div>
+
+      <div className={`p-4 rounded-2xl border-2 my-auto transition-all duration-500 ${questions[selectedQuestion].border}`}>
+        <span className="text-[8px] font-black uppercase tracking-wider block opacity-70">Strategic Quadrant</span>
+        <h4 className="text-xs font-black mt-0.5">{questions[selectedQuestion].quad}</h4>
+        <p className="text-[10px] font-bold mt-1.5 leading-relaxed opacity-90">{questions[selectedQuestion].desc}</p>
+      </div>
+
+      <span className="text-[8px] text-slate-400 text-center">
+        *Tapping Q1-Q4 shows dynamic routing into target decision quadrants.
+      </span>
+    </div>
+  );
+}
+
+// 13. Time Trap Detection
+function TimeTrapWidget() {
+  const [selectedNode, setSelectedNode] = useState(4); // default to trap
+
+  const nodes = [
+    { label: "Q1", time: "40s", status: "Correct", desc: "Standard arithmetic. Solved inside average threshold.", color: "bg-emerald-500 border-emerald-500 text-white" },
+    { label: "Q2", time: "35s", status: "Correct", desc: "Basic vocabulary passage. Fast pacing.", color: "bg-emerald-500 border-emerald-500 text-white" },
+    { label: "Q3", time: "15s", status: "Skipped", desc: "Identified rare permutation trap. Strategic skip.", color: "bg-indigo-500 border-indigo-500 text-white" },
+    { label: "Q4", time: "45s", status: "Correct", desc: "Linear arrangement. Clean logical matrix.", color: "bg-emerald-500 border-emerald-500 text-white" },
+    { label: "Q5", time: "185s", status: "Time Trap Flagged", desc: "Spent 3+ minutes on obscure modern geometry. Lost marks & ruined pacing.", color: "bg-rose-500 border-rose-500 text-white animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.6)]" },
+    { label: "Q6", time: "22s", status: "Correct", desc: "Percentages conversion. High speed solve.", color: "bg-emerald-500 border-emerald-500 text-white" }
+  ];
+
+  return (
+    <div className="bg-[#0B0F19] border border-slate-800 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-2xl text-left">
+      <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest block mb-2">Attempt Timeline Analyzer</span>
+
+      <div className="flex justify-between items-center relative my-auto py-2">
+        <div className="absolute left-2 right-2 h-0.5 bg-slate-800 z-0" />
+        
+        {nodes.map((node, i) => {
+          const isSelected = selectedNode === i;
+          return (
+            <button
+              key={i}
+              onClick={() => setSelectedNode(i)}
+              className={`w-7 h-7 rounded-full border text-[9px] font-black flex items-center justify-center z-10 transition-transform ${node.color} ${
+                isSelected ? "scale-125 ring-2 ring-white/20" : "hover:scale-110"
+              }`}
+            >
+              {node.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-900 flex justify-between items-start gap-4 min-h-[75px]">
+        <div>
+          <h5 className="text-[11px] font-black text-white">{nodes[selectedNode].status} ({nodes[selectedNode].time})</h5>
+          <p className="text-[9px] text-slate-400 mt-1 leading-relaxed">{nodes[selectedNode].desc}</p>
+        </div>
+      </div>
+
+      <span className="text-[8px] text-slate-500 text-center">
+        *Interactive: Tap timeline nodes to inspect solving duration details and skipping ROI.
+      </span>
+    </div>
+  );
+}
+
+// 14. Expected Percentile Tracking
+function ExpectedPercentileWidget() {
+  return (
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 h-72 flex flex-col justify-between shadow-lg text-left">
+      <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-widest block">Projected Growth Curve</span>
+
+      <div className="h-28 relative my-auto">
+        <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="gradientPercentile" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#5B4DFF" stopOpacity="0.15"/>
+              <stop offset="100%" stopColor="#5B4DFF" stopOpacity="0"/>
+            </linearGradient>
+          </defs>
+          
+          <line x1="0" y1="10" x2="100" y2="10" stroke="#F1F5F9" strokeWidth="0.5" />
+          <line x1="0" y1="20" x2="100" y2="20" stroke="#F1F5F9" strokeWidth="0.5" />
+          <line x1="0" y1="30" x2="100" y2="30" stroke="#F1F5F9" strokeWidth="0.5" />
+
+          <path d="M0,38 Q30,35 60,20 T100,5 L100,40 L0,40 Z" fill="url(#gradientPercentile)" />
+          
+          <path d="M0,38 Q30,35 60,20 T100,5" fill="none" stroke="#5B4DFF" strokeWidth="2" strokeLinecap="round" />
+          
+          <circle cx="0" cy="38" r="2" fill="#5B4DFF" />
+          <circle cx="30" cy="35" r="2" fill="#5B4DFF" />
+          <circle cx="60" cy="20" r="2.5" fill="#5B4DFF" className="animate-ping" />
+          <circle cx="60" cy="20" r="2" fill="#5B4DFF" />
+          <circle cx="100" cy="5" r="2" fill="#5B4DFF" />
+          
+          <text x="5" y="32" fontSize="3" className="fill-slate-400 font-bold uppercase">Base</text>
+          <text x="35" y="28" fontSize="3" className="fill-slate-400 font-bold uppercase">Qualifier</text>
+          <text x="65" y="15" fontSize="3.5" className="fill-[#5B4DFF] font-black uppercase">Active Phase</text>
+          <text x="82" y="10" fontSize="3" className="fill-slate-400 font-bold uppercase">Target 99%ile</text>
+        </svg>
+      </div>
+
+      <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center">
+        <div>
+          <span className="text-[8px] font-bold text-slate-400 uppercase block">Active Readiness State</span>
+          <span className="text-[11px] font-black text-slate-800">Contenders Range (Phase 2)</span>
+        </div>
+        <div className="text-right">
+          <span className="text-[8px] font-bold text-slate-400 uppercase block">Milestone Status</span>
+          <span className="text-[11px] font-black text-emerald-500">On Track</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Map index to each of the 14 widgets
+const featuresWidgetsMap = [
+  GuidedLearningWidget,
+  TopicTestsWidget,
+  SectionTestsWidget,
+  MockTestsWidget,
+  PerformanceAnalyticsWidget,
+  RevisionEngineWidget,
+  AdaptiveReinforcementWidget,
+  ProgressTrackingWidget,
+  RewardsSystemWidget,
+  MissionSystemWidget,
+  StreakSystemWidget,
+  SmartSkippingWidget,
+  TimeTrapWidget,
+  ExpectedPercentileWidget
+];
+
+// --- MAIN REDESIGNED FEATURES PAGE ---
 export function FeaturesPage() {
+  const [selectedCluster, setSelectedCluster] = useState("Learn");
+
   const features = [
     {
       title: "Guided Learning",
+      headline: "The system always knows your exact next study action.",
       purpose: "Provide a direct, step-by-step roadmap from foundations to advanced concept levels.",
       problem: "Aspirants spend hours planning study calendars, facing heavy decision fatigue.",
       works: "Algorithmically sequences topics and daily sections based on user accuracy.",
@@ -562,6 +1339,7 @@ export function FeaturesPage() {
     },
     {
       title: "Topic Tests",
+      headline: "Isolate conceptual gaps at the most granular level possible.",
       purpose: "Target specific, granular concept subdivisions for direct testing.",
       problem: "Traditional books have massive mixed exercises that hide specific concept errors.",
       works: "Generates custom 10-15 minute quizzes targeting specific sub-rules (e.g. Compound Interest ratios).",
@@ -569,6 +1347,7 @@ export function FeaturesPage() {
     },
     {
       title: "Section Tests",
+      headline: "Master individual slots without full mock exhaustion.",
       purpose: "Simulate individual exam slots (Quant, VARC, or DILR) under strict timing envelopes.",
       problem: "Full 2-hour mock tests are draining, making routine segment diagnostics difficult.",
       works: "Provides dedicated 40-minute slot tests mapping exact section compositions.",
@@ -576,6 +1355,7 @@ export function FeaturesPage() {
     },
     {
       title: "Mock Tests",
+      headline: "Full exam conditions to lock in strategic confidence.",
       purpose: "Provide slot simulations mimicking national CAT test patterns.",
       problem: "Unpredictable slot schedules can trigger exam anxiety and time allocation errors.",
       works: "Simulates full slot boundaries, compiling multi-layered diagnostic reports.",
@@ -583,6 +1363,7 @@ export function FeaturesPage() {
     },
     {
       title: "Performance Analytics",
+      headline: "Deep strategic diagnostics built to expose pacing leaks.",
       purpose: "Deliver direct diagnostics outlining conceptual accuracy and pace metrics.",
       problem: "Standard scorecards only show total marks, obscuring conceptual error patterns.",
       works: "Evaluates time allocation charts and maps errors to specific syllabus sections.",
@@ -590,6 +1371,7 @@ export function FeaturesPage() {
     },
     {
       title: "Revision Engine",
+      headline: "Protect hard-earned concepts from memory decay cycles.",
       purpose: "Protect memory retention using spaced repetition schedules.",
       problem: "Students study new topics while completely forgetting previous concepts.",
       works: "Triggers spaced review intervals automatically whenever memory thresholds decline.",
@@ -597,6 +1379,7 @@ export function FeaturesPage() {
     },
     {
       title: "Adaptive Reinforcement",
+      headline: "Practicing complexity that adjusts dynamically to your skill.",
       purpose: "Automatically customize practicing difficulty parameters in real-time.",
       problem: "Static exercises are either demoralizingly difficult or boringly easy.",
       works: "Increases difficulty iteratively as your answers stabilize, scaling down when error spikes occur.",
@@ -604,6 +1387,7 @@ export function FeaturesPage() {
     },
     {
       title: "Progress Tracking",
+      headline: "Your entire strategically coordinated pathway, visual and clear.",
       purpose: "Visualize overall syllabus completion and phase benchmarks.",
       problem: "Aspirants study blindly, unsure if they are close to syllabus mastery.",
       works: "Compiles a live roadmap tracking finished activities and next milestone requirements.",
@@ -611,6 +1395,7 @@ export function FeaturesPage() {
     },
     {
       title: "Rewards System",
+      headline: "Premium gamification designed to feed consistency loops.",
       purpose: "Dopamine trigger mechanics rewarding routine study actions.",
       problem: "Traditional self-preparation is isolated, causing consistency drops.",
       works: "Grants platform badges and level-ups on completing daily sections.",
@@ -618,6 +1403,7 @@ export function FeaturesPage() {
     },
     {
       title: "Mission System",
+      headline: "Break syllabus overwhelm into daily actionable milestones.",
       purpose: "Divide weekly assignments into bite-sized daily milestones.",
       problem: "Vast syllabi trigger strategic paralysis, preventing routine practice.",
       works: "Converts weekly goals into specific, actionable daily missions.",
@@ -625,6 +1411,7 @@ export function FeaturesPage() {
     },
     {
       title: "Streak System",
+      headline: "Visual daily momentum charts that build bulletproof habits.",
       purpose: "Condition consistency using visual daily streak trackers.",
       problem: "Prepare inconsistently, leaving weeks of blank spaces between study blocks.",
       works: "Maintains a live calendar tracking consecutive days with completed sections.",
@@ -632,6 +1419,7 @@ export function FeaturesPage() {
     },
     {
       title: "Smart Skipping",
+      headline: "Recognize low-ROI examiner trap questions in 15 seconds.",
       purpose: "Condition fast question selection during active slot tests.",
       problem: "Aspirants waste 5-8 minutes attempting difficult trap questions.",
       works: "Schedules specific speed-filtering exercises to teach time-saving skipping guidelines.",
@@ -639,6 +1427,7 @@ export function FeaturesPage() {
     },
     {
       title: "Time Trap Detection",
+      headline: "Flag pace bottlenecks before they compromise slot scores.",
       purpose: "Flag specific questions where attempts exceeded safe timing envelopes.",
       problem: "Students ignore time metrics, failing to recognize pacing errors.",
       works: "Monitors response durations, tagging any attempt >120s without success.",
@@ -646,6 +1435,7 @@ export function FeaturesPage() {
     },
     {
       title: "Expected Percentile Tracking",
+      headline: "Professional mathematical forecasting based on competitive slots.",
       purpose: "Provide live percentile forecasts based on competitive benchmarks.",
       problem: "Raw mock scores are difficult to evaluate without comparative metrics.",
       works: "Maps raw accuracy parameters to current slot statistics.",
@@ -653,55 +1443,395 @@ export function FeaturesPage() {
     },
   ];
 
-  return (
-    <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="pt-24 min-h-screen bg-[#F8FAFC]">
-      <div className="max-w-5xl mx-auto px-6 py-12 text-center">
-        <motion.span variants={fadeUp} className="px-3 py-1 text-xs font-semibold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-          Feature Catalogue
-        </motion.span>
-        <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.08] mt-4 mb-6">
-          The <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">TESTRIGHTNOW</span> Engine
-        </motion.h1>
-        <motion.p variants={fadeUp} className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
-          Explore all 14 core features engineered specifically to remove strategy paralysis and accelerate score efficiency.
-        </motion.p>
-      </div>
+  const clusters = {
+    Learn: {
+      desc: "Structured linear syllabus pathways built entirely on cognitive retention science, completely eliminating preparation planning stress.",
+      items: ["Guided Learning", "Progress Tracking", "Mission System"]
+    },
+    Practice: {
+      desc: "Granular concept tests, strict segment slot simulations, and full national mocks engineered to condition active retrieval.",
+      items: ["Topic Tests", "Section Tests", "Mock Tests"]
+    },
+    Analyze: {
+      desc: "Apple-quality pacing algorithms and expectation indicators uncovering precise strategic performance leaks.",
+      items: ["Performance Analytics", "Time Trap Detection", "Expected Percentile Tracking"]
+    },
+    Improve: {
+      desc: "Spaced recall engines, dynamic reinforcement, and phase builders addressing specific errors before progression.",
+      items: ["Revision Engine", "Adaptive Reinforcement"]
+    },
+    Master: {
+      desc: "Habit-forming streak trackers, gamified badges, and time-saving prioritization frameworks building elite attempt speeds.",
+      items: ["Rewards System", "Streak System", "Smart Skipping"]
+    }
+  };
 
-      {/* Feature Grid */}
-      <div className="max-w-6xl mx-auto px-6 pb-20 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((item, idx) => (
-          <motion.div
-            key={idx}
-            whileHover={{ y: -5 }}
-            className="bg-white border border-slate-200/60 p-6 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.01)] flex flex-col justify-between"
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 },
+    },
+  };
+
+  return (
+    <div className="bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden">
+      
+      {/* Custom Styles for Glow and Dashed line animations */}
+      <style>{`
+        @keyframes pulseGlow {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(91,77,255,0.4)); opacity: 0.8; }
+          50% { transform: scale(1.04); filter: drop-shadow(0 0 20px rgba(91,77,255,0.8)); opacity: 1; }
+        }
+        @keyframes dashMove {
+          to { stroke-dashoffset: -20; }
+        }
+        .animate-pulseGlow {
+          animation: pulseGlow 3s infinite ease-in-out;
+        }
+        .animate-dashMove {
+          animation: dashMove 2.5s infinite linear;
+        }
+      `}</style>
+
+      {/* SECTION 1: IMMERSIVE HERO */}
+      <section className="relative pt-32 pb-24 px-6 md:px-12 flex flex-col items-center text-center overflow-hidden bg-gradient-to-b from-[#08071A] via-[#0D0B26] to-slate-950">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#5B4DFF]/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[10%] right-[-10%] w-[45%] h-[45%] bg-[#9B8FFF]/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto space-y-6 relative z-10">
+          <motion.span
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="px-3.5 py-1 text-[10px] font-bold text-[#A5B4FC] bg-[#5B4DFF]/15 border border-[#5B4DFF]/25 rounded-full uppercase tracking-widest"
           >
-            <div>
-              <span className="text-[10px] font-black uppercase text-[#5B4DFF] tracking-wider block mb-3">{item.title}</span>
-              
-              <div className="space-y-3">
+            The Ultimate Preparation Machine
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[1.05] text-white"
+          >
+            The Operating System <br className="hidden sm:inline" />
+            For <span className="bg-gradient-to-r from-[#818CF8] via-[#a78bfa] to-white bg-clip-text text-transparent">CAT Success.</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+          >
+            Every feature is engineered to remove confusion, build consistency and maximize percentile growth.
+          </motion.p>
+        </div>
+
+        {/* Animated Ecosystem Map SVG */}
+        <div className="w-full max-w-3xl h-[280px] sm:h-[350px] mt-16 relative z-10">
+          <svg className="w-full h-full" viewBox="0 0 100 80">
+            {/* Connecting Glow Paths */}
+            <path d="M50,40 L15,20" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+            <path d="M50,40 L85,20" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+            <path d="M50,40 L85,60" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+            <path d="M50,40 L50,70" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+            <path d="M50,40 L15,60" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+            <path d="M50,40 L50,10" stroke="#5B4DFF" strokeWidth="1" strokeDasharray="3, 3" className="animate-dashMove" />
+
+            {/* Nodes */}
+            {/* Center: TESTRIGHTNOW Engine */}
+            <g className="animate-pulseGlow">
+              <circle cx="50" cy="40" r="7" fill="url(#gradientCenter)" stroke="#5B4DFF" strokeWidth="1.5" />
+              <text x="50" y="41.5" fontSize="2.5" fontWeight="900" fill="#FFF" textAnchor="middle">ENGINE</text>
+            </g>
+
+            {/* Outer Nodes */}
+            <g>
+              <circle cx="15" cy="20" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="15" y="21" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Guided Learning</text>
+            </g>
+            <g>
+              <circle cx="85" cy="20" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="85" y="21" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Revision</text>
+            </g>
+            <g>
+              <circle cx="85" cy="60" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="85" y="61" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Mocks</text>
+            </g>
+            <g>
+              <circle cx="50" cy="70" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="50" y="71" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Analytics</text>
+            </g>
+            <g>
+              <circle cx="15" cy="60" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="15" y="61" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Reinforcement</text>
+            </g>
+            <g>
+              <circle cx="50" cy="10" r="5" fill="#0B0F19" stroke="#5B4DFF" strokeWidth="1" />
+              <text x="50" y="11" fontSize="2" fontWeight="800" fill="#9B8FFF" textAnchor="middle">Smart Skipping</text>
+            </g>
+
+            {/* Gradients */}
+            <defs>
+              <radialGradient id="gradientCenter" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#7C6CFF" />
+                <stop offset="100%" stopColor="#5B4DFF" />
+              </radialGradient>
+            </defs>
+          </svg>
+        </div>
+      </section>
+
+      {/* SECTION 2: FEATURE ECOSYSTEM MAP */}
+      <section className="py-24 px-6 md:px-12 bg-slate-900 border-y border-slate-800 relative">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+          
+          <div className="lg:col-span-5 space-y-6 text-left">
+            <span className="px-3 py-1 text-[10px] font-bold text-[#A5B4FC] bg-white/5 rounded-full uppercase tracking-wider border border-white/5">
+              Interactive Blueprint
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Explore The <span className="text-[#9B8FFF]">Ecosystem Clusters</span>
+            </h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Hover or click the clusters below to inspect how various feature sets organize and streamline different preparation stages.
+            </p>
+
+            {/* Selector list */}
+            <div className="space-y-2 pt-4">
+              {Object.keys(clusters).map((clusterName) => (
+                <button
+                  key={clusterName}
+                  onClick={() => setSelectedCluster(clusterName)}
+                  className={`w-full p-4 rounded-2xl text-left border flex items-center justify-between transition-all duration-300 ${
+                    selectedCluster === clusterName
+                      ? "bg-[#5B4DFF]/10 border-[#5B4DFF]/40 text-white"
+                      : "bg-slate-950/40 border-slate-800 text-slate-500 hover:border-slate-700"
+                  }`}
+                >
+                  <span className="text-sm font-bold">{clusterName} System</span>
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center border text-xs font-black transition-colors ${
+                    selectedCluster === clusterName ? "bg-[#5B4DFF] border-[#5B4DFF] text-white" : "border-slate-800 text-slate-600"
+                  }`}>
+                    {clusterName[0]}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:col-span-7">
+            {/* Cluster Display Card */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedCluster}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="bg-slate-950 border border-slate-800 rounded-3xl p-8 text-left space-y-6 shadow-2xl relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-40 h-40 bg-[#5B4DFF]/5 rounded-full blur-3xl pointer-events-none" />
+                
                 <div>
-                  <span className="text-[9px] font-extrabold uppercase text-slate-400 block">Purpose</span>
-                  <p className="text-xs text-slate-800 font-semibold leading-relaxed">{item.purpose}</p>
+                  <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest">Selected Cluster</span>
+                  <h3 className="text-2xl font-black text-white mt-1">{selectedCluster} Module</h3>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed">
+                    {clusters[selectedCluster].desc}
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-slate-900 space-y-3">
+                  <span className="text-[9px] font-extrabold uppercase text-slate-500 tracking-wider block">Child Features in this Cluster</span>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {clusters[selectedCluster].items.map((feat) => (
+                      <div key={feat} className="flex items-center gap-2 p-2 rounded-xl bg-slate-900 border border-slate-800/80">
+                        <Check size={12} className="text-[#9B8FFF]" strokeWidth={3} />
+                        <span className="text-xs font-bold text-white">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
+      </section>
+
+      {/* SECTION 3: FEATURE STORYTELLING */}
+      <section className="py-12 bg-slate-950 relative">
+        <div className="text-center mb-16 max-w-xl mx-auto px-6">
+          <span className="px-3 py-1 text-[10px] font-bold text-[#A5B4FC] bg-[#5B4DFF]/15 border border-[#5B4DFF]/25 rounded-full uppercase tracking-wider">
+            Feature Catalog
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight mt-3">
+            Cinematic Feature <span className="text-[#9B8FFF]">Stories</span>
+          </h2>
+          <p className="text-slate-500 text-xs sm:text-sm mt-2">
+            Alternate layouts and deep-dive illustrations highlighting all 14 core components of our strategic framework.
+          </p>
+        </div>
+
+        <div className="space-y-12 max-w-7xl mx-auto">
+          {features.map((item, idx) => {
+            const WidgetComponent = featuresWidgetsMap[idx];
+            const isEven = idx % 2 === 0;
+            const isWidgetLeft = !isEven; // alternates left/right widget layouts
+            
+            // alternate bg-theme for high rhythmic visual flow
+            const sectionBg = isEven 
+              ? "bg-[#080713]/85 border-y border-[#5B4DFF]/5 shadow-[inset_0_0_30px_rgba(91,77,255,0.02)]" 
+              : "bg-transparent";
+
+            return (
+              <div 
+                key={idx} 
+                className={`py-20 px-6 sm:px-12 md:px-20 rounded-[32px] transition-all duration-300 ${sectionBg}`}
+              >
+                <div className="grid lg:grid-cols-12 gap-12 items-center">
+                  
+                  {/* Left layout placement */}
+                  {isWidgetLeft ? (
+                    <div className="lg:col-span-6 w-full max-w-md mx-auto">
+                      <WidgetComponent />
+                    </div>
+                  ) : null}
+
+                  {/* Content Panel */}
+                  <div className="lg:col-span-6 space-y-6 text-left">
+                    <span className="px-3 py-0.5 rounded-lg text-[9px] font-black tracking-widest text-[#9B8FFF] bg-[#5B4DFF]/10 uppercase border border-[#5B4DFF]/20">
+                      Feature {idx + 1}: {item.title}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                      {item.headline}
+                    </h3>
+                    
+                    <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
+                      <div>
+                        <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Purpose</span>
+                        <p className="text-xs text-slate-300 mt-1 leading-relaxed">{item.purpose}</p>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-black uppercase text-rose-500 tracking-wider">Core Problem Solved</span>
+                        <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.problem}</p>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">How it Works</span>
+                        <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.works}</p>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-black uppercase text-emerald-400 tracking-wider">Student Outcome</span>
+                        <p className="text-xs text-[#9B8FFF] font-bold mt-1 leading-relaxed">{item.benefit}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right layout placement */}
+                  {!isWidgetLeft ? (
+                    <div className="lg:col-span-6 w-full max-w-md mx-auto">
+                      <WidgetComponent />
+                    </div>
+                  ) : null}
+
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* SECTION 4: HOW EVERYTHING WORKS TOGETHER (SYSTEM FLOW DIAGRAM) */}
+      <section className="py-24 px-6 md:px-12 bg-slate-900 border-y border-slate-800 relative">
+        <div className="max-w-6xl mx-auto text-center space-y-12">
+          <div className="max-w-xl mx-auto space-y-4">
+            <span className="px-3.5 py-1 text-[10px] font-bold text-[#A5B4FC] bg-[#5B4DFF]/15 border border-[#5B4DFF]/25 rounded-full uppercase tracking-wider">
+              Architecture Blueprint
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Coordinated Preparation <span className="text-[#9B8FFF]">System Loop</span>
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              TESTRIGHTNOW functions as a coordinating system where every activity directly feeds and updates subsequent stages.
+            </p>
+          </div>
+
+          {/* Flow diagram visual */}
+          <div className="grid sm:grid-cols-4 lg:grid-cols-7 gap-4 pt-8">
+            {[
+              { title: "1. Guided Learning", desc: "Linear Phase Maps", bg: "bg-indigo-950/20 border-indigo-900/40 text-indigo-400" },
+              { title: "2. Practice", desc: "Topic & Section Tests", bg: "bg-emerald-950/20 border-emerald-900/40 text-emerald-400" },
+              { title: "3. Revision", desc: "Memory Repetition Calendar", bg: "bg-purple-950/20 border-purple-900/40 text-purple-400" },
+              { title: "4. Mock Slots", desc: "Exam Stamina Simulations", bg: "bg-pink-950/20 border-pink-900/40 text-pink-400" },
+              { title: "5. Analytics", desc: "Pacing & Heatmap Audits", bg: "bg-cyan-950/20 border-cyan-900/40 text-cyan-400" },
+              { title: "6. Reinforcement", desc: "Auxiliary remedial drills", bg: "bg-amber-950/20 border-amber-900/40 text-amber-400" },
+              { title: "7. Higher Readiness", desc: "99+ Percentile Optimization", bg: "bg-rose-950/20 border-rose-900/40 text-rose-400" }
+            ].map((node, i) => (
+              <div 
+                key={i} 
+                className={`p-5 rounded-2xl border flex flex-col justify-between items-center text-center shadow-lg transition-transform hover:scale-103 ${node.bg}`}
+              >
+                <div className="w-8 h-8 rounded-full bg-slate-900 text-white text-xs font-black flex items-center justify-center border border-current shadow-sm shrink-0 mb-4">
+                  {i + 1}
                 </div>
                 <div>
-                  <span className="text-[9px] font-extrabold uppercase text-slate-400 block">Problem Solved</span>
-                  <p className="text-xs text-slate-600 leading-relaxed">{item.problem}</p>
+                  <h4 className="text-xs font-black uppercase tracking-wider">{node.title}</h4>
+                  <p className="text-[10px] opacity-75 mt-1 leading-normal">{node.desc}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: WHY THIS MATTERS (EDITORIAL STORYTELLING) */}
+      <section className="py-24 px-6 md:px-12 bg-gradient-to-b from-slate-950 via-[#070514] to-slate-950 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[140px] pointer-events-none" />
+        
+        <div className="max-w-5xl mx-auto grid md:grid-cols-12 gap-12 items-center relative z-10">
+          <div className="md:col-span-5 text-left space-y-5">
+            <span className="px-3 py-0.5 rounded-lg text-[9px] font-black tracking-widest text-[#9B8FFF] bg-[#5B4DFF]/10 uppercase border border-[#5B4DFF]/20">
+              The Strategic Difference
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight">
+              CAT Success Is <br className="hidden sm:inline" />
+              Not About Working Harder. <br />
+              <span className="bg-gradient-to-r from-[#A5B4FC] to-white bg-clip-text text-transparent">
+                It's About Working Smarter.
+              </span>
+            </h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Standard prep methodologies force candidates into rigid routines with zero strategic feedback, creating high cognitive fatigue. TESTRIGHTNOW replaces active planning overhead with an automated, personal strategist.
+            </p>
+          </div>
+
+          <div className="md:col-span-7 bg-slate-950/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-left shadow-2xl backdrop-blur-md">
+            <span className="text-[10px] font-black uppercase text-[#9B8FFF] tracking-widest">Methodology Contrast</span>
+            
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-rose-500/5 border border-rose-500/10 flex items-start gap-4">
+                <div className="w-5 h-5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center shrink-0 mt-0.5 text-xs font-black">✕</div>
                 <div>
-                  <span className="text-[9px] font-extrabold uppercase text-slate-400 block">How it Works</span>
-                  <p className="text-xs text-slate-500 leading-relaxed">{item.works}</p>
+                  <h4 className="text-xs font-black text-white">Standard Preparation Gaps</h4>
+                  <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                    Aspirants solve huge exercises randomly, study inconsistently without spaced review routines, neglect real-time pacing logs, and practice without remedial error isolators.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 flex items-start gap-4">
+                <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5 text-xs font-black">✓</div>
+                <div>
+                  <h4 className="text-xs font-black text-white">The Coordinated System Solution</h4>
+                  <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                    TESTRIGHTNOW organizes every single study step. Syllabus progress is linear, memory strength decays trigger automated review Worksheets, and pacing trap drills train high attempt accuracy.
+                  </p>
                 </div>
               </div>
             </div>
-
-            <div className="pt-4 mt-4 border-t border-slate-100">
-              <span className="text-[9px] font-extrabold uppercase text-emerald-500 block">Student Benefit</span>
-              <p className="text-xs text-[#5B4DFF] font-bold leading-relaxed">{item.benefit}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
+          </div>
+        </div>
+      </section>
+      
+    </div>
   );
 }
 
