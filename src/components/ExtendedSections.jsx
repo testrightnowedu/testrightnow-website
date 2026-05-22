@@ -495,16 +495,15 @@ export function GuidedLearningPage() {
 // --- PAGE: /how-it-works ---
 export function HowItWorksPage() {
   const workflow = [
-    { step: "1", title: "Create Account", desc: "Set up your profile and configure your graduation background and timeline." },
-    { step: "2", title: "Select Target Percentile", desc: "Set your target percentile guidelines to determine phase complexity." },
-    { step: "3", title: "Diagnostic Assessment", desc: "Complete an onboarding diagnostic test to map out conceptual strengths and gaps." },
-    { step: "4", title: "Guided Learning Starts", desc: "Bypass syllabus confusion; your sequential phase pathway unlocks immediately." },
-    { step: "5", title: "Daily Sections", desc: "Obtain your daily 45–90 minute hyper-focused task checklist every morning." },
-    { step: "6", title: "Targeted Practice", desc: "Solve modular quizzes built around specific focus patterns and sub-categories." },
-    { step: "7", title: "Automated Revision Loops", desc: "Spaced review triggers automatically whenever concept decay thresholds are reached." },
-    { step: "8", title: "Performance Diagnostics", desc: "Audit detailed analytics dashboards showing timing details and time traps." },
-    { step: "9", title: "Integrated Mock Tests", desc: "Enter simulated slot tests with real-time skipping conditioning and metrics." },
-    { step: "10", title: "Adaptive Reinforcement", desc: "Remedial modules automatically trigger to fortify persistent weak zones." },
+    { step: "1", title: "Create Account", desc: "Set up your profile and basic preparation details." },
+    { step: "2", title: "Guided Learning Starts", desc: "Your structured CAT preparation path becomes available immediately." },
+    { step: "3", title: "Daily Sections", desc: "Receive your daily 45–90 minute guided learning plan." },
+    { step: "4", title: "Targeted Practice", desc: "Complete focused activities and exercises." },
+    { step: "5", title: "Revision", desc: "Reinforce concepts through scheduled revision." },
+    { step: "6", title: "Performance Analysis", desc: "Track strengths, weaknesses, and progress." },
+    { step: "7", title: "Adaptive Reinforcement", desc: "Receive additional practice for weak areas." },
+    { step: "8", title: "Mock Tests", desc: "Apply learning under exam conditions." },
+    { step: "9", title: "Continuous Improvement", desc: "Progress through phases and milestones." }
   ];
 
   return (
