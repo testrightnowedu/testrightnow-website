@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { STUDENT_APP_URL } from '../constants';
 
 
 const navLinks = [
@@ -63,13 +64,13 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-2 xl:gap-4 flex-shrink-0">
           <a
-            href="#"
+            href={STUDENT_APP_URL}
             className="text-[15px] font-bold text-[#0F172A] px-4 xl:px-6 py-2.5 rounded-xl border border-transparent hover:bg-slate-50 transition-all"
           >
             Log in
           </a>
           <motion.a
-            href="#"
+            href={STUDENT_APP_URL}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="text-[15px] font-bold text-white bg-[#5B4DFF] px-6 xl:px-8 py-3 rounded-xl shadow-[0_4px_12px_rgba(91,77,255,0.2)] transition-all"
@@ -108,8 +109,8 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="flex flex-col gap-4 mt-2">
-                <a href="#" className="text-lg font-bold text-slate-800">Login</a>
-                <a href="#" className="bg-[#5B4DFF] text-white font-bold py-4 rounded-2xl">
+                <a href={STUDENT_APP_URL} className="text-lg font-bold text-slate-800">Login</a>
+                <a href={STUDENT_APP_URL} className="bg-[#5B4DFF] text-white font-bold py-4 rounded-2xl">
                   Start Practicing
                 </a>
               </div>

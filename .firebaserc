@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "testrightnow-admin"
+  },
+  "targets": {
+    "testrightnow-admin": {
+      "hosting": {
+        "website": [
+          "testrightnow-website"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { STUDENT_APP_URL } from '../constants';
 import { Trophy, ArrowRight, Map } from 'lucide-react';
 
 const fadeUp = {
@@ -62,7 +63,7 @@ export default function CTABanner() {
             {/* Right: Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
               <motion.a
-                href="#"
+                href={STUDENT_APP_URL}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-[#0F172A] font-bold text-[15px] px-8 py-4 rounded-[14px] transition-all duration-300"

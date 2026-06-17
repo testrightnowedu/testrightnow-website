@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { STUDENT_APP_URL } from '../constants';
 import { Brain, Clock, SkipForward, ArrowRight, CheckCircle2, Lock, Star, Flame, Home, BookOpen, Map, BarChart2, User, Share2, Target, Network } from 'lucide-react';
 
 const fadeUp = {
@@ -64,7 +65,7 @@ function MobileScreen() {
       {/* Hero Visual: Mountain Peak */}
       <div className="px-3.5 mx-3 rounded-2xl bg-gradient-to-br from-[#5B4DFF] via-[#4836E0] to-[#0F172A] pt-4 pb-0 mb-3 relative overflow-hidden h-36">
         <div className="relative z-10">
-          <p className="text-[7px] font-bold text-white/50 uppercase tracking-widest">Phase 3</p>
+          <p className="text-[7px] font-bold text-white/50 uppercase tracking-widest">Milestone 6</p>
           <h4 className="text-white font-bold text-[13px] mt-0.5">Strategic Mastery</h4>
           <p className="text-white/70 text-[8px] mt-1 max-w-[120px] leading-snug">
             Learn advanced strategies to solve smarter and faster.
@@ -89,30 +90,30 @@ function MobileScreen() {
         </div>
       </div>
 
-      {/* Phases List */}
+      {/* Milestones List */}
       <div className="flex-1 px-4 overflow-hidden flex flex-col gap-1">
         {[
-          { id: 1, label: 'Foundation', sub: 'Build your basics strong', status: 'done', color: '#22c55e' },
-          { id: 2, label: 'Core Skills', sub: 'Practice with purpose', status: 'done', color: '#22c55e' },
-          { id: 3, label: 'Strategy Building', sub: 'Learn to think like a topper', status: 'active', color: '#5B4DFF' },
-          { id: 4, label: 'Advanced Application', sub: 'Solve, analyze, improve', status: 'locked', color: '#334155' },
-          { id: 5, label: 'Mock Mastery', sub: 'Perform under real pressure', status: 'locked', color: '#334155' },
-        ].map((phase) => (
+          { id: 'M0-2', label: 'Milestones 0–2', sub: 'Build your basics strong', status: 'done', color: '#22c55e' },
+          { id: 'M3-5', label: 'Milestones 3–5', sub: 'Practice with purpose', status: 'done', color: '#22c55e' },
+          { id: 'M6-8', label: 'Milestones 6–8', sub: 'Learn to think like a topper', status: 'active', color: '#5B4DFF' },
+          { id: 'M9-10', label: 'Milestones 9–10', sub: 'Solve, analyze, improve', status: 'locked', color: '#334155' },
+          { id: 'Mock', label: 'Mock Slots', sub: 'Perform under real pressure', status: 'locked', color: '#334155' },
+        ].map((milestone) => (
           <div
-            key={phase.id}
+            key={milestone.id}
             className={`flex items-center gap-2.5 p-2 rounded-xl border ${
-              phase.status === 'active'
+              milestone.status === 'active'
                 ? 'bg-white/5 border-white/10'
                 : 'bg-transparent border-transparent'
             }`}
           >
             <div
               className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-              style={{ background: phase.status === 'locked' ? 'transparent' : phase.color + '22', border: `1px solid ${phase.status === 'locked' ? '#334155' : phase.color}` }}
+              style={{ background: milestone.status === 'locked' ? 'transparent' : milestone.color + '22', border: `1px solid ${milestone.status === 'locked' ? '#334155' : milestone.color}` }}
             >
-              {phase.status === 'done' ? (
+              {milestone.status === 'done' ? (
                 <CheckCircle2 size={10} color="#22c55e" />
-              ) : phase.status === 'active' ? (
+              ) : milestone.status === 'active' ? (
                 <div className="w-1.5 h-1.5 rounded-full bg-[#5B4DFF]" />
               ) : (
                 <Lock size={8} color="#334155" />
@@ -120,13 +121,13 @@ function MobileScreen() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-[7px] text-slate-500 font-bold">{phase.id}</span>
-                <p className={`text-[9px] font-bold truncate ${phase.status === 'locked' ? 'text-slate-600' : 'text-white'}`}>
-                  {phase.label}
+                <span className="text-[7px] text-slate-500 font-bold">{milestone.id}</span>
+                <p className={`text-[9px] font-bold truncate ${milestone.status === 'locked' ? 'text-slate-600' : 'text-white'}`}>
+                  {milestone.label}
                 </p>
-                {phase.status === 'active' && <CheckCircle2 size={8} className="text-[#5B4DFF] ml-auto" />}
+                {milestone.status === 'active' && <CheckCircle2 size={8} className="text-[#5B4DFF] ml-auto" />}
               </div>
-              <p className="text-[7px] text-slate-500 truncate mt-0.5">{phase.sub}</p>
+              <p className="text-[7px] text-slate-500 truncate mt-0.5">{milestone.sub}</p>
             </div>
           </div>
         ))}
@@ -239,7 +240,7 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto mt-10"
             >
               <motion.a
-                href="#"
+                href={STUDENT_APP_URL}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-white font-bold text-[16px] bg-[#5B4DFF] px-[36px] h-[58px] rounded-[18px] transition-all"

@@ -7,10 +7,10 @@ import AnimatedLaptopScreen from "./AnimatedLaptopScreen";
 
 /* ── Learning path ───────────────────────────────────────────── */
 const LEARNING_PATH = [
-  { title: "Foundation", sub: "12 / 12 Topics", status: "completed" },
-  { title: "Core Concepts", sub: "18 / 18 Topics", status: "completed" },
-  { title: "Advanced Topics", sub: "In Progress", status: "active", pct: 65 },
-  { title: "Mock Tests", sub: "Locked", status: "locked" },
+  { title: "Milestones 0–2", sub: "Foundations & Qualifiers", status: "completed" },
+  { title: "Milestones 3–5", sub: "Core Contenders", status: "completed" },
+  { title: "Milestones 6–8", sub: "Elite (In Progress)", status: "active", pct: 68 },
+  { title: "Milestones 9–10", sub: "Mock Slots", status: "locked" },
 ];
 
 /* ── Bottom tabs ─────────────────────────────────────────────── */
@@ -398,7 +398,7 @@ export default function PhoneMockup() {
                   </motion.div>
 
                   {/* Learning path */}
-                  <p className="text-[11px] font-bold text-white mb-2">Your Learning Path</p>
+                  <p className="text-[11px] font-bold text-white mb-2">Your Preparation Milestones</p>
                   <div className="flex flex-col gap-1.5 overflow-y-auto flex-1 custom-scrollbar pb-1">
                     {LEARNING_PATH.map(({ title, sub, status, pct }, i) => (
                       <motion.div key={title}

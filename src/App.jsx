@@ -23,6 +23,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import logo from "./assets/logo.png";
 import PhoneMockup from "./components/PhoneMockup";
 import CrossPlatformSection from "./components/CrossPlatformSection";
+import { STUDENT_APP_URL } from "./constants";
 import {
   GuidedLearningPreview,
   SmartSkippingPreview,
@@ -37,10 +38,12 @@ import {
   CollegesPage,
   FinalPremiumCTA,
 } from "./components/ExtendedSections";
+import PricingModal from "./components/PricingModal";
 
 function App() {
   const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -59,7 +62,7 @@ function App() {
       className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-clip transition-opacity duration-500"
       style={{ opacity: mounted ? 1 : 0 }}
     >
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={() => setIsPricingModalOpen(true)} />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -78,7 +81,7 @@ function App() {
                   <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
                 </div>
                 <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-[100px] lg:pt-[140px] pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
-                  <HeroSection onNavigate={handleNavigate} />
+                  <HeroSection onNavigate={handleNavigate} onOpenPricing={() => setIsPricingModalOpen(true)} />
                   <CredibilitySection />
                 </main>
               </div>
@@ -101,16 +104,22 @@ function App() {
           {currentPage === "colleges" && <CollegesPage />}
 
           {/* Render Premium CTA on all views */}
-          <FinalPremiumCTA onNavigate={handleNavigate} />
+          <FinalPremiumCTA onNavigate={handleNavigate} onOpenPricing={() => setIsPricingModalOpen(true)} />
         </motion.div>
       </AnimatePresence>
 
       <Footer setCurrentPage={setCurrentPage} />
+
+      <AnimatePresence>
+        {isPricingModalOpen && (
+          <PricingModal isOpen={isPricingModalOpen} onClose={() => setIsPricingModalOpen(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-function Navbar({ currentPage, setCurrentPage }) {
+function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -229,7 +238,7 @@ function Navbar({ currentPage, setCurrentPage }) {
             About Us
           </button>
           <button
-            onClick={() => handleNav("how-it-works")}
+            onClick={onOpenPricing}
             className="h-9 px-5 rounded-xl bg-[#5B4DFF] text-white text-[13px] font-semibold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
           >
             Start Practicing
@@ -283,7 +292,7 @@ function Navbar({ currentPage, setCurrentPage }) {
               </motion.button>
             ))}
             <button
-              onClick={() => handleNav("how-it-works")}
+              onClick={onOpenPricing}
               className="mt-3 h-11 rounded-xl bg-[#5B4DFF] text-white text-[14px] font-bold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
             >
               Start Practicing
@@ -302,7 +311,7 @@ const HERO_FEATURES = [
   { Icon: Trophy, title: "Earn Rewards", text: "Get self motivating rewards that keep you going." },
 ];
 
-function HeroSection({ onNavigate }) {
+function HeroSection({ onNavigate, onOpenPricing }) {
   return (
     <section className="flex-1 flex items-center relative w-full py-4 lg:py-0">
       <div className="w-full grid lg:grid-cols-[38%_62%] items-center gap-4 lg:gap-6">
@@ -361,7 +370,7 @@ function HeroSection({ onNavigate }) {
           {/* CTA */}
           <div className="mt-5 flex justify-center lg:justify-start">
             <button
-              onClick={() => onNavigate("how-it-works")}
+              onClick={onOpenPricing}
               className="h-12 px-8 rounded-2xl bg-[#5B4DFF] text-white text-[14px] font-bold flex items-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group"
             >
               Start Your Journey

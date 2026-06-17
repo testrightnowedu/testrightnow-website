@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { STUDENT_APP_URL } from "../constants";
 import {
   Brain,
   Trophy,
@@ -11,6 +12,7 @@ import {
   ArrowRight,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   Check,
   X,
   Award,
@@ -32,6 +34,7 @@ import {
   Lightbulb,
   Layers,
   ShieldCheck,
+  Lock,
   Compass as CompassIcon,
   HelpCircle as HelpIcon,
   BookOpenCheck,
@@ -60,11 +63,11 @@ const staggerContainer = {
 // ==========================================
 
 export function GuidedLearningPreview({ onNavigate }) {
-  const previewPhases = [
-    { phase: "Phase 1", name: "Qualifiers", percentile: "75–85%", desc: "Master Arithmetic foundations and basic reading speed.", color: "from-indigo-500 to-indigo-700" },
-    { phase: "Phase 2", name: "Contenders", percentile: "85–95%", desc: "Build strategic depth in Algebra & Geometry.", color: "from-purple-500 to-purple-700" },
-    { phase: "Phase 3", name: "Elite", percentile: "95–99%", desc: "Advanced number systems, inference reading, and complex logic grids.", color: "from-[#5B4DFF] to-[#7C6CFF]" },
-    { phase: "Phase 4", name: "Top 1%", percentile: "99%+", desc: "Tactical skipping drills, multi-concept integration, and stamina.", color: "from-[#1E1B4B] to-[#312E81]" },
+  const previewMilestones = [
+    { milestone: "Milestones 0–2", name: "Foundations & Qualifiers", percentile: "75–85%", desc: "Master Arithmetic foundations and basic reading speed.", color: "from-indigo-500 to-indigo-700" },
+    { milestone: "Milestones 3–5", name: "Core Contenders", percentile: "85–95%", desc: "Build strategic depth in Algebra & Geometry.", color: "from-purple-500 to-purple-700" },
+    { milestone: "Milestones 6–8", name: "Elite Mastery", percentile: "95–99%", desc: "Advanced number systems, inference reading, and complex logic grids.", color: "from-[#5B4DFF] to-[#7C6CFF]" },
+    { milestone: "Milestones 9–10", name: "Top 1% Conditioning", percentile: "99%+", desc: "Tactical skipping drills, multi-concept integration, and stamina.", color: "from-[#1E1B4B] to-[#312E81]" },
   ];
 
   return (
@@ -78,19 +81,19 @@ export function GuidedLearningPreview({ onNavigate }) {
             Inside <span className="text-[#5B4DFF]">Guided Learning</span>
           </h2>
           <p className="mt-3 text-slate-500 text-sm sm:text-base max-w-lg mx-auto">
-            A linear progression structure modeled after cognitive development phases. No skipping, just absolute mastery.
+            A linear progression structure modeled after cognitive development milestones. No skipping, just absolute mastery.
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {previewPhases.map((item, idx) => (
+          {previewMilestones.map((item, idx) => (
             <motion.div
               key={idx}
               whileHover={{ y: -6, boxShadow: "0 20px 40px -15px rgba(0,0,0,0.06)" }}
               className="bg-white border border-slate-200/60 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300"
             >
               <div>
-                <span className="text-[10px] uppercase font-black text-slate-400 block mb-1">{item.phase}</span>
+                <span className="text-[10px] uppercase font-black text-slate-400 block mb-1">{item.milestone}</span>
                 <h3 className="text-lg font-black text-slate-900 leading-snug">{item.name}</h3>
                 <span className="inline-block mt-2 px-2.5 py-0.5 text-[10px] font-bold text-indigo-600 bg-indigo-50 rounded-lg">
                   Target: {item.percentile}
@@ -341,42 +344,123 @@ export function StrategyPage() {
 
 // --- PAGE: /guided-learning ---
 export function GuidedLearningPage() {
-  const [activePhase, setActivePhase] = useState(0);
+  const [activeMilestone, setActiveMilestone] = useState(0);
+  const [expandedMilestones, setExpandedMilestones] = useState({ 0: true });
+  const [expandedSessions, setExpandedSessions] = useState({ "0-1": true }); // default expand session 1 of milestone 0
 
-  const phases = [
+  const milestones = [
     {
-      phase: "Phase 1",
-      name: "Qualifiers",
-      percentile: "Target: 75–85%",
-      objective: "Build fundamental Arithmetic accuracy and vocabulary speed guidelines.",
-      focus: ["Percentages & Ratios", "Basic Reading Speeds", "Linear Arrangements", "Mental Arithmetic"],
-      reinforce: "Topics with sub-50% accuracy benchmarks trigger immediate concept-review alerts.",
+      id: 0,
+      label: "Milestone 0",
+      status: "in-progress",
+      totalActivities: 77,
+      completedActivities: 2,
+      sessionsCount: 7,
+      sessions: [
+        {
+          id: 1,
+          name: "Session 1",
+          activitiesCount: 11,
+          duration: "680 min",
+          tags: ["Q", "VARC", "DILR"],
+          progress: 18,
+          activities: [
+            { id: 1, title: "New_concept", type: "concept", duration: "61m", status: "completed", dotColor: "bg-blue-500" },
+            { id: 2, title: "New_concept_Test", type: "test", duration: "98m", status: "active", dotColor: "bg-amber-500" },
+            { id: 3, title: "New_concept_Test", type: "test", duration: "46m", status: "active", dotColor: "bg-amber-500" },
+            { id: 4, title: "New_concept", type: "concept", duration: "96m", status: "active", dotColor: "bg-blue-500" },
+            { id: 5, title: "New_concept_Test", type: "test", duration: "75m", status: "active", dotColor: "bg-amber-500" },
+            { id: 6, title: "Time Trap skipping drills", type: "practice", duration: "60m", status: "locked", dotColor: "bg-[#5B4DFF]" },
+            { id: 7, title: "Active Recall Sprint", type: "revision", duration: "45m", status: "locked", dotColor: "bg-indigo-500" },
+            { id: 8, title: "Topic level review", type: "concept", duration: "50m", status: "locked", dotColor: "bg-blue-500" },
+            { id: 9, title: "Logical Grid setup test", type: "test", duration: "60m", status: "locked", dotColor: "bg-amber-500" },
+            { id: 10, title: "Linear Arrangement practice", type: "practice", duration: "45m", status: "locked", dotColor: "bg-[#5B4DFF]" },
+            { id: 11, title: "Session end revision", type: "revision", duration: "44m", status: "locked", dotColor: "bg-indigo-500" }
+          ]
+        },
+        {
+          id: 2,
+          name: "Session 2",
+          activitiesCount: 11,
+          duration: "720 min",
+          tags: ["DILR", "Q", "VARC"],
+          progress: 0,
+          activities: [
+            { id: 1, title: "Algebra Foundations", type: "concept", duration: "65m", status: "locked", dotColor: "bg-blue-500" },
+            { id: 2, title: "Equations Sprint", type: "test", duration: "80m", status: "locked", dotColor: "bg-amber-500" },
+            { id: 3, title: "Sequence Mapping", type: "concept", duration: "70m", status: "locked", dotColor: "bg-blue-500" },
+            { id: 4, title: "Linear equations practice", type: "practice", duration: "90m", status: "locked", dotColor: "bg-[#5B4DFF]" },
+            { id: 5, title: "Weekly Revision review", type: "revision", duration: "60m", status: "locked", dotColor: "bg-indigo-500" }
+          ]
+        },
+        {
+          id: 3,
+          name: "Session 3",
+          activitiesCount: 11,
+          duration: "639 min",
+          tags: ["Q", "DILR", "VARC"],
+          progress: 0,
+          activities: []
+        },
+        {
+          id: 4,
+          name: "Session 4",
+          activitiesCount: 11,
+          duration: "620 min",
+          tags: ["VARC", "DILR", "Q"],
+          progress: 0,
+          activities: []
+        },
+        {
+          id: 5,
+          name: "Session 5",
+          activitiesCount: 11,
+          duration: "503 min",
+          tags: ["DILR", "VARC", "Q"],
+          progress: 0,
+          activities: []
+        },
+        {
+          id: 6,
+          name: "Session 6",
+          activitiesCount: 11,
+          duration: "480 min",
+          tags: ["Q", "VARC"],
+          progress: 0,
+          activities: []
+        },
+        {
+          id: 7,
+          name: "Session 7",
+          activitiesCount: 11,
+          duration: "450 min",
+          tags: ["DILR", "Q"],
+          progress: 0,
+          activities: []
+        }
+      ]
     },
-    {
-      phase: "Phase 2",
-      name: "Contenders",
-      percentile: "Target: 85–95%",
-      objective: "Establish comprehensive Algebra mechanics and baseline speed criteria.",
-      focus: ["Equations & Sequences", "RC Inference Patterns", "Matrix Selection Grids", "Basic Time-Trap Blocks"],
-      reinforce: "Timed practice sprints scheduled dynamically based on your error distributions.",
-    },
-    {
-      phase: "Phase 3",
-      name: "Elite",
-      percentile: "Target: 95–99%",
-      objective: "Master Number Systems and advanced reading comprehension logic.",
-      focus: ["Number Systems & Modern Math", "Double-Negative RC Inferences", "Complex Arrangements", "Skip Threshold Drills"],
-      reinforce: "Custom revision worksheets auto-generated every Saturday covering weekly errors.",
-    },
-    {
-      phase: "Phase 4",
-      name: "Top 1%",
-      percentile: "Target: 99%+",
-      objective: "Maximize tactical decision accuracy under strict timing envelopes.",
-      focus: ["10-Second Skip Decisions", "Multi-Concept Algebra puzzles", "Advanced Philosophy RCs", "Stamina Conditioning"],
-      reinforce: "Continuous adaptive drills scaling to expert level as accuracy remains above 90%.",
-    },
+    { id: 1, label: "Milestone 1", status: "locked", totalActivities: 82, completedActivities: 0, sessionsCount: 6, sessions: [] },
+    { id: 2, label: "Milestone 2", status: "locked", totalActivities: 90, completedActivities: 0, sessionsCount: 7, sessions: [] },
+    { id: 3, label: "Milestone 3", status: "locked", totalActivities: 75, completedActivities: 0, sessionsCount: 5, sessions: [] },
+    { id: 4, label: "Milestone 4", status: "locked", totalActivities: 88, completedActivities: 0, sessionsCount: 6, sessions: [] },
+    { id: 5, label: "Milestone 5", status: "locked", totalActivities: 70, completedActivities: 0, sessionsCount: 5, sessions: [] },
+    { id: 6, label: "Milestone 6", status: "locked", totalActivities: 95, completedActivities: 0, sessionsCount: 7, sessions: [] },
+    { id: 7, label: "Milestone 7", status: "locked", totalActivities: 80, completedActivities: 0, sessionsCount: 6, sessions: [] },
+    { id: 8, label: "Milestone 8", status: "locked", totalActivities: 85, completedActivities: 0, sessionsCount: 7, sessions: [] },
+    { id: 9, label: "Milestone 9", status: "locked", totalActivities: 77, completedActivities: 0, sessionsCount: 5, sessions: [] },
+    { id: 10, label: "Milestone 10", status: "locked", totalActivities: 90, completedActivities: 0, sessionsCount: 6, sessions: [] }
   ];
+
+  const toggleMilestone = (id) => {
+    if (id !== 0) return; // Only Milestone 0 is unlocked in this build
+    setExpandedMilestones(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const toggleSession = (milestoneId, sessionId) => {
+    const key = `${milestoneId}-${sessionId}`;
+    setExpandedSessions(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="pt-24 min-h-screen bg-[#F8FAFC]">
@@ -388,17 +472,17 @@ export function GuidedLearningPage() {
           The <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">Guided Learning</span> System
         </motion.h1>
         <motion.p variants={fadeUp} className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
-          How our linear curriculum path guides you step-by-step from fundamental arithmetic to elite skipping efficiency.
+          How our linear curriculum path guides you step-by-step through milestones, daily sessions, and custom activities.
         </motion.p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 pb-20 space-y-16">
+      <div className="max-w-5xl mx-auto px-6 pb-20 space-y-12">
         {/* Core Hierarchy */}
         <motion.div variants={fadeUp} className="grid md:grid-cols-3 gap-6">
           {[
-            { title: "1. Phase", desc: "Target percentile blocks (Qualifiers, Contenders, Elite, Top 1%). Sequential progression only." },
-            { title: "2. Section", desc: "Bite-sized daily assignments. Takes 45–90 minutes. You see \"Today's Section\" instead of a massive syllabus." },
-            { title: "3. Activity", desc: "The smallest unit. Takes 5–15 minutes. Includes Timed Practice, Active Recall, and Spaced Revision." },
+            { title: "1. Milestone", desc: "Structured preparation blocks (M0 to M10). Multiple milestones will be available sequentially, ensuring steady readiness growth." },
+            { title: "2. Session", desc: "Sub-milestone blocks (e.g. 5–7 sessions per milestone) that bundle daily assignments so you never face planning overwhelm." },
+            { title: "3. Activity", desc: "The smallest learning unit (concept cards, timed practice, spaced revision) designed to be fully completed within one day's session." },
           ].map((item, i) => (
             <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
               <h3 className="text-lg font-bold text-slate-950 mb-2">{item.title}</h3>
@@ -407,67 +491,226 @@ export function GuidedLearningPage() {
           ))}
         </motion.div>
 
-        {/* Phase Selector Panel */}
-        <motion.div variants={fadeUp} className="space-y-6">
-          <div className="text-center">
-            <h3 className="text-2xl font-extrabold text-slate-900">Linear Phase Progression</h3>
-            <p className="text-slate-500 text-sm max-w-md mx-auto mt-2">
-              Select a phase to explore targeted objectives, focus syllabus topics, and reinforcement mechanics.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-2 mb-6">
-            {phases.map((p, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActivePhase(idx)}
-                className={`px-5 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
-                  activePhase === idx
-                    ? "bg-[#5B4DFF] text-white shadow-md"
-                    : "bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50"
-                }`}
-              >
-                {p.phase} — {p.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="bg-white rounded-3xl border border-slate-200/60 shadow-md p-8 grid md:grid-cols-12 gap-8">
-            <div className="md:col-span-5 bg-gradient-to-br from-[#1E1B4B] to-[#312E81] text-white p-6 rounded-2xl flex flex-col justify-between">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-[#9B8FFF] tracking-widest block mb-1">{phases[activePhase].phase}</span>
-                <h4 className="text-2xl font-black">{phases[activePhase].name}</h4>
-                <span className="inline-block mt-3 px-3 py-1 bg-white/10 rounded-xl text-xs font-bold">
-                  {phases[activePhase].percentile}
-                </span>
+        {/* Milestones Dashboard Panel */}
+        <motion.div variants={fadeUp} className="bg-white rounded-3xl border border-slate-200/60 shadow-md p-6 sm:p-8 space-y-8">
+          
+          {/* Timeline Nodes */}
+          <div>
+            <span className="text-[10px] sm:text-xs font-black uppercase text-slate-400 tracking-widest mb-6 block text-left">
+              Your Preparation Milestones
+            </span>
+            <div className="relative">
+              {/* Connected Line */}
+              <div className="absolute top-5 left-4 right-4 h-0.5 bg-slate-100 z-0" />
+              
+              {/* Horizontal Scroll wrapper */}
+              <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-none justify-between items-center relative z-10">
+                {milestones.map((m, idx) => {
+                  const isActive = activeMilestone === m.id;
+                  const isUnlocked = m.id === 0;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => isUnlocked && setActiveMilestone(m.id)}
+                      className="flex flex-col items-center gap-2 shrink-0 group focus:outline-none"
+                    >
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-xs border transition-all duration-300 ${
+                        isActive
+                          ? "bg-[#5B4DFF] border-[#5B4DFF] text-white shadow-[0_0_14px_rgba(91,77,255,0.45)] scale-110"
+                          : isUnlocked
+                          ? "bg-indigo-50 border-indigo-200 text-[#5B4DFF] hover:bg-indigo-100"
+                          : "bg-slate-100 border-slate-200 text-slate-400"
+                      }`}>
+                        M{m.id}
+                      </div>
+                      <span className={`text-[10px] font-bold transition-colors ${
+                        isActive ? "text-[#5B4DFF]" : "text-slate-400 group-hover:text-slate-600"
+                      }`}>
+                        {m.id === 0 ? "Milestone..." : `Milestone ${m.id}`}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-              <p className="text-xs text-indigo-200 leading-relaxed mt-6">
-                *Success benchmarks must be secured to unlock subsequent phases.
-              </p>
             </div>
+          </div>
 
-            <div className="md:col-span-7 space-y-6">
-              <div>
-                <h5 className="text-[10px] uppercase font-black text-slate-400 mb-1">Learning Objective</h5>
-                <p className="text-slate-800 text-sm font-semibold leading-relaxed">{phases[activePhase].objective}</p>
-              </div>
+          <hr className="border-slate-100" />
 
-              <div>
-                <h5 className="text-[10px] uppercase font-black text-slate-400 mb-2">Key Focus Areas</h5>
-                <div className="grid sm:grid-cols-2 gap-2">
-                  {phases[activePhase].focus.map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs text-slate-700">
-                      <Check size={12} className="text-[#5B4DFF] stroke-[3]" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* Current Focus section */}
+          <div>
+            <h3 className="text-xl font-extrabold text-slate-900 tracking-tight text-left mb-6">Current Focus</h3>
+            
+            <div className="space-y-4">
+              {milestones.slice(0, 5).map((m) => {
+                const isExpanded = expandedMilestones[m.id];
+                const isUnlocked = m.id === 0;
+                
+                return (
+                  <div key={m.id} className="border border-slate-200/80 rounded-[24px] bg-white overflow-hidden shadow-sm transition-all duration-300">
+                    {/* Milestone Header */}
+                    <button
+                      onClick={() => isUnlocked && toggleMilestone(m.id)}
+                      className={`w-full flex items-center justify-between p-5 text-left transition-colors focus:outline-none ${
+                        isUnlocked ? "hover:bg-slate-50/50 cursor-pointer" : "cursor-not-allowed opacity-75"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-sm border ${
+                          isUnlocked
+                            ? "bg-indigo-50 border-indigo-100 text-[#5B4DFF]"
+                            : "bg-slate-50 border-slate-200 text-slate-400"
+                        }`}>
+                          {isUnlocked ? `M${m.id}` : <Lock size={16} />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2.5">
+                            <span className={`text-base font-extrabold ${isUnlocked ? "text-slate-900" : "text-slate-400 font-bold"}`}>
+                              {m.label}
+                            </span>
+                            {isUnlocked ? (
+                              <span className="px-2 py-0.5 text-[9px] font-black text-[#5B4DFF] bg-[#5B4DFF]/10 rounded border border-[#5B4DFF]/20 uppercase">
+                                In Progress
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 text-[9px] font-bold text-slate-400 bg-slate-100 rounded border border-slate-200 uppercase">
+                                Locked
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-slate-400 text-xs mt-1 leading-none font-medium">
+                            {isUnlocked
+                              ? `${m.completedActivities}/${m.totalActivities} activities • ${m.sessionsCount} sessions`
+                              : "Complete previous milestones to unlock"}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {isUnlocked ? (
+                        isExpanded ? <ChevronUp size={20} className="text-slate-500" /> : <ChevronDown size={20} className="text-slate-500" />
+                      ) : (
+                        <Lock size={16} className="text-slate-300" />
+                      )}
+                    </button>
 
-              <div className="pt-4 border-t border-slate-100">
-                <h5 className="text-[10px] uppercase font-black text-[#5B4DFF] mb-1">Reinforcement Engine</h5>
-                <p className="text-slate-500 text-xs leading-relaxed">{phases[activePhase].reinforce}</p>
-              </div>
+                    {/* Sessions & Activities (Expanded Content) */}
+                    {isUnlocked && isExpanded && (
+                      <div className="border-t border-slate-100 bg-[#FBFBFE]/40 p-5 space-y-4">
+                        {m.sessions.map((session) => {
+                          const sessionKey = `${m.id}-${session.id}`;
+                          const isSessionExpanded = expandedSessions[sessionKey];
+                          
+                          return (
+                            <div key={session.id} className="border border-slate-200/60 rounded-2xl bg-white overflow-hidden shadow-sm">
+                              {/* Session Row */}
+                              <button
+                                onClick={() => toggleSession(m.id, session.id)}
+                                className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50/50 transition-colors focus:outline-none"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="w-6 h-6 rounded-full border border-indigo-200 bg-indigo-50 text-[#5B4DFF] flex items-center justify-center text-[10px] font-extrabold shrink-0">
+                                    {session.id}
+                                  </div>
+                                  <div>
+                                    <h4 className="text-sm font-extrabold text-slate-900 leading-tight">
+                                      {session.name}
+                                    </h4>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 leading-none font-medium">
+                                      {session.activitiesCount} activities • {session.duration}
+                                    </p>
+                                  </div>
+                                </div>
+                                
+                                <div className="flex items-center gap-3">
+                                  {/* Subject Tags */}
+                                  <div className="hidden sm:flex items-center gap-1">
+                                    {session.tags.map((tag) => (
+                                      <span key={tag} className="px-1.5 py-0.5 text-[8px] font-bold text-slate-500 bg-slate-50 border border-slate-200/60 rounded uppercase">
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
+                                  
+                                  {/* Progress Ring */}
+                                  <div className="relative w-5 h-5 shrink-0">
+                                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                      <path className="text-slate-100" strokeWidth="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                      <path className="text-[#5B4DFF]" strokeDasharray={`${session.progress}, 100`} strokeWidth="4" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                  </div>
+
+                                  {isSessionExpanded ? <ChevronUp size={16} className="text-slate-400" /> : <ChevronDown size={16} className="text-slate-400" />}
+                                </div>
+                              </button>
+
+                              {/* Activities List */}
+                              {isSessionExpanded && (
+                                <div className="border-t border-slate-100 bg-[#FAFBFD]/30 p-3.5 space-y-2">
+                                  {session.activities.length > 0 ? (
+                                    session.activities.map((act) => {
+                                      const isCompleted = act.status === "completed";
+                                      const isActive = act.status === "active";
+                                      
+                                      return (
+                                        <div
+                                          key={act.id}
+                                          className={`flex items-center justify-between p-3 rounded-xl border transition-colors ${
+                                            isCompleted
+                                              ? "bg-emerald-50/30 border-emerald-100/70 text-slate-800"
+                                              : "bg-white border-slate-100 text-slate-800 hover:bg-slate-50/50"
+                                          }`}
+                                        >
+                                          <div className="flex items-center gap-3">
+                                            <span className="text-[10px] font-bold text-slate-400 w-4">
+                                              {act.id}
+                                            </span>
+                                            <div className={`w-2 h-2 rounded-full ${act.dotColor} shrink-0`} />
+                                            <span className={`text-xs font-bold ${isCompleted ? "text-slate-500 font-medium" : "text-slate-900"}`}>
+                                              {act.title}
+                                            </span>
+                                          </div>
+                                          
+                                          <div className="flex items-center gap-3">
+                                            <span className={`text-[8px] font-black uppercase tracking-wider border px-1.5 py-0.5 rounded-md ${
+                                              act.type === "concept"
+                                                ? "text-blue-600 bg-blue-50 border-blue-100"
+                                                : act.type === "test"
+                                                ? "text-amber-600 bg-amber-50 border-amber-100"
+                                                : act.type === "practice"
+                                                ? "text-purple-600 bg-purple-50 border-purple-100"
+                                                : "text-indigo-600 bg-indigo-50 border-indigo-100"
+                                            }`}>
+                                              {act.type}
+                                            </span>
+                                            <span className="text-[10px] text-slate-400 font-bold shrink-0">
+                                              {act.duration}
+                                            </span>
+                                            {isCompleted ? (
+                                              <span className="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]">
+                                                <Check size={9} strokeWidth={4} />
+                                              </span>
+                                            ) : (
+                                              <ChevronRight size={12} className={isActive ? "text-[#5B4DFF]" : "text-slate-300"} />
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    })
+                                  ) : (
+                                    <p className="text-slate-400 text-xs italic text-center py-2">
+                                      Activities locked. Complete prior sessions to unlock.
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </motion.div>
@@ -477,7 +720,7 @@ export function GuidedLearningPage() {
           <div>
             <h4 className="text-lg font-bold text-slate-900 mb-2">Progression &amp; Spaced Revision</h4>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Whenever you complete daily sections, our spacing algorithms calculate memory decay intervals. Revision loops are automatically scheduled at 1, 3, and 7 days. If the system flags conceptual deficits, it adjusts daily learning worksheets dynamically to reinforce the exact rules you struggled with.
+              Whenever you complete daily sessions, our spacing algorithms calculate memory decay intervals. Revision loops are automatically scheduled at 1, 3, and 7 days. If the system flags conceptual deficits, it adjusts daily learning worksheets dynamically to reinforce the exact rules you struggled with.
             </p>
           </div>
           <div>
@@ -957,31 +1200,31 @@ function ProgressTrackingWidget() {
 
         <div className="text-left space-y-2.5">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black">1</div>
+            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black font-black">1</div>
             <div>
-              <span className="text-[9px] font-bold text-slate-800 block leading-tight">Qualifiers Phase</span>
-              <span className="text-[7px] font-extrabold uppercase text-emerald-500">100% Completed</span>
+              <span className="text-[9px] font-bold text-slate-800 block leading-tight font-bold">Milestones 0–2</span>
+              <span className="text-[7px] font-extrabold uppercase text-emerald-500 font-extrabold">100% Completed</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black">2</div>
+            <div className="w-4 h-4 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[9px] text-[#5B4DFF] font-black font-black">2</div>
             <div>
-              <span className="text-[9px] font-bold text-slate-800 block leading-tight">Contenders Phase</span>
-              <span className="text-[7px] font-extrabold uppercase text-indigo-500">80% In Progress</span>
+              <span className="text-[9px] font-bold text-slate-800 block leading-tight font-bold">Milestones 3–5</span>
+              <span className="text-[7px] font-extrabold uppercase text-indigo-500 font-extrabold">80% In Progress</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-[9px] text-slate-400 font-black">3</div>
+            <div className="w-4 h-4 rounded bg-slate-50 border border-slate-200 flex items-center justify-center text-[9px] text-slate-400 font-black font-black">3</div>
             <div>
-              <span className="text-[9px] font-bold text-slate-400 block leading-tight">Elite Phase</span>
-              <span className="text-[7px] font-extrabold uppercase text-slate-400">Locked</span>
+              <span className="text-[9px] font-bold text-slate-400 block leading-tight font-bold">Milestones 6–8</span>
+              <span className="text-[7px] font-extrabold uppercase text-slate-400 font-extrabold">Locked</span>
             </div>
           </div>
         </div>
       </div>
 
       <div className="text-[9px] text-slate-500">
-        Phase advancement requires meeting minimum accuracy targets in all core categories.
+        Milestone advancement requires meeting minimum accuracy targets in all core categories.
       </div>
     </div>
   );
@@ -1286,7 +1529,7 @@ function ExpectedPercentileWidget() {
           
           <text x="5" y="32" fontSize="3" className="fill-slate-400 font-bold uppercase">Base</text>
           <text x="35" y="28" fontSize="3" className="fill-slate-400 font-bold uppercase">Qualifier</text>
-          <text x="65" y="15" fontSize="3.5" className="fill-[#5B4DFF] font-black uppercase">Active Phase</text>
+          <text x="65" y="15" fontSize="3.5" className="fill-[#5B4DFF] font-black uppercase">Active Milestone</text>
           <text x="82" y="10" fontSize="3" className="fill-slate-400 font-bold uppercase">Target 99%ile</text>
         </svg>
       </div>
@@ -1294,7 +1537,7 @@ function ExpectedPercentileWidget() {
       <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center">
         <div>
           <span className="text-[8px] font-bold text-slate-400 uppercase block">Active Readiness State</span>
-          <span className="text-[11px] font-black text-slate-800">Contenders Range (Phase 2)</span>
+          <span className="text-[11px] font-black text-slate-800">Milestones 3–5 Range</span>
         </div>
         <div className="text-right">
           <span className="text-[8px] font-bold text-slate-400 uppercase block">Milestone Status</span>
@@ -1983,14 +2226,14 @@ export function FAQPage() {
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqs = [
-    { q: "What is Guided Learning?", a: "Guided Learning is a structured, algorithmically sequenced curriculum pathway that divides the massive CAT syllabus into focused daily sections, adapting to your progress so you never have to plan what to study next." },
-    { q: "How are phases structured?", a: "The syllabus is divided into four sequential phases: Phase 1 (Qualifiers), Phase 2 (Contenders), Phase 3 (Elite), and Phase 4 (Top 1%). Each phase targets specific percentile benchmarks and syllabus segments." },
-    { q: "Can I skip phases?", a: "No. Progression is linear and sequential. You must lock in the accuracy benchmarks of the current phase before subsequent phases unlock." },
+    { q: "What is Guided Learning?", a: "Guided Learning is a structured, algorithmically sequenced curriculum pathway that divides the massive CAT syllabus into milestones and daily sessions, adapting to your progress so you never have to plan what to study next." },
+    { q: "How are milestones structured?", a: "The syllabus is divided into multiple sequential milestones (M0 to M10). Each milestone contains 5 to 7 sessions targeting specific readiness ranges and syllabus segments." },
+    { q: "Can I skip milestones?", a: "No. Progression is linear and sequential. You must complete the sessions of your current milestone before the next milestone unlocks." },
     { q: "How does revision work?", a: "Whenever you fail a problem or concept test, our Spaced Repetition algorithm schedules tailored reviews at 1, 3, and 7-day intervals until your accuracy stabilizes." },
-    { q: "What are sections?", a: "A Section represents 'Things To Do In One Day' — a bite-sized, achievable 45–90 minute study goal that completely bypasses strategic decision fatigue." },
-    { q: "What are activities?", a: "Activities are the smallest executable units within a daily section (concept cards, timed practice, spaced revision, etc.), taking between 5 to 15 minutes." },
-    { q: "How are mocks integrated?", a: "Mock slots unlock in Phase 3. Our system evaluates mock attempt metrics, tracking skipped time and tagging time traps to suggest targeted remedial sections." },
-    { q: "What happens if I miss a day?", a: "The system automatically adjusts your timeline. Backlogs are avoided as the recommended daily section shifts dynamically to support consistency." },
+    { q: "What are sessions?", a: "A Session represents a sub-milestone block, e.g. 5–7 sessions per milestone. It bundles daily assignments so you completely bypass study planning overwhelm." },
+    { q: "What are activities?", a: "Activities are the smallest executable units within a daily session (concept cards, timed practice, spaced revision, etc.), taking between 5 to 15 minutes." },
+    { q: "How are mocks integrated?", a: "Mock slots unlock in Milestone 6. Our system evaluates mock attempt metrics, tracking skipped time and tagging time traps to suggest targeted remedial sessions." },
+    { q: "What happens if I miss a day?", a: "The system automatically adjusts your timeline. Backlogs are avoided as the recommended daily session shifts dynamically to support consistency." },
     { q: "How is progress measured?", a: "Progress is tracked using accuracy metrics, pacing benchmarks, time spent on incorrect/skipped questions, and live expected percentile ranges based on slot statistics." },
     { q: "How does reinforcement work?", a: "If our diagnostic engine flags conceptual weaknesses in a specific topic, it automatically schedules easier concept reviews before gradually scaling up the complexity." },
   ];
@@ -2192,7 +2435,7 @@ export function CollegesPage() {
 }
 
 // --- COMMON FINAL PREMIUM CTA ---
-export function FinalPremiumCTA({ onNavigate }) {
+export function FinalPremiumCTA({ onNavigate, onOpenPricing }) {
   return (
     <section className="px-6 lg:px-8 py-20 bg-white border-t border-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -2218,7 +2461,7 @@ export function FinalPremiumCTA({ onNavigate }) {
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <button 
-                onClick={() => onNavigate("how-it-works")}
+                onClick={onOpenPricing}
                 className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-white text-[#5B4DFF] text-sm font-bold shadow-lg hover:scale-[1.03] transition-all flex items-center justify-center gap-2 group cursor-pointer"
               >
                 Start Practicing <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
