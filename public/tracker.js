@@ -31,14 +31,25 @@ if (BOT_REGEX.test(navigator.userAgent)) {
 
 function initTracker() {
   // --- 1.5. Internal Traffic Filtering ---
-  const isLocalhost = window.location.hostname === "localhost" || 
-                      window.location.hostname === "127.0.0.1" || 
-                      window.location.hostname.includes("192.168.") ||
-                      window.location.hostname.includes("10.0.");
-  const isStaging = window.location.hostname.includes("staging") || 
-                    window.location.hostname.includes("test") || 
-                    window.location.hostname.includes("github.io");
-  const isInternalTraffic = isLocalhost || isStaging;
+  // IMPORTANT: Explicit production allowlist — these hosts are NEVER internal traffic.
+  // This prevents substring matches like "test" from incorrectly flagging testrightnow.com.
+  const PRODUCTION_HOSTS = [
+    "testrightnow.com",
+    "www.testrightnow.com",
+    "app.testrightnow.com"
+  ];
+  const hostname = window.location.hostname;
+  const isProductionHost = PRODUCTION_HOSTS.some(h => hostname === h || hostname.endsWith("." + h));
+
+  const isLocalhost = hostname === "localhost" ||
+                      hostname === "127.0.0.1" ||
+                      hostname.endsWith(".local") ||
+                      hostname.includes("192.168.") ||
+                      hostname.includes("10.0.");
+  // NOTE: Do NOT use hostname.includes("test") — it would match testrightnow.com.
+  const isStaging = hostname.includes("staging") ||
+                    hostname.includes("github.io");
+  const isInternalTraffic = isProductionHost ? false : (isLocalhost || isStaging);
 
   // --- 2. Identity & Session Setup ---
   const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
