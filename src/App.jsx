@@ -537,7 +537,7 @@ function Footer({ setCurrentPage }) {
           ))}
         </div>
         <div className="pt-6 border-t border-white/[0.07] flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[13px] text-slate-500">© 2024 TestRightNow. All rights reserved.</p>
+          <p className="text-[13px] text-slate-500">© {new Date().getFullYear()} TestRightNow. All rights reserved.</p>
           <div className="flex items-center gap-2 text-slate-400">
             <span className="text-[13px] mr-2 text-slate-500">Connect with us</span>
             {/* Twitter/X */}
