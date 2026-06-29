@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Home, CheckCircle, XCircle, Circle } from "lucide-react";
+import { ArrowLeft, Home, CheckCircle } from "lucide-react";
 
 /* ── Reward pool ─────────────────────────────────────────────── */
 const REWARDS = [
@@ -13,26 +13,43 @@ const REWARDS = [
 /* ── Confetti burst ──────────────────────────────────────────── */
 const CONFETTI_COLORS = ["#5B4DFF","#F59E0B","#10B981","#F43F5E","#8B5CF6","#06B6D4","#FBBF24"];
 function Confetti({ active }) {
-  if (!active) return null;
-  return (
-    <div className="absolute inset-0 pointer-events-none z-40 overflow-hidden">
-      {Array.from({ length: 24 }).map((_, i) => {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    let frame;
+    if (!active) {
+      frame = requestAnimationFrame(() => setParticles([]));
+      return () => cancelAnimationFrame(frame);
+    }
+    frame = requestAnimationFrame(() => {
+      const newParticles = Array.from({ length: 24 }).map((_, i) => {
         const angle   = (i / 24) * 360;
         const dist    = 65 + Math.random() * 90;
         const color   = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
         const size    = 3 + Math.random() * 4;
         const dx      = Math.cos((angle * Math.PI) / 180) * dist;
         const dy      = Math.sin((angle * Math.PI) / 180) * dist;
-        return (
-          <motion.div key={i}
-            initial={{ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 }}
-            animate={{ x: dx, y: dy, opacity: 0, scale: 0.3, rotate: angle * 2 }}
-            transition={{ duration: 1.3, ease: "easeOut", delay: Math.random() * 0.18 }}
-            className="absolute top-1/2 left-1/2 rounded-sm"
-            style={{ width: size, height: size, backgroundColor: color, marginLeft: -size/2, marginTop: -size/2 }}
-          />
-        );
-      })}
+        const delay   = Math.random() * 0.18;
+        return { angle, dx, dy, color, size, delay };
+      });
+      setParticles(newParticles);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <div className="absolute inset-0 pointer-events-none z-40 overflow-hidden">
+      {particles.map((p, i) => (
+        <motion.div key={i}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 }}
+          animate={{ x: p.dx, y: p.dy, opacity: 0, scale: 0.3, rotate: p.angle * 2 }}
+          transition={{ duration: 1.3, ease: "easeOut", delay: p.delay }}
+          className="absolute top-1/2 left-1/2 rounded-sm"
+          style={{ width: p.size, height: p.size, backgroundColor: p.color, marginLeft: -p.size/2, marginTop: -p.size/2 }}
+        />
+      ))}
     </div>
   );
 }
@@ -41,17 +58,20 @@ function Confetti({ active }) {
 function Counter({ to, delay = 0 }) {
   const [val, setVal] = useState(0);
   useEffect(() => {
+    let iv;
     const t = setTimeout(() => {
       let i = 0;
       const steps = 30;
-      const iv = setInterval(() => {
+      iv = setInterval(() => {
         i++;
         setVal(Math.round((to * i) / steps));
         if (i >= steps) clearInterval(iv);
       }, 40);
-      return () => clearInterval(iv);
     }, delay);
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t);
+      if (iv) clearInterval(iv);
+    };
   }, [to, delay]);
   return <>{val}</>;
 }

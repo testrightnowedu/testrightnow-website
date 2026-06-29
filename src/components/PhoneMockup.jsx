@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Brain, TrendingUp, Trophy, Home, FileText, Gift, User, Lock, CheckCircle } from "lucide-react";
+import { BookOpen, Home, FileText, Gift, User, Lock, CheckCircle } from "lucide-react";
 import RewardReveal from "./RewardReveal";
 import OrbitalSystem from "./OrbitalSystem";
 import AnimatedLaptopScreen from "./AnimatedLaptopScreen";
@@ -26,31 +26,23 @@ const TABS = [
 function useCountUp(target, dur = 1800, delay = 600) {
   const [v, setV] = useState(target - 60);
   useEffect(() => {
+    let iv;
     const t = setTimeout(() => {
       let i = 0, steps = 40;
-      const iv = setInterval(() => { i++; setV(Math.round((target - 60) + (60 * i / steps))); if (i >= steps) clearInterval(iv); }, dur / steps);
-      return () => clearInterval(iv);
+      iv = setInterval(() => {
+        i++;
+        setV(Math.round((target - 60) + (60 * i / steps)));
+        if (i >= steps) clearInterval(iv);
+      }, dur / steps);
     }, delay);
-    return () => clearTimeout(t);
-  }, []);
+    return () => {
+      clearTimeout(t);
+      if (iv) clearInterval(iv);
+    };
+  }, [target, dur, delay]);
   return v;
 }
 
-/* ── Purple sphere component ─────────────────────────────────── */
-function PurpleSphere({ size, top, left, right, delay, dur }) {
-  return (
-    <motion.div
-      animate={{ y: [0, -10, 0], scale: [1, 1.06, 1] }}
-      transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay }}
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: size, height: size, top, left, right,
-        background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), #7C3AED 55%, #4C1D95)`,
-        boxShadow: `0 ${size / 3}px ${size}px rgba(124,58,237,0.45), 0 0 ${size / 2}px rgba(139,92,246,0.3)`,
-      }}
-    />
-  );
-}
 
 /* ── Main component ──────────────────────────────────────────── */
 export default function PhoneMockup() {
@@ -59,10 +51,18 @@ export default function PhoneMockup() {
   const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
-    const cycle = () => { setShowReward(true); setTimeout(() => setShowReward(false), 12000); };
+    let innerTimeout;
+    const cycle = () => {
+      setShowReward(true);
+      innerTimeout = setTimeout(() => setShowReward(false), 12000);
+    };
     const t = setTimeout(cycle, 9000);
     const iv = setInterval(cycle, 22000);
-    return () => { clearTimeout(t); clearInterval(iv); };
+    return () => {
+      clearTimeout(t);
+      clearInterval(iv);
+      if (innerTimeout) clearTimeout(innerTimeout);
+    };
   }, []);
 
   // Base cinematic tilt + subtle mouse influence

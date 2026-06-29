@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Smartphone, Monitor, Tablet, Wifi, Bell, RefreshCw, Zap, CheckCircle2, ArrowRight, CloudLightning } from "lucide-react";
+import { Monitor, Tablet, Wifi, Bell, RefreshCw, Zap, CheckCircle2, ArrowRight, CloudLightning } from "lucide-react";
 
 const PLATFORMS = [
   {

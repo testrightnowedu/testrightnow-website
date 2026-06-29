@@ -1,16 +1,7 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { STUDENT_APP_URL } from '../constants';
-import { Trophy, ArrowRight, Map } from 'lucide-react';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
+import { Trophy, ArrowRight } from 'lucide-react';
 
 export default function CTABanner() {
   const ref = useRef(null);

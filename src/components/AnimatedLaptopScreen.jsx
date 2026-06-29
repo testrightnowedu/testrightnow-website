@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, Target, Trophy, Clock, Zap, CheckCircle, BarChart2, PieChart, PenTool, LayoutDashboard, Flag } from 'lucide-react';
+import { Flame, Target, Trophy, Clock, Zap, CheckCircle, BarChart2, PenTool, LayoutDashboard } from 'lucide-react';
+
+const VIEWS = ['dashboard', 'mock', 'analysis', 'goals', 'reward'];
 
 const slideVariants = {
   initial: { opacity: 0, x: 20 },
@@ -10,11 +12,10 @@ const slideVariants = {
 
 export default function AnimatedLaptopScreen() {
   const [currentView, setCurrentView] = useState(0);
-  const views = ['dashboard', 'mock', 'analysis', 'goals', 'reward'];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentView((prev) => (prev + 1) % views.length);
+      setCurrentView((prev) => (prev + 1) % VIEWS.length);
     }, 5500); // cycle every 5.5s
     return () => clearInterval(timer);
   }, []);

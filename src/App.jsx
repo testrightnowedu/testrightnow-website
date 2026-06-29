@@ -1,21 +1,17 @@
 import {
   ArrowRight,
   Brain,
-  Target,
-  Clock3,
   BookOpen,
   Trophy,
-  BarChart3,
-  ChevronRight,
-  Zap,
   TrendingUp,
   Sparkles,
   Briefcase,
   Clock,
   Calendar,
   ShieldCheck,
-  ExternalLink,
   ChevronDown,
+  Phone,
+  Mail,
 } from "lucide-react";
 
 import { useState, useEffect } from "react";
@@ -23,7 +19,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import logo from "./assets/logo.png";
 import PhoneMockup from "./components/PhoneMockup";
 import CrossPlatformSection from "./components/CrossPlatformSection";
-import { STUDENT_APP_URL } from "./constants";
 import {
   GuidedLearningPreview,
   SmartSkippingPreview,
@@ -39,6 +34,7 @@ import {
   FinalPremiumCTA,
 } from "./components/ExtendedSections";
 import PricingModal from "./components/PricingModal";
+import StickyHelpButton from "./components/StickyHelpButton";
 
 function App() {
   const [mounted, setMounted] = useState(false);
@@ -46,7 +42,8 @@ function App() {
   const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -109,6 +106,9 @@ function App() {
       </AnimatePresence>
 
       <Footer setCurrentPage={setCurrentPage} />
+
+      {/* Sticky Help Button */}
+      <StickyHelpButton />
 
       <AnimatePresence>
         {isPricingModalOpen && (
@@ -311,7 +311,7 @@ const HERO_FEATURES = [
   { Icon: Trophy, title: "Earn Rewards", text: "Get self motivating rewards that keep you going." },
 ];
 
-function HeroSection({ onNavigate, onOpenPricing }) {
+function HeroSection({ onOpenPricing }) {
   return (
     <section className="flex-1 flex items-center relative w-full py-4 lg:py-0">
       <div className="w-full grid lg:grid-cols-[38%_62%] items-center gap-4 lg:gap-6">
@@ -377,6 +377,18 @@ function HeroSection({ onNavigate, onOpenPricing }) {
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
+
+          {/* Hero helper text — subtle contact nudge */}
+          <p className="mt-4 text-[11px] text-slate-400 text-center lg:text-left">
+            Questions before joining?{" "}
+            <a
+              href="tel:+919400325294"
+              aria-label="Call us at +91 9400325294"
+              className="font-semibold text-slate-500 hover:text-[#5B4DFF] transition-colors underline underline-offset-2 decoration-slate-300"
+            >
+              Talk to us: +91 9400325294
+            </a>
+          </p>
         </motion.div>
 
         {/* RIGHT — PHONE MOCKUP */}
@@ -500,10 +512,14 @@ function Footer({ setCurrentPage }) {
     },
   ];
 
+  const CONTACT_PHONE = '+919400325294';
+  const CONTACT_PHONE_DISPLAY = '+91 9400325294';
+  const CONTACT_EMAIL = 'testrightnow.edu@gmail.com';
+
   return (
     <footer className="bg-[#070B14] pt-8 lg:pt-10 pb-6 px-4 sm:px-6 lg:px-12 border-t border-white/5 z-40 relative">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-6 mb-8">
           <div className="col-span-2 lg:col-span-2 text-left">
             <div className="flex items-center mb-6">
               <button onClick={() => handleNav("home")} className="flex items-center">
@@ -535,6 +551,41 @@ function Footer({ setCurrentPage }) {
               </div>
             </div>
           ))}
+
+          {/* Contact Us column */}
+          <div className="text-left">
+            <h4 className="text-[11px] font-bold text-white tracking-widest uppercase mb-4">Contact Us</h4>
+            <div className="flex flex-col gap-3.5">
+              <a
+                href={`tel:${CONTACT_PHONE}`}
+                aria-label={`Call us at ${CONTACT_PHONE_DISPLAY}`}
+                className="flex items-start gap-2.5 group"
+              >
+                <Phone size={14} className="text-[#5B4DFF] mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-[10px] text-slate-500 font-semibold leading-none mb-0.5">Phone</p>
+                  <p className="text-[13px] text-slate-400 group-hover:text-white transition-colors font-medium">
+                    {CONTACT_PHONE_DISPLAY}
+                  </p>
+                </div>
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                aria-label={`Email us at ${CONTACT_EMAIL}`}
+                className="flex items-start gap-2.5 group"
+              >
+                <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0 group-hover:bg-indigo-100 transition-colors">
+                  <Mail size={14} className="text-[#5B4DFF] mt-0.5 shrink-0" />
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500 font-semibold leading-none mb-0.5">Email</p>
+                  <p className="text-[11px] text-slate-400 group-hover:text-white transition-colors font-medium">
+                    {CONTACT_EMAIL}
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
         <div className="pt-6 border-t border-white/[0.07] flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-[13px] text-slate-500">© {new Date().getFullYear()} TestRightNow. All rights reserved.</p>

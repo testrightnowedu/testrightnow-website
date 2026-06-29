@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, AtSign, Send, Play } from 'lucide-react';
 import logo from '../assets/logo.png';

@@ -98,7 +98,6 @@ function OrbitalCard({ orbit, card, cardKey, isMobile }) {
   const scale   = useTransform(rawY, [-maxY, maxY], [0.72, 1.08]);
   const zIndex  = useTransform(rawY, [-maxY, maxY], [2, 30]);
   const depthOp = useTransform(rawY, [-maxY, maxY], [0.35, 1.0]);
-  const blur    = useTransform(rawY, [-maxY, maxY], [isMobile ? 2 : 3.5, 0]);
   const tiltZ   = useTransform(theta, t => -Math.sin(t)*6);
   const glowOp  = useTransform(rawY, [0, maxY], [0, 0.40]);
 

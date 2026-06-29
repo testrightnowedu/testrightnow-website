@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Calendar, RefreshCw, BarChart3, Trophy, Gamepad2, GraduationCap, Users, Sparkles } from "lucide-react";
+import { Target, Calendar, RefreshCw, BarChart3, Trophy, Gamepad2, GraduationCap, Users } from "lucide-react";
 
 /* ── Feature blocks ───────────────────────────────────────────── */
 const FEATURES = [

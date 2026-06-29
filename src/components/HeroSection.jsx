@@ -1,7 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { STUDENT_APP_URL } from '../constants';
-import { Brain, Clock, SkipForward, ArrowRight, CheckCircle2, Lock, Star, Flame, Home, BookOpen, Map, BarChart2, User, Share2, Target, Network } from 'lucide-react';
+import { Clock, ArrowRight, CheckCircle2, Lock, Star, Flame, Home, BookOpen, Map, BarChart2, User, Target, Network } from 'lucide-react';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
