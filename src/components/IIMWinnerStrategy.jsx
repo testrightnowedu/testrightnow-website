@@ -141,7 +141,7 @@ export default function IIMWinnerStrategy() {
               </div>
             </div>
 
-            {/* ── RIGHT GRAPH — mobile: horizontal scroll ── */}
+            {/* ── RIGHT GRAPH - mobile: horizontal scroll ── */}
             <div className="relative">
               {/* Mobile: fade-right edge to signal scrollability */}
               <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-20 lg:hidden rounded-r-[32px]" />
@@ -152,12 +152,12 @@ export default function IIMWinnerStrategy() {
                 <span className="text-[10px] text-slate-400">→</span>
               </div>
 
-              {/* Scroll container — only horizontal on mobile */}
+              {/* Scroll container - only horizontal on mobile */}
               <div
                 className="overflow-x-auto overflow-y-hidden lg:overflow-visible"
                 style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {/* Inner content — min-width on mobile to preserve desktop layout */}
+                {/* Inner content - min-width on mobile to preserve desktop layout */}
                 <div className="p-5 lg:p-6 flex flex-col gap-3 min-w-[780px] lg:min-w-0">
                   {/* Graph header */}
                   <div className="flex items-start justify-between">

@@ -46,13 +46,13 @@ export function GuidedLearningPreview({ onNavigate }) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="px-3 py-1 text-[11px] font-bold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-            Curriculum Roadmap
+            Daily Study Plan
           </span>
           <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-            The <span className="text-[#5B4DFF]">Guided Learning</span> System
+            Never Wonder What to Study <span className="text-[#5B4DFF]">Tomorrow.</span>
           </h2>
           <p className="mt-3 text-slate-500 text-sm sm:text-base max-w-lg mx-auto">
-            A linear progression structure modeled after cognitive development milestones. No skipping, just absolute mastery.
+            Log in every day. Your study plan is ready. Exactly what to learn, practise, and revise - in the right order, every time.
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export function GuidedLearningPreview({ onNavigate }) {
             onClick={() => onNavigate("guided-learning")}
             className="inline-flex items-center gap-2 text-sm font-bold text-[#5B4DFF] hover:text-[#4F42F0] hover:underline"
           >
-            Learn More About Guided Learning <ArrowRight size={14} />
+            See How the Daily Plan Works <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -80,25 +80,26 @@ export function SmartSkippingPreview({ onNavigate }) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="px-3 py-1 text-[11px] font-bold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-              Exam Psychology
+              CAT Exam Strategy
             </span>
             <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mt-3 mb-5">
-              The Smart Skipping <span className="text-[#5B4DFF]">Strategy</span>
+              CAT Isn&apos;t About Answering Everything.{" "}
+              <span className="text-[#5B4DFF]">It&apos;s About the Right Things.</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-              CAT is an exam of selection, not completion. High-percentile students excel not because they solve everything, but because they identify time-traps instantly and skip them within seconds. We teach you this core attempt methodology systematically.
+              Students who score 99+ percentile don&apos;t attempt more questions. They attempt smarter ones. TestRightNow trains you to identify which questions to solve - and which to skip in under 15 seconds. This one skill alone can improve your score significantly.
             </p>
             <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm mb-6">
-              <h4 className="text-sm font-bold text-slate-900 mb-1">Methodology Philosophy</h4>
+              <h4 className="text-sm font-bold text-slate-900 mb-1">The Core Insight</h4>
               <p className="text-slate-600 text-xs sm:text-sm italic leading-relaxed">
-                "Success in CAT is about attempting the highest ROI questions first. Never waste 5 minutes on low-yield traps when simple marks remain open."
+                &ldquo;Knowing which question <em>not</em> to attempt is worth more marks than solving five extra questions.&rdquo;
               </p>
             </div>
             <button
               onClick={() => onNavigate("strategy")}
               className="inline-flex items-center gap-2 text-sm font-bold text-[#5B4DFF] hover:text-[#4F42F0] hover:underline"
             >
-              Explore Our Strategy <ArrowRight size={14} />
+              Explore Our CAT Strategy <ArrowRight size={14} />
             </button>
           </div>
 
@@ -126,10 +127,26 @@ export function SmartSkippingPreview({ onNavigate }) {
 
 export function FeaturesPreview({ onNavigate }) {
   const previews = [
-    { icon: BookOpen, title: "Guided Learning", desc: "Linear pathways that decide your daily lessons, taking away planning stress." },
-    { icon: Clock, title: "Time Trap Detection", desc: "Identify time-draining questions dynamically using practice analytics." },
-    { icon: Brain, title: "Smart Skipping", desc: "Train your brain to recognize Quadrant 4 (Low ROI) questions within 15 seconds." },
-    { icon: RefreshCw, title: "Revision Engine", desc: "Automated spaced repetition intervals mapping weak topics into revision blocks." },
+    {
+      icon: BookOpen,
+      title: "Know Exactly What to Study - Every Day",
+      desc: "Wake up, log in, and your study plan is ready. No more wondering where to start or what to do next.",
+    },
+    {
+      icon: Clock,
+      title: "Know Which Questions to Skip",
+      desc: "Identify time-wasting questions in 15 seconds and move on confidently - a skill that directly improves your score.",
+    },
+    {
+      icon: Brain,
+      title: "Understand Every Mock Result Deeply",
+      desc: "Go beyond a percentile. Know exactly what went wrong and get a targeted plan to fix it before the next mock.",
+    },
+    {
+      icon: RefreshCw,
+      title: "Never Forget What You've Learned",
+      desc: "Revision is scheduled automatically at exactly the right intervals. Nothing falls through the cracks.",
+    },
   ];
 
   return (
@@ -137,13 +154,14 @@ export function FeaturesPreview({ onNavigate }) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="px-3 py-1 text-[11px] font-bold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-            Platform Capabilities
+            What Changes When You Use TestRightNow
           </span>
           <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-            More Than Mock Tests. <span className="text-[#5B4DFF]">A Smarter Preparation System.</span>
+            Stop Preparing Randomly.{" "}
+            <span className="text-[#5B4DFF]">Start Preparing with Purpose.</span>
           </h2>
           <p className="mt-3 text-slate-500 text-sm max-w-lg mx-auto">
-            A comprehensive list of core features structured entirely around transparent study science.
+            Four ways TestRightNow turns daily confusion into daily clarity.
           </p>
         </div>
 
@@ -151,7 +169,7 @@ export function FeaturesPreview({ onNavigate }) {
           {previews.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className="bg-[#F8FAFC] border border-slate-200/60 p-6 rounded-2xl flex flex-col gap-4">
+              <div key={idx} className="bg-[#F8FAFC] border border-slate-200/60 p-6 rounded-2xl flex flex-col gap-4 hover:shadow-[0_4px_24px_rgba(91,77,255,0.08)] hover:border-indigo-100 transition-all duration-300">
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 text-[#5B4DFF] flex items-center justify-center shrink-0">
                   <Icon size={18} />
                 </div>
@@ -300,54 +318,141 @@ export function StrategyPage() {
 
 // --- PAGE: /guided-learning ---
 export function GuidedLearningPage() {
+  const phases = [
+    { num: "Phase 1", title: "Foundation Builder", desc: "Build your first layer across all sections.", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+    { num: "Phase 2", title: "Core Foundation", desc: "Master essential concepts in the right order.", color: "bg-violet-50 text-violet-700 border-violet-200" },
+    { num: "Phase 3", title: "Skill Development", desc: "Apply knowledge to real CAT-level questions.", color: "bg-purple-50 text-purple-700 border-purple-200" },
+    { num: "Phase 4", title: "Competitive Builder", desc: "Build speed, pressure tolerance, and instincts.", color: "bg-blue-50 text-blue-700 border-blue-200" },
+    { num: "Phase 5", title: "Performance Mastery", desc: "Full mocks, deep analysis, targeted improvement.", color: "bg-teal-50 text-teal-700 border-teal-200" },
+    { num: "Phase 6", title: "CAT Readiness", desc: "Walk into CAT with a complete plan and full confidence.", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  ];
+
+  const dailyMix = [
+    { emoji: "📖", label: "Learn Concepts", desc: "New concept introduction, clearly explained" },
+    { emoji: "🔄", label: "Refresh Concepts", desc: "Revisit recent learning before it fades" },
+    { emoji: "✏️", label: "Practise Questions", desc: "Apply concepts to real questions immediately" },
+    { emoji: "🧠", label: "Revision", desc: "Spaced repetition of older topics, automatically scheduled" },
+    { emoji: "📋", label: "Previous Year Questions", desc: "Real CAT questions in the exact topic you just learned" },
+    { emoji: "⚡", label: "CAT Application", desc: "Mixed application under real exam conditions" },
+    { emoji: "📊", label: "Sectional Practice", desc: "Full-section timed practice when you're ready" },
+    { emoji: "🎯", label: "Mock Preparation", desc: "Strategy and exam readiness activities" },
+  ];
+
   return (
     <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="pt-24 min-h-screen bg-[#F8FAFC]">
+      {/* Hero header */}
       <div className="max-w-5xl mx-auto px-6 py-12 text-center">
         <motion.span variants={fadeUp} className="px-3 py-1 text-xs font-semibold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-          Curriculum Deep Dive
+          How Your Daily Preparation Works
         </motion.span>
         <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.08] mt-4 mb-6">
-          The <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">Guided Learning</span> System
+          Not a Course. <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">A Daily Guided Journey.</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
-          How our linear curriculum path guides you step-by-step through milestones, daily sessions, and custom activities.
+          TestRightNow is not Chapter 1 → Chapter 2 → Chapter 3. Every day, you receive a personalised mission - a carefully designed session that tells you exactly what to learn, practise, and revise.
         </motion.p>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 pb-20 space-y-12">
-        {/* Core Hierarchy */}
-        <motion.div variants={fadeUp} className="grid md:grid-cols-3 gap-6">
-          {[
-            { title: "1. Milestone", desc: "Structured preparation blocks (M0 to M10). Multiple milestones will be available sequentially, ensuring steady readiness growth." },
-            { title: "2. Session", desc: "Sub-milestone blocks (e.g. 5–7 sessions per milestone) that bundle daily assignments so you never face planning overwhelm." },
-            { title: "3. Activity", desc: "The smallest learning unit (concept cards, timed practice, spaced revision) designed to be fully completed within one day's session." },
-          ].map((item, i) => (
-            <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
-              <h3 className="text-lg font-bold text-slate-950 mb-2">{item.title}</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
+
+        {/* Architecture hierarchy */}
+        <motion.div variants={fadeUp} className="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm">
+          <h3 className="text-lg font-bold text-slate-900 mb-2">The Architecture Behind Your Daily Plan</h3>
+          <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+            The system is designed as a hierarchy. Each level has a purpose. You never see the complexity - you just see today&apos;s task.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            {[
+              { label: "6 Phases", sub: "Transformation stages", primary: true },
+              { label: "→", sub: "", arrow: true },
+              { label: "10 Milestones", sub: "Preparation blocks" },
+              { label: "→", sub: "", arrow: true },
+              { label: "Daily Sessions", sub: "Your daily mission" },
+              { label: "→", sub: "", arrow: true },
+              { label: "Activities", sub: "Individual tasks" },
+            ].map((item, i) => (
+              item.arrow
+                ? <span key={i} className="text-slate-300 font-bold text-xl">→</span>
+                : <div key={i} className={`flex flex-col items-center px-4 py-3 rounded-2xl border ${item.primary ? "bg-[#5B4DFF] border-[#5B4DFF] text-white" : "bg-slate-50 border-slate-200 text-slate-700"}`}>
+                    <span className={`text-[13px] font-bold ${item.primary ? "text-white" : "text-slate-900"}`}>{item.label}</span>
+                    <span className={`text-[10px] mt-0.5 ${item.primary ? "text-indigo-200" : "text-slate-400"}`}>{item.sub}</span>
+                  </div>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Guided Learning Cinema Section */}
+        {/* 6 Phases */}
+        <motion.div variants={fadeUp} className="space-y-4">
+          <h3 className="text-xl font-bold text-slate-900">The 6 Transformation Phases</h3>
+          <p className="text-slate-500 text-sm max-w-2xl leading-relaxed">
+            Every student follows the same 6-phase path. No shortcuts. No skipping. Each phase builds on the previous one. By Phase 6, you are genuinely ready.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {phases.map((phase, i) => (
+              <div key={i} className={`p-5 rounded-2xl border ${phase.color} flex flex-col gap-2`}>
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-60">{phase.num}</span>
+                <h4 className="text-[15px] font-bold">{phase.title}</h4>
+                <p className="text-[12px] opacity-75 leading-relaxed">{phase.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Daily Mission Philosophy */}
+        <motion.div variants={fadeUp} className="bg-[#0B0F19] rounded-3xl p-8 border border-slate-800 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[85px] pointer-events-none" />
+          <div className="relative z-10">
+            <h3 className="text-xl font-bold text-white mb-2">What &ldquo;Today&apos;s Mission&rdquo; Looks Like</h3>
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              Every session is a guided day. Not just a list of tasks - a purposeful progression.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { label: "Today you will:", items: ["Strengthen Ratio & Proportion (Concept)", "Practise real CAT Percentage questions", "Revise previous Algebra concepts", "Improve your attempt speed"] },
+                { label: "Expected outcome:", items: ["Solve beginner Ratio questions confidently", "Revise Algebra before it fades", "Build the habit of timed answering", "Be ready for tomorrow&apos;s session"] },
+              ].map((col, i) => (
+                <div key={i} className="bg-white/5 rounded-2xl border border-white/8 p-5">
+                  <span className="text-[11px] font-black text-[#9B8FFF] uppercase tracking-wider block mb-3">{col.label}</span>
+                  {col.items.map((item, j) => (
+                    <div key={j} className="flex items-start gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#5B4DFF] mt-1.5 shrink-0" />
+                      <span className="text-[12px] text-slate-300" dangerouslySetInnerHTML={{ __html: item }} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* The intentional daily mix */}
+        <motion.div variants={fadeUp} className="space-y-4">
+          <h3 className="text-xl font-bold text-slate-900">What Every Session Can Contain</h3>
+          <p className="text-slate-500 text-sm max-w-2xl leading-relaxed">
+            You never study one subject for weeks straight. Each session intentionally combines different activity types - this follows our learning philosophy and prevents the burnout and forgetting that comes from monotonous study.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {dailyMix.map((item, i) => (
+              <div key={i} className="bg-white border border-slate-200/60 p-4 rounded-2xl flex flex-col gap-2 shadow-sm">
+                <span className="text-[22px]">{item.emoji}</span>
+                <h4 className="text-[13px] font-bold text-slate-900">{item.label}</h4>
+                <p className="text-[11px] text-slate-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Guided Learning Cinema */}
         <motion.div variants={fadeUp}>
           <GuidedLearningCinema />
         </motion.div>
 
-        {/* Operational Flow */}
-        <motion.div variants={fadeUp} className="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm grid md:grid-cols-2 gap-8">
-          <div>
-            <h4 className="text-lg font-bold text-slate-900 mb-2">Progression &amp; Spaced Revision</h4>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Whenever you complete daily sessions, our spacing algorithms calculate memory decay intervals. Revision loops are automatically scheduled at 1, 3, and 7 days. If the system flags conceptual deficits, it adjusts daily learning worksheets dynamically to reinforce the exact rules you struggled with.
-            </p>
-          </div>
-          <div>
-            <h4 className="text-lg font-bold text-slate-900 mb-2">How Next Activities Are Chosen</h4>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Our recommendation engine evaluates three parameters: your active accuracy, mock test performance, and revision schedules. Daily goals are then assembled, featuring concept building tasks, timing sprints, and reinforcement reviews, ensuring you spend 100% of your time on maximum ROI study steps.
-            </p>
-          </div>
+        {/* Spaced revision */}
+        <motion.div variants={fadeUp} className="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm">
+          <h4 className="text-lg font-bold text-slate-900 mb-2">Revision - Scheduled Automatically</h4>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Whenever you complete a concept or practice session, the system calculates when you&apos;re most likely to forget it - and schedules a revision activity into a future session before that happens. You don&apos;t decide when to revise. The system decides. You just follow the plan.
+          </p>
         </motion.div>
       </div>
     </motion.div>
@@ -356,38 +461,65 @@ export function GuidedLearningPage() {
 
 // --- PAGE: /how-it-works ---
 export function HowItWorksPage() {
-  const workflow = [
-    { step: "1", title: "Create Account", desc: "Set up your profile and basic preparation details." },
-    { step: "2", title: "Guided Learning Starts", desc: "Your structured CAT preparation path becomes available immediately." },
-    { step: "3", title: "Daily Sections", desc: "Receive your daily 45–90 minute guided learning plan." },
-    { step: "4", title: "Targeted Practice", desc: "Complete focused activities and exercises." },
-    { step: "5", title: "Revision", desc: "Reinforce concepts through scheduled revision." },
-    { step: "6", title: "Performance Analysis", desc: "Track strengths, weaknesses, and progress." },
-    { step: "7", title: "Adaptive Reinforcement", desc: "Receive additional practice for weak areas." },
-    { step: "8", title: "Mock Tests", desc: "Apply learning under exam conditions." },
-    { step: "9", title: "Continuous Improvement", desc: "Progress through phases and milestones." }
+  const steps = [
+    {
+      step: "01",
+      title: "Create Your Account",
+      desc: "Sign up and set up your profile. The system immediately prepares your Phase 1 preparation path.",
+      tag: "One-time setup",
+    },
+    {
+      step: "02",
+      title: "Your Daily Mission Begins",
+      desc: "Log in every day and see your session for the day. No planning required. The system already knows what you need to do.",
+      tag: "Every single day",
+    },
+    {
+      step: "03",
+      title: "Follow Today's Activities",
+      desc: "Each session contains a carefully mixed set of activities: learn new concepts, practise questions, revise previous topics, and apply CAT strategy.",
+      tag: "Learn + Practise + Revise",
+    },
+    {
+      step: "04",
+      title: "Revision Happens Automatically",
+      desc: "You don't decide when to revise. The system schedules revision into your future sessions at exactly the right time - before you forget.",
+      tag: "Nothing falls through",
+    },
+    {
+      step: "05",
+      title: "Mocks Begin at the Right Time",
+      desc: "Mock tests are introduced when you've built the foundation to benefit from them. After every mock, you receive a targeted improvement plan - not just a score.",
+      tag: "Phase 5 onwards",
+    },
+    {
+      step: "06",
+      title: "Progress Through All 6 Phases",
+      desc: "As you complete milestones, you unlock the next phase. Each phase builds on the previous. By Phase 6, you are genuinely exam-ready.",
+      tag: "Foundation → CAT Readiness",
+    },
   ];
 
   return (
     <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="pt-24 min-h-screen bg-[#F8FAFC]">
       <div className="max-w-5xl mx-auto px-6 py-12 text-center">
         <motion.span variants={fadeUp} className="px-3 py-1 text-xs font-semibold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-          Product Workflow
+          How It Works
         </motion.span>
         <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.08] mt-4 mb-6">
-          The <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">TESTRIGHTNOW</span> Workflow
+          Six Steps. <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">Every Day Decided.</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
-          From first signup to percentile optimization: a transparent view of how the platform structures your day-to-day study workflow.
+          From your first login to exam day - here is exactly how TestRightNow guides your preparation every single day.
         </motion.p>
       </div>
 
-      {/* Timeline flow */}
+      {/* Timeline */}
       <div className="max-w-3xl mx-auto px-6 pb-20 relative">
         <div className="absolute left-10 top-6 bottom-6 w-0.5 bg-slate-200/80" />
 
         <div className="space-y-10">
-          {workflow.map((item, idx) => (
+          {steps.map((item, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, x: -20 }}
@@ -399,12 +531,23 @@ export function HowItWorksPage() {
               <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-bold text-xs text-[#5B4DFF] shrink-0 group-hover:bg-[#5B4DFF] group-hover:text-white transition-all duration-300 shadow-sm">
                 {item.step}
               </div>
-              <div className="pt-1">
-                <h3 className="text-base font-bold text-slate-900 mb-1">{item.title}</h3>
+              <div className="pt-1 flex-1">
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-base font-bold text-slate-900 mb-1">{item.title}</h3>
+                  <span className="text-[10px] font-bold text-[#5B4DFF] bg-indigo-50 border border-indigo-100 rounded-full px-2 py-0.5 shrink-0 hidden sm:block">{item.tag}</span>
+                </div>
                 <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Philosophy note */}
+        <div className="mt-12 bg-[#0B0F19] rounded-3xl p-8 border border-slate-800">
+          <h4 className="text-lg font-bold text-white mb-2">The North Star</h4>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            The student should never wonder &ldquo;What should I study today?&rdquo; That question should disappear forever once they join TestRightNow. Every day has a purpose. Every session has an outcome. Every activity has a reason.
+          </p>
         </div>
       </div>
     </motion.div>
@@ -867,7 +1010,7 @@ function RewardsSystemWidget() {
         <div className="flex justify-between items-center">
           <div className="text-left">
             <span className="text-[8px] font-black text-[#9B8FFF] uppercase block">Current Rank</span>
-            <span className="text-xs font-black text-white">Level 18 — Contender</span>
+            <span className="text-xs font-black text-white">Level 18 - Contender</span>
           </div>
           <div className="text-right">
             <span className="text-[8px] font-bold text-slate-400 block">Current XP</span>
@@ -1836,16 +1979,38 @@ export function FAQPage() {
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqs = [
-    { q: "What is Guided Learning?", a: "Guided Learning is a structured, algorithmically sequenced curriculum pathway that divides the massive CAT syllabus into milestones and daily sessions, adapting to your progress so you never have to plan what to study next." },
-    { q: "How are milestones structured?", a: "The syllabus is divided into multiple sequential milestones (M0 to M10). Each milestone contains 5 to 7 sessions targeting specific readiness ranges and syllabus segments." },
-    { q: "Can I skip milestones?", a: "No. Progression is linear and sequential. You must complete the sessions of your current milestone before the next milestone unlocks." },
-    { q: "How does revision work?", a: "Whenever you fail a problem or concept test, our Spaced Repetition algorithm schedules tailored reviews at 1, 3, and 7-day intervals until your accuracy stabilizes." },
-    { q: "What are sessions?", a: "A Session represents a sub-milestone block, e.g. 5–7 sessions per milestone. It bundles daily assignments so you completely bypass study planning overwhelm." },
-    { q: "What are activities?", a: "Activities are the smallest executable units within a daily session (concept cards, timed practice, spaced revision, etc.), taking between 5 to 15 minutes." },
-    { q: "How are mocks integrated?", a: "Mock slots unlock in Milestone 6. Our system evaluates mock attempt metrics, tracking skipped time and tagging time traps to suggest targeted remedial sessions." },
-    { q: "What happens if I miss a day?", a: "The system automatically adjusts your timeline. Backlogs are avoided as the recommended daily session shifts dynamically to support consistency." },
-    { q: "How is progress measured?", a: "Progress is tracked using accuracy metrics, pacing benchmarks, time spent on incorrect/skipped questions, and live expected percentile ranges based on slot statistics." },
-    { q: "How does reinforcement work?", a: "If our diagnostic engine flags conceptual weaknesses in a specific topic, it automatically schedules easier concept reviews before gradually scaling up the complexity." },
+    {
+      q: "I already watch YouTube. Why do I need TESTRIGHTNOW?",
+      a: "YouTube gives content. TESTRIGHTNOW gives a complete preparation system. The student never has to decide what to study next.",
+    },
+    {
+      q: "Can I prepare without joining expensive coaching?",
+      a: "Yes. The platform is designed specifically for students and working professionals who prefer disciplined self-preparation instead of classroom coaching.",
+    },
+    {
+      q: "I'm a complete beginner. Can I still start?",
+      a: "Yes. The six-phase guided journey starts from fundamentals and gradually progresses to CAT-level preparation.",
+    },
+    {
+      q: "I work full-time. Will I get enough time?",
+      a: "Yes. Every session is designed as a manageable daily mission so students can make consistent progress without studying the entire day.",
+    },
+    {
+      q: "Will I have to decide what to study every day?",
+      a: "No. Every day's preparation has already been planned. Simply complete today's session and return tomorrow.",
+    },
+    {
+      q: "Is this just another collection of videos, notes and PDFs?",
+      a: "No. TESTRIGHTNOW is a structured preparation system that combines learning, practice, revision, previous-year questions and mock-based improvement into one guided daily journey.",
+    },
+    {
+      q: "Why is the complete program only ₹1000?",
+      a: "Because quality CAT preparation should be affordable. Our goal is to make structured preparation accessible to students and working professionals instead of charging coaching-level prices.",
+    },
+    {
+      q: "What if I don't know where to begin?",
+      a: "That's exactly why TESTRIGHTNOW exists. Open today's session. We'll guide you through the rest.",
+    },
   ];
 
   return (
@@ -1922,7 +2087,7 @@ export function AboutPage() {
             Traditional CAT preparation systems are broken. Offline coachings group fifty distinct aspirants into rigid batch schedules, ignoring personal accuracy baselines. Furthermore, the market is filled with massive, generic video libraries that encourage passive watching instead of active retrieval. 
           </p>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            TESTRIGHTNOW was created by IIM Indore and Ahmedabad Crackers who successfully cleared CAT through self-directed, highly strategic schedules. We wanted to build an automated, personalized daily system that acts like a strategist—curating target priorities, scheduling revision reviews, and enforcing skipping mechanics.
+            TESTRIGHTNOW was created by IIM Indore and Ahmedabad Crackers who successfully cleared CAT through self-directed, highly strategic schedules. We wanted to build an automated, personalized daily system that acts like a strategist - curating target priorities, scheduling revision reviews, and enforcing skipping mechanics.
           </p>
         </motion.div>
 
@@ -1937,7 +2102,7 @@ export function AboutPage() {
           <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
             <h4 className="text-base font-bold text-slate-950 mb-2">Our Vision</h4>
             <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-              To establish a transparent, educational preparation environment built on verifiable cognitive sciences—avoiding hyperbolic urgency, unrealistic score promises, and fake marketing claims.
+              To establish a transparent, educational preparation environment built on verifiable cognitive sciences - avoiding hyperbolic urgency, unrealistic score promises, and fake marketing claims.
             </p>
           </div>
         </motion.div>
@@ -2106,33 +2271,34 @@ export function FinalPremiumCTA({ onNavigate, onOpenPricing }) {
           <div className="relative z-10 px-8 py-16 sm:px-12 sm:py-20 lg:px-20 text-center max-w-4xl mx-auto space-y-8">
             <div className="space-y-4">
               <span className="px-3.5 py-1.5 text-[10px] font-bold text-white bg-white/10 rounded-full uppercase tracking-widest border border-white/10">
-                Unlock Consistency
+                Start Today
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
-                Your CAT Journey Doesn't Need More Motivation. <br />
+                Your IIM Dream Doesn&apos;t Need More Motivation.
+                <br />
                 <span className="bg-gradient-to-r from-[#A5B4FC] to-white bg-clip-text text-transparent">
-                  It Needs A Better System.
+                  It Needs a Plan.
                 </span>
               </h2>
               <p className="text-indigo-200 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-                Join thousands of self-directed aspirants building daily study habits, avoiding time traps, and scoring higher through sequential guided learning.
+                Stop spending time deciding what to study. Start following a system that decides for you - every single day, from today until CAT.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <button 
+              <button
                 onClick={onOpenPricing}
                 className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-white text-[#5B4DFF] text-sm font-bold shadow-lg hover:scale-[1.03] transition-all flex items-center justify-center gap-2 group cursor-pointer"
               >
-                Start Practicing <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                Start Your CAT Journey <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <button 
+              <button
                 onClick={() => onNavigate("guided-learning")}
                 className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-transparent border border-white/20 text-white text-sm font-bold hover:bg-white/10 hover:border-white/40 transition-all cursor-pointer"
               >
                 Explore Guided Learning
               </button>
-              <button 
+              <button
                 onClick={() => onNavigate("strategy")}
                 className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-transparent border border-white/10 text-white/80 text-xs font-semibold hover:text-white transition-all cursor-pointer"
               >

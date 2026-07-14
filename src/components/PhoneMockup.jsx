@@ -196,7 +196,7 @@ export default function PhoneMockup() {
         </motion.div>
 
         {/* ── Floating info cards (from reference) ── */}
-        {/* Seamless Sync — top right */}
+        {/* Seamless Sync - top right */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: [0, -5, 0] }}
@@ -208,7 +208,7 @@ export default function PhoneMockup() {
           <div><p style={{ fontSize: 11, fontWeight: 700, color: "#1E293B" }}>Seamless Sync</p><p style={{ fontSize: 9.5, color: "#64748B" }}>Across all devices</p></div>
         </motion.div>
 
-        {/* Mobile App — bottom left */}
+        {/* Mobile App - bottom left */}
         <motion.div
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
@@ -219,7 +219,7 @@ export default function PhoneMockup() {
           <div><p style={{ fontSize: 11, fontWeight: 700, color: "#1E293B" }}>Mobile App</p><p style={{ fontSize: 9.5, color: "#64748B" }}>Practice on the go</p></div>
         </motion.div>
 
-        {/* Web App — bottom right */}
+        {/* Web App - bottom right */}
         <motion.div
           animate={{ y: [0, -5, 0] }}
           transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
@@ -230,7 +230,7 @@ export default function PhoneMockup() {
           <div><p style={{ fontSize: 11, fontWeight: 700, color: "#1E293B" }}>Web App</p><p style={{ fontSize: 9.5, color: "#64748B" }}>Deep analysis & insights</p></div>
         </motion.div>
 
-        {/* Your Progress — center bottom */}
+        {/* Your Progress - center bottom */}
         <motion.div
           animate={{ y: [0, -7, 0] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
@@ -268,7 +268,7 @@ export default function PhoneMockup() {
           className="relative z-20"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Ground glow ring — matches reference bright circular halo */}
+          {/* Ground glow ring - matches reference bright circular halo */}
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 pointer-events-none" style={{ width: 280, height: 56 }}>
             {/* Outer wide glow */}
             <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.35, 0.65, 0.35] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}

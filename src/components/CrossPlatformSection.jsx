@@ -6,7 +6,7 @@ const PLATFORMS = [
     icon: "📱",
     name: "iPhone App",
     tagline: "Study on the go",
-    desc: "Guided missions, daily practice, and rewards — right in your pocket.",
+    desc: "Guided missions, daily practice, and rewards - right in your pocket.",
     badge: "App Store",
     badgeColor: "#000000",
     badgeBg: "linear-gradient(135deg,#1c1c1e,#3a3a3c)",
@@ -71,7 +71,7 @@ function DeviceOrbit() {
         <ellipse cx={160} cy={160} rx={95}  ry={38} fill="none" stroke="rgba(109,95,250,0.12)" strokeWidth="1" strokeDasharray="4 6" />
       </svg>
 
-      {/* Center — iPhone */}
+      {/* Center - iPhone */}
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
@@ -90,7 +90,7 @@ function DeviceOrbit() {
         <div className="w-4 h-1 rounded-full bg-white/15 mt-1" />
       </motion.div>
 
-      {/* Laptop — right */}
+      {/* Laptop - right */}
       <motion.div
         animate={{ y: [0, -5, 0], x: [0, 2, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
@@ -105,7 +105,7 @@ function DeviceOrbit() {
         </div>
       </motion.div>
 
-      {/* Tablet — left */}
+      {/* Tablet - left */}
       <motion.div
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
@@ -117,7 +117,7 @@ function DeviceOrbit() {
         </div>
       </motion.div>
 
-      {/* Streak card — top */}
+      {/* Streak card - top */}
       <motion.div
         animate={{ y: [0, -7, 0] }}
         transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
@@ -130,7 +130,7 @@ function DeviceOrbit() {
         </div>
       </motion.div>
 
-      {/* Sync badge — bottom */}
+      {/* Sync badge - bottom */}
       <motion.div
         animate={{ y: [0, 5, 0] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
@@ -201,7 +201,7 @@ export default function CrossPlatformSection() {
         {/* Main content grid */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-10 lg:mb-14">
 
-          {/* Left — device ecosystem */}
+          {/* Left - device ecosystem */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -228,7 +228,7 @@ export default function CrossPlatformSection() {
             </div>
           </motion.div>
 
-          {/* Right — platform cards */}
+          {/* Right - platform cards */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -302,7 +302,7 @@ export default function CrossPlatformSection() {
               <div>
                 <p className="text-[13px] font-bold text-white">Automatic Sync</p>
                 <p className="text-[12px] text-slate-400 mt-0.5 leading-relaxed">
-                  Your streaks, missions, rewards, revision schedule, and performance data sync automatically across every device — in real time.
+                  Your streaks, missions, rewards, revision schedule, and performance data sync automatically across every device - in real time.
                 </p>
               </div>
             </div>

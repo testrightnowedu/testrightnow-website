@@ -11,8 +11,6 @@ import {
   Loader2,
   ChevronDown,
   ChevronUp,
-  Phone,
-  Mail,
   ShieldCheck,
   Scale
 } from "lucide-react";
@@ -135,10 +133,11 @@ export default function PricingModal({ isOpen, onClose }) {
         {/* Modal Header */}
         <div className="text-center mb-3 sm:mb-4 max-w-3xl mx-auto">
           <h2 id="pricing-modal-title" className="text-lg sm:text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            TESTRIGHTNOW is honestly priced. <span className="text-[#6b58ff]">No fake discounts.</span>
+            Complete CAT Preparation.{" "}
+            <span className="text-[#6b58ff]">One Honest Price.</span>
           </h2>
           <p className="text-slate-500 text-[11px] sm:text-xs mt-1.5 leading-relaxed font-medium">
-            We believe students deserve transparent pricing. Choose the plan that fits your CAT 2026 preparation goals.
+            No coaching fees. No subscriptions. No hidden charges. Everything you need.
           </p>
         </div>
 
@@ -234,25 +233,22 @@ export default function PricingModal({ isOpen, onClose }) {
               {/* Pricing & Comparison Section */}
               <div className="flex flex-col sm:flex-row sm:items-stretch gap-2 pb-3 border-b border-slate-100">
                 <div className="flex-1 flex flex-col justify-center">
-                  <div className="flex items-baseline gap-1">
+                  <div className="flex items-baseline gap-2 mb-0.5">
+                    <span className="text-[15px] text-slate-400 line-through font-semibold">₹1,499</span>
                     <span className="text-2xl sm:text-3xl font-extrabold text-slate-900">₹1,000</span>
-                    <span className="text-slate-500 text-[10px] font-semibold">One-Time Payment</span>
                   </div>
-                  <p className="text-[10px] text-slate-500 mt-1 font-medium leading-relaxed">
+                  <p className="text-[10px] font-semibold text-[#6b58ff] mb-0.5">Current CAT 2026 Enrollment Pricing</p>
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed">
                     One transparent payment. No subscriptions. No hidden charges.
                   </p>
                 </div>
 
-                {/* Subtle Comparison Card */}
-                <div className="sm:w-[170px] bg-slate-50 rounded-lg p-2 border border-slate-200/60 flex flex-col justify-center">
-                  <div className="text-[9px] font-bold text-slate-400 mb-0.5">Others</div>
-                  <div className="text-[13px] font-bold text-slate-300 relative inline-block w-fit">
-                    ₹9,999
-                    <div className="absolute top-1/2 left-0 right-0 h-[1.5px] bg-red-500 -rotate-6"></div>
-                  </div>
-                  <div className="text-[9px] font-bold text-red-500 mt-0.5 mb-1">❌ Fake Discount Offers</div>
-                  <p className="text-[8px] text-slate-500 font-medium leading-snug">
-                    Some platforms inflate prices before showing fake discounts. Our product does not.
+                {/* Coaching comparison card */}
+                <div className="sm:w-[180px] bg-slate-50 rounded-lg p-2.5 border border-slate-200/60 flex flex-col justify-center">
+                  <div className="text-[9px] font-bold text-slate-400 mb-0.5">Classroom Coaching</div>
+                  <div className="text-[13px] font-bold text-slate-400">₹30,000 – ₹80,000</div>
+                  <p className="text-[8px] text-slate-500 font-medium leading-snug mt-1">
+                    TestRightNow delivers a structured preparation system at a fraction of that cost.
                   </p>
                 </div>
               </div>
@@ -340,7 +336,7 @@ export default function PricingModal({ isOpen, onClose }) {
                   <Loader2 size={14} className="animate-spin text-white" />
                 ) : (
                   <>
-                    Become a CAT Focuser
+                    Start Your CAT Journey
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
                   </>
                 )}

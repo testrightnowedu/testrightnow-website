@@ -435,7 +435,7 @@ export default function GuidedLearningCinema() {
     const runSequence = () => {
       switch (animStep) {
         case 1:
-          // STEP 1 — Roadmap visible, M0 active, others locked
+          // STEP 1 - Roadmap visible, M0 active, others locked
           setLoopOpacity(1);
           setActiveMilestone(0);
           setExpandedMilestones({ 0: false });
@@ -466,7 +466,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 2:
-          // STEP 2 — Milestone 0 expands downward to reveal Sessions
+          // STEP 2 - Milestone 0 expands downward to reveal Sessions
           setExpandedMilestones({ 0: true });
           setSpotlightTarget("milestone-0-card");
           setViewportY(20);
@@ -477,7 +477,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 3:
-          // STEP 3 — Automatically expand Session 1 inline.
+          // STEP 3 - Automatically expand Session 1 inline.
           setActiveSession(1);
           setExpandedSessions({ 1: true });
           setSpotlightTarget("session-1-card");
@@ -489,7 +489,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 4:
-          // STEP 4 — Study activities inside Session 1 (complete + show rewards)
+          // STEP 4 - Study activities inside Session 1 (complete + show rewards)
           // Activity 1
           setActiveActivityIdx(0);
           setSpotlightTarget("s1-activity-0");
@@ -617,7 +617,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 5:
-          // STEP 5 — Collapse Session 1
+          // STEP 5 - Collapse Session 1
           setExpandedSessions({ 1: false });
           setActiveActivityIdx(null);
           setSpotlightTarget("session-1-card");
@@ -629,7 +629,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 6:
-          // STEP 6 — Expand Session 2 inline. Complete activities, rewards, summary.
+          // STEP 6 - Expand Session 2 inline. Complete activities, rewards, summary.
           setActiveSession(2);
           setExpandedSessions({ 1: false, 2: true });
           setSpotlightTarget("session-2-card");
@@ -715,7 +715,7 @@ export default function GuidedLearningCinema() {
           break;
 
         case 7: {
-          // STEP 7 — Collapse all sessions. Milestone becomes COMPLETE.
+          // STEP 7 - Collapse all sessions. Milestone becomes COMPLETE.
           setExpandedMilestones({ 0: true });
           setSpotlightTarget("milestone-0-card");
           setViewportY(0);
@@ -735,7 +735,7 @@ export default function GuidedLearningCinema() {
         }
 
         case 8: {
-          // STEP 8 — Unlock Milestone 1
+          // STEP 8 - Unlock Milestone 1
           if (pathIntervalRef.current) clearInterval(pathIntervalRef.current);
           let pathTick = 0;
           pathIntervalRef.current = setInterval(() => {
@@ -769,7 +769,7 @@ export default function GuidedLearningCinema() {
         }
 
         case 9:
-          // STEP 9 — Loop reset morph
+          // STEP 9 - Loop reset morph
           setLoopOpacity(0.15);
           autoplayTimerRef.current = setTimeout(() => {
             setAnimStep(1);

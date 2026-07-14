@@ -1,17 +1,21 @@
 import {
   ArrowRight,
   Brain,
-  BookOpen,
-  Trophy,
   TrendingUp,
   Sparkles,
-  Briefcase,
   Clock,
   Calendar,
   ShieldCheck,
   ChevronDown,
+  ChevronUp,
   Phone,
   Mail,
+  RefreshCw,
+  BarChart2,
+  Check,
+  X,
+  GraduationCap,
+  CheckCircle2,
 } from "lucide-react";
 
 import { useState, useEffect } from "react";
@@ -46,7 +50,7 @@ function App() {
     if (window.trackEvent) {
       window.trackEvent("pricing_cta_click", "Navigation");
     }
-    
+
     setTimeout(() => {
       window.location.href = `${STUDENT_APP_URL}${refSessionId ? `/?refSessionId=${refSessionId}` : ""}`;
     }, 200);
@@ -70,7 +74,7 @@ function App() {
       className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-clip transition-opacity duration-500"
       style={{ opacity: mounted ? 1 : 0 }}
     >
-    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={handleOpenApp} />
+      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={handleOpenApp} />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -82,7 +86,7 @@ function App() {
         >
           {currentPage === "home" && (
             <>
-              {/* FIRST VIEWPORT */}
+              {/* ── FIRST VIEWPORT: Hero + Credibility ── */}
               <div className="min-h-screen flex flex-col relative">
                 <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
                   <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
@@ -94,11 +98,40 @@ function App() {
                 </main>
               </div>
 
+              {/* ── STORY FLOW - BELOW THE FOLD ── */}
+
+              {/* Step 1: Student recognises their pain */}
+              <PainSection />
+
+              {/* Step 2: Student understands why prep feels hard */}
+              <WhySelfPrepFails />
+
+              {/* Step 3: Student identifies themselves */}
+              <WhoThisIsFor onOpenPricing={handleOpenApp} />
+
+              {/* Step 4: Simple visual - random vs structured */}
+              <VisualComparison />
+
+              {/* Step 5: The system that solves it */}
               <WorkingProfessionalsSection />
+
+              {/* Step 6: The 6-phase journey */}
+              <JourneySection90Day onOpenPricing={handleOpenApp} />
+
+              {/* Step 7: Features in depth */}
               <GuidedLearningPreview onNavigate={handleNavigate} />
               <SmartSkippingPreview onNavigate={handleNavigate} />
               <FeaturesPreview onNavigate={handleNavigate} />
               <CrossPlatformSection />
+
+              {/* Step 8: Pricing - visible without a modal click */}
+              <HomePricingSection onOpenPricing={handleOpenApp} />
+
+              {/* Step 9: Authentic social proof */}
+
+
+              {/* Step 10: Real objection FAQs */}
+              <HomeFAQSection />
             </>
           )}
 
@@ -120,11 +153,13 @@ function App() {
 
       {/* Sticky Help Button */}
       <StickyHelpButton />
-
     </div>
   );
 }
 
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
 function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -247,7 +282,7 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
             onClick={onOpenPricing}
             className="h-9 px-5 rounded-xl bg-[#5B4DFF] text-white text-[13px] font-semibold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
           >
-            Start Practicing
+            Start Your CAT Journey
           </button>
           {/* Mobile hamburger */}
           <button
@@ -301,7 +336,7 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
               onClick={onOpenPricing}
               className="mt-3 h-11 rounded-xl bg-[#5B4DFF] text-white text-[14px] font-bold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
             >
-              Start Practicing
+              Start Your CAT Journey
             </button>
           </motion.div>
         )}
@@ -310,55 +345,60 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
   );
 }
 
+/* ══════════════════════════════════════════════
+   HERO SECTION
+   Core promise: "Stop deciding. Start preparing."
+══════════════════════════════════════════════ */
 const HERO_FEATURES = [
-  { Icon: BookOpen, title: "Guided Learning", text: "Follow a structured path designed by toppers." },
-  { Icon: Brain, title: "Smart Practice", text: "Practice smart with AI powered insights." },
-  { Icon: TrendingUp, title: "Track Progress", text: "Analyze performance and improve every day." },
-  { Icon: Trophy, title: "Earn Rewards", text: "Get self motivating rewards that keep you going." },
+  { Icon: Calendar, title: "Daily Study Plan", text: "Know exactly what to study every day. Zero confusion." },
+  { Icon: TrendingUp, title: "Smart Practice", text: "Every question you solve makes your next session smarter." },
+  { Icon: Brain, title: "Understand Your Mistakes", text: "Know exactly where you're losing marks - and how to fix it." },
+  { Icon: ShieldCheck, title: "Stay Consistent", text: "Built-in habit tracking keeps you moving - even on hard days." },
 ];
 
 function HeroSection({ onOpenPricing }) {
   return (
     <section className="flex-1 flex items-center relative w-full py-4 lg:py-0">
       <div className="w-full grid lg:grid-cols-[38%_62%] items-center gap-4 lg:gap-6">
-        {/* LEFT CONTENT — centered on mobile */}
+        {/* LEFT CONTENT - centered on mobile */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.75, ease: "easeOut" }}
           className="max-w-[500px] mx-auto lg:mx-0 text-center lg:text-left"
         >
-          {/* Badge */}
+          {/* Trust Badge */}
           <motion.div
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/80 border border-indigo-100/80 shadow-[0_4px_16px_rgba(91,77,255,0.08)] backdrop-blur-sm mb-3"
           >
             <div className="w-5 h-5 rounded-lg bg-indigo-50 flex items-center justify-center">
-              <Trophy size={10} className="text-indigo-500" />
+              <GraduationCap size={10} className="text-indigo-500" />
             </div>
             <span className="text-[10px] sm:text-[10.5px] font-semibold text-slate-600 leading-snug">
-              Built by <span className="font-bold text-[#5B4DFF]">IIM Indore &amp; IIM Ahmedabad</span> Crackers
+              Academic guidance by{" "}
+              <span className="font-bold text-[#5B4DFF]">IIM Ahmedabad &amp; IIM Indore</span> Alumni
             </span>
           </motion.div>
 
-          {/* Headline */}
+          {/* Headline - sells the transformation */}
           <h1 className="text-[26px] sm:text-[34px] xl:text-[46px] font-extrabold leading-[1.08] tracking-[-0.03em] text-slate-900">
-            Everything You Need
+            Stop Deciding
             <br />
-            to Crack CAT.
+            What to Study.
             <br />
             <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">
-              In One Smart App.
+              Start Preparing.
             </span>
           </h1>
 
           {/* Subtext */}
           <p className="mt-2 sm:mt-3 text-[13px] sm:text-[14px] xl:text-[15px] leading-[1.6] text-slate-500 max-w-[420px] mx-auto lg:mx-0">
-            Self-study, done right. Structured paths, daily practice, smart analytics and rewards to help you crack CAT.
+            TestRightNow gives you a daily study plan - so you always know exactly what to learn, practice, and revise. No confusion. No wasted days.
           </p>
 
-          {/* Feature list — hidden on mobile, visible sm+ */}
+          {/* Feature list - visible sm+ */}
           <div className="hidden sm:flex flex-col gap-2 mt-4">
             {HERO_FEATURES.map(({ Icon, title, text }) => (
               <div key={title} className="flex items-center gap-2.5">
@@ -373,18 +413,18 @@ function HeroSection({ onOpenPricing }) {
             ))}
           </div>
 
-          {/* CTA */}
+          {/* Primary CTA */}
           <div className="mt-5 flex justify-center lg:justify-start">
             <button
               onClick={onOpenPricing}
               className="h-12 px-8 rounded-2xl bg-[#5B4DFF] text-white text-[14px] font-bold flex items-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group"
             >
-              Start Your Journey
+              Start Your CAT Journey
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          {/* Hero helper text — subtle contact nudge */}
+          {/* Helper text */}
           <p className="mt-4 text-[11px] text-slate-400 text-center lg:text-left">
             Questions before joining?{" "}
             <a
@@ -397,13 +437,17 @@ function HeroSection({ onOpenPricing }) {
           </p>
         </motion.div>
 
-        {/* RIGHT — PHONE MOCKUP */}
+        {/* RIGHT - PHONE MOCKUP */}
         <PhoneMockup />
       </div>
     </section>
   );
 }
 
+/* ══════════════════════════════════════════════
+   CREDIBILITY SECTION
+   Tells the story, not just states the badge.
+══════════════════════════════════════════════ */
 function CredibilitySection() {
   return (
     <section className="w-full z-30">
@@ -414,23 +458,28 @@ function CredibilitySection() {
         className="bg-[#0B0F19] rounded-[20px] lg:rounded-[24px] px-5 py-5 sm:p-6 lg:px-10 lg:py-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-8 shadow-2xl relative overflow-hidden border border-slate-800/60"
       >
         <div className="absolute top-0 left-0 w-[400px] h-full bg-gradient-to-r from-indigo-500/10 to-transparent pointer-events-none" />
-        <div className="max-w-[460px] relative z-10 text-left">
+
+        <div className="max-w-[480px] relative z-10 text-left">
           <div className="flex items-center gap-2 text-[10px] font-bold tracking-wider text-amber-400/90 uppercase mb-2">
             <Sparkles size={12} className="text-amber-400" />
-            Built by Top CAT Performers
+            Academic Guidance
           </div>
-          <h3 className="text-[17px] sm:text-[20px] lg:text-[26px] font-bold text-white leading-[1.15] tracking-tight">
-            We Cracked CAT Without Coaching. Now We Help You.
+          <h3 className="text-[17px] sm:text-[20px] lg:text-[24px] font-bold text-white leading-[1.2] tracking-tight">
+            Built by People Who Cracked CAT the Same Way You're Trying To.
           </h3>
-          <p className="mt-2 text-[12px] sm:text-[14px] text-slate-400 leading-relaxed font-medium">
-            We know what it takes. Because we've been there.
+          <p className="mt-2 text-[12px] sm:text-[13px] text-slate-400 leading-relaxed font-medium">
+            The academic guidance behind TestRightNow is informed by IIM Ahmedabad and IIM Indore alumni who successfully cracked CAT through disciplined self-preparation - without expensive classroom coaching. This platform is built from that lived experience.
+          </p>
+          <p className="mt-2 text-[10px] text-slate-600 leading-relaxed italic">
+            TestRightNow is an independent platform with no official affiliation with IIM Ahmedabad, IIM Indore, or any IIM.
           </p>
         </div>
+
         <div className="flex items-center gap-3 relative z-10 w-full md:w-auto">
           {["IIM Indore", "IIM Ahmedabad"].map((name) => (
             <div
               key={name}
-              className="flex-1 md:w-[140px] lg:w-[180px] h-[64px] lg:h-[88px] rounded-[14px] overflow-hidden relative group border border-white/5 shadow-lg"
+              className="flex-1 md:w-[140px] lg:w-[175px] h-[70px] lg:h-[90px] rounded-[14px] overflow-hidden relative border border-white/5 shadow-lg"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#1A2342] to-[#0A0E17]" />
               <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
@@ -438,6 +487,7 @@ function CredibilitySection() {
                   <span className="text-white/80 text-[9px] font-bold">IIM</span>
                 </div>
                 <span className="text-white text-[11px] font-bold tracking-wide">{name}</span>
+                <span className="text-slate-500 text-[8px] mt-0.5">Alumni Guided</span>
               </div>
             </div>
           ))}
@@ -447,36 +497,657 @@ function CredibilitySection() {
   );
 }
 
-function WorkingProfessionalsSection() {
+/* ══════════════════════════════════════════════
+   PAIN SECTION
+   Create immediate recognition: "This is me."
+══════════════════════════════════════════════ */
+function PainSection() {
+  const painPoints = [
+    { text: "What should I study today?", delay: 0 },
+    { text: "Am I making progress, or just going through the motions?", delay: 0.07 },
+    { text: "Which mock should I attempt next?", delay: 0.14 },
+    { text: "Should I revise this topic or move forward?", delay: 0.21 },
+    { text: "Am I on track to crack CAT this year?", delay: 0.28 },
+  ];
+
   return (
-    <section className="py-10 lg:py-16 px-4 sm:px-6 lg:px-12">
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-[#F8FAFC] border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10 lg:mb-12">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-indigo-600 bg-indigo-50 rounded-full uppercase tracking-wider mb-3">
+            Does This Sound Familiar?
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Every CAT Aspirant Faces These Questions.
+            <br />
+            <span className="text-[#5B4DFF]">Every. Single. Day.</span>
+          </h2>
+        </div>
+
+        {/* Pain cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {painPoints.map((point, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: point.delay }}
+              className={`bg-white rounded-[18px] border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-5 flex items-start gap-3 ${
+                i === 4 ? "sm:col-span-2 lg:col-span-1" : ""
+              }`}
+            >
+              <div className="w-8 h-8 rounded-xl bg-rose-50 flex items-center justify-center shrink-0 mt-0.5 text-[15px]">
+                🤔
+              </div>
+              <p className="text-[14px] font-semibold text-slate-700 leading-snug">
+                &ldquo;{point.text}&rdquo;
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bridge */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="text-center"
+        >
+          <div className="inline-block bg-white rounded-2xl border border-indigo-100 shadow-[0_4px_24px_rgba(91,77,255,0.08)] px-6 py-4 max-w-xl">
+            <p className="text-[14px] text-slate-600 leading-relaxed">
+              This confusion doesn&apos;t mean you&apos;re unprepared.
+              <br className="hidden sm:block" />
+              It means you don&apos;t have a system yet.{" "}
+              <span className="font-bold text-[#5B4DFF]">TestRightNow is that system.</span>
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   WHY SELF-PREP FAILS
+   You have the content. You're missing the structure.
+══════════════════════════════════════════════ */
+function WhySelfPrepFails() {
+  const haveItems = [
+    "YouTube lectures",
+    "Telegram study groups",
+    "PDFs and notes",
+    "ChatGPT for doubts",
+    "Free practice papers",
+    "Previous year questions",
+  ];
+
+  const missingItems = [
+    "A daily study plan - ready every morning",
+    "A structured revision schedule",
+    "Clarity on what to prioritise first",
+    "A way to know if you're actually improving",
+    "Guidance on what to do after every mock",
+    "A clear next step - every single day",
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-white border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider mb-3">
+            Why Most CAT Prep Feels Overwhelming
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            You Already Have Everything.
+            <br />
+            <span className="text-[#5B4DFF]">Except a Plan.</span>
+          </h2>
+          <p className="mt-3 text-[14px] text-slate-500 max-w-[520px] mx-auto leading-relaxed">
+            The internet has more than enough CAT content. The real problem is that nobody tells you how to use it - in the right order, at the right time.
+          </p>
+        </div>
+
+        {/* Two-column comparison */}
+        <div className="grid lg:grid-cols-2 gap-5 lg:gap-6 mb-6">
+          {/* What you have */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
+            className="bg-[#F8FAFC] rounded-[20px] border border-slate-200/80 p-6 lg:p-8"
+          >
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="w-7 h-7 rounded-lg bg-slate-200/80 flex items-center justify-center">
+                <Check size={13} className="text-slate-500" />
+              </div>
+              <h3 className="text-[15px] font-bold text-slate-600">What you already have</h3>
+            </div>
+            <div className="flex flex-col gap-3">
+              {haveItems.map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <CheckCircle2 size={15} className="text-slate-400 shrink-0" />
+                  <span className="text-[13px] text-slate-500 font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* What's missing */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white rounded-[20px] border-2 border-[#5B4DFF]/15 p-6 lg:p-8 shadow-[0_4px_30px_rgba(91,77,255,0.07)]"
+          >
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="w-7 h-7 rounded-lg bg-rose-50 flex items-center justify-center">
+                <X size={13} className="text-rose-500" />
+              </div>
+              <h3 className="text-[15px] font-bold text-slate-900">What&apos;s actually missing</h3>
+            </div>
+            <div className="flex flex-col gap-3">
+              {missingItems.map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <div className="w-4 h-4 rounded-full border-2 border-rose-300 flex items-center justify-center shrink-0">
+                    <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                  </div>
+                  <span className="text-[13px] text-slate-700 font-semibold">{item}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bridge banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-[#5B4DFF] rounded-[18px] px-6 py-5 text-center"
+        >
+          <p className="text-[15px] font-bold text-white leading-relaxed">
+            The problem is not lack of content.{" "}
+            <span className="text-indigo-200">
+              TestRightNow was built to give you exactly what is missing - a structured daily preparation system.
+            </span>
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   WHO THIS IS FOR
+   Immediate audience identification.
+══════════════════════════════════════════════ */
+function WhoThisIsFor({ onOpenPricing }) {
+  const audiences = [
+    {
+      emoji: "🎓",
+      title: "Final Year Students",
+      desc: "Preparing alongside academics. Need a structured plan that fits into a busy schedule without overwhelm.",
+    },
+    {
+      emoji: "💼",
+      title: "Working Professionals",
+      desc: "1–2 focused hours a day is enough. The system adapts to your pace - no batch timings, no missed classes.",
+    },
+    {
+      emoji: "🔰",
+      title: "First-Time CAT Aspirants",
+      desc: "Starting from scratch. The guided path takes you from basics to exam-ready - step by step, no gaps.",
+    },
+    {
+      emoji: "📚",
+      title: "Self-Preparing Candidates",
+      desc: "Already studying on your own. Get the daily structure and revision system you've been missing.",
+    },
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gradient-to-b from-[#F8FAFC] to-white border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 rounded-full uppercase tracking-wider mb-3">
+            Who This Is For
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            TestRightNow Is Built for You
+            <br />
+            <span className="text-[#5B4DFF]">If You Are Serious About CAT.</span>
+          </h2>
+        </div>
+
+        {/* Audience cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {audiences.map((audience, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="bg-white rounded-[20px] border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col gap-3 hover:shadow-[0_8px_30px_rgba(91,77,255,0.08)] hover:border-indigo-100 transition-all duration-300"
+            >
+              <div className="text-[30px] leading-none">{audience.emoji}</div>
+              <h3 className="text-[14px] font-bold text-slate-900 leading-snug">{audience.title}</h3>
+              <p className="text-[12px] text-slate-500 leading-relaxed">{audience.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <p className="text-[13px] text-slate-500 mb-4">
+            Regardless of where you are in your preparation journey - TestRightNow gives you a clear next step.
+          </p>
+          <button
+            onClick={onOpenPricing}
+            className="inline-flex items-center gap-2 h-11 px-7 rounded-2xl bg-[#5B4DFF] text-white text-[13px] font-bold shadow-[0_6px_20px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group"
+          >
+            Start Your CAT Journey
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   VISUAL COMPARISON
+   Random prep vs. a structured system - simple, clean.
+══════════════════════════════════════════════ */
+function VisualComparison() {
+  const randomPrep = [
+    "Random YouTube videos",
+    "Random PDFs and notes",
+    "Random mock tests",
+    "No revision plan",
+    "No clear next step",
+  ];
+
+  const structured = [
+    "Today's study task - ready on login",
+    "Focused, purposeful practice",
+    "Mock test with actionable analysis",
+    "Automatic revision scheduling",
+    "Clear next step - every single day",
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-white border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-indigo-600 bg-indigo-50 rounded-full uppercase tracking-wider mb-3">
+            The Difference
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Random Preparation vs.
+            <br />
+            <span className="text-[#5B4DFF]">A Structured System</span>
+          </h2>
+        </div>
+
+        {/* Comparison grid */}
+        <div className="grid lg:grid-cols-[1fr_64px_1fr] gap-4 lg:gap-0 items-stretch max-w-3xl mx-auto">
+          {/* Random Prep */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
+            className="bg-slate-50 rounded-[20px] border border-slate-200/80 p-6 lg:p-8 lg:rounded-r-none lg:border-r-0"
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-2.5 h-2.5 rounded-full bg-rose-400 shrink-0" />
+              <h3 className="text-[12px] font-bold text-slate-500 uppercase tracking-wider">Random Preparation</h3>
+            </div>
+            <div className="flex flex-col gap-3 mb-6">
+              {randomPrep.map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
+                  <span className="text-[13px] text-slate-500">{item}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-4 border-t border-slate-200">
+              <span className="text-[15px] font-bold text-rose-500">→ Confusion &amp; Frustration</span>
+            </div>
+          </motion.div>
+
+          {/* VS divider */}
+          <div className="hidden lg:flex items-center justify-center bg-white border-y border-slate-200/80 z-10">
+            <div className="w-10 h-10 rounded-full bg-indigo-50 border-2 border-indigo-100 flex items-center justify-center shadow-sm">
+              <span className="text-[11px] font-black text-[#5B4DFF]">VS</span>
+            </div>
+          </div>
+
+          {/* TestRightNow */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white rounded-[20px] border-2 border-[#5B4DFF]/20 p-6 lg:p-8 shadow-[0_8px_30px_rgba(91,77,255,0.10)] lg:rounded-l-none"
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#5B4DFF] shrink-0" />
+              <h3 className="text-[12px] font-bold text-[#5B4DFF] uppercase tracking-wider">TestRightNow</h3>
+            </div>
+            <div className="flex flex-col gap-3 mb-6">
+              {structured.map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <CheckCircle2 size={14} className="text-[#5B4DFF] shrink-0" />
+                  <span className="text-[13px] font-semibold text-slate-700">{item}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-4 border-t border-indigo-100">
+              <span className="text-[15px] font-bold text-[#5B4DFF]">→ Clarity &amp; Confidence</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   WORKING PROFESSIONALS / THE SYSTEM SECTION
+   Rewritten: solution-focused, not sympathy-focused.
+══════════════════════════════════════════════ */
+function WorkingProfessionalsSection() {
+  const systemCards = [
+    {
+      icon: <Calendar size={20} />,
+      title: "Your Daily Study Plan - Ready Every Day",
+      sub: "Log in every morning. See exactly what to study. No planning. No confusion. Just follow the plan.",
+    },
+    {
+      icon: <RefreshCw size={20} />,
+      title: "Revision - Automatically Scheduled",
+      sub: "The system schedules revision for you at exactly the right time. Nothing falls through the cracks.",
+    },
+    {
+      icon: <BarChart2 size={20} />,
+      title: "After Every Mock - Know What to Fix",
+      sub: "Go beyond a percentile. Understand exactly where you're losing marks and get a targeted improvement plan.",
+    },
+    {
+      icon: <TrendingUp size={20} />,
+      title: "Track Real Progress Every Week",
+      sub: "See clearly whether you're improving - and know precisely what needs to change.",
+    },
+  ];
+
+  return (
+    <section className="py-10 lg:py-16 px-4 sm:px-6 lg:px-12 bg-[#F8FAFC] border-t border-slate-100">
       <div className="max-w-[1280px] mx-auto">
         <div className="bg-white rounded-[24px] lg:rounded-[28px] p-5 sm:p-6 lg:p-10 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[200px] bg-indigo-50/60 rounded-full blur-3xl pointer-events-none" />
+
           <div className="text-center relative z-10 mb-6 lg:mb-8">
+            <span className="inline-block px-3 py-1 text-[11px] font-bold text-indigo-600 bg-indigo-50 rounded-full uppercase tracking-wider mb-3">
+              The TestRightNow System
+            </span>
             <h2 className="text-[20px] sm:text-[24px] lg:text-[30px] font-bold text-slate-900 tracking-tight leading-[1.2]">
-              Not Everyone Has Time for Full-Time Coaching.
-              <br className="hidden sm:block" /> <span className="text-[#5B4DFF]">Come with us.</span>
+              You Don&apos;t Need More Resources.
+              <br className="hidden sm:block" />
+              <span className="text-[#5B4DFF]">You Need a System That Uses Them.</span>
             </h2>
-            <p className="mt-2 text-[13px] lg:text-[15px] text-slate-500 font-medium max-w-[480px] mx-auto">
-              We'll guide you. You just need a few hours a day and the consistency.
+            <p className="mt-2 text-[13px] lg:text-[15px] text-slate-500 font-medium max-w-[540px] mx-auto leading-relaxed">
+              Most CAT aspirants already have enough content. What they&apos;re missing is a daily plan that tells them exactly where to start, what to practice, and what to revise.
             </p>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 relative z-10">
-            {[
-              { icon: <Briefcase size={20} />, title: "Working or busy?", sub: "We get it." },
-              { icon: <Clock size={20} />, title: "No time for coaching?", sub: "We guide you." },
-              { icon: <Calendar size={20} />, title: "Spend a few hours comfortably.", sub: null },
-              { icon: <ShieldCheck size={20} />, title: "Be consistent,", sub: "we'll take care of the rest." },
-            ].map(({ icon, title, sub }, i) => (
-              <div key={i} className="flex items-start gap-4">
+            {systemCards.map(({ icon, title, sub }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="flex items-start gap-4"
+              >
                 <div className="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                   {icon}
                 </div>
                 <div className="pt-0.5 text-left">
                   <p className="text-[14px] font-bold text-slate-900 leading-snug">{title}</p>
-                  {sub && <p className="text-[13px] text-slate-500 mt-0.5">{sub}</p>}
+                  <p className="text-[12px] text-slate-500 mt-1 leading-relaxed">{sub}</p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   YOUR 6-PHASE PREPARATION JOURNEY
+   Based on the actual product architecture:
+   6 Phases → 10 Milestones → Sessions → Activities
+══════════════════════════════════════════════ */
+function JourneySection90Day({ onOpenPricing }) {
+  const stages = [
+    {
+      num: "Phase 1",
+      title: "Foundation Builder",
+      desc: "Build your first layer of concepts. Start with the fundamentals across all three sections - no overwhelm, no gaps.",
+      color: "border-indigo-200 bg-indigo-50/80 text-indigo-800",
+      tag: "Where every student starts",
+    },
+    {
+      num: "Phase 2",
+      title: "Core Foundation",
+      desc: "Go deeper. Master the essential concepts across Quant, VARC, and DILR in the right order, session by session.",
+      color: "border-violet-200 bg-violet-50/80 text-violet-800",
+      tag: "Concepts + practice, mixed daily",
+    },
+    {
+      num: "Phase 3",
+      title: "Skill Development",
+      desc: "Apply your knowledge to real CAT-level questions. Build speed, accuracy, and sectional confidence.",
+      color: "border-purple-200 bg-purple-50/80 text-purple-800",
+      tag: "CAT application begins",
+    },
+    {
+      num: "Phase 4",
+      title: "Competitive Builder",
+      desc: "Raise your level. Practice under time pressure. Build exam instincts and learn to identify time traps instantly.",
+      color: "border-blue-200 bg-blue-50/80 text-blue-800",
+      tag: "Speed + strategy training",
+    },
+    {
+      num: "Phase 5",
+      title: "Performance Mastery",
+      desc: "Full mock tests. Deep analysis after every attempt. Know exactly what to fix and how to fix it.",
+      color: "border-teal-200 bg-teal-50/80 text-teal-800",
+      tag: "Mocks + targeted improvement",
+    },
+    {
+      num: "Phase 6",
+      title: "CAT Readiness",
+      desc: "Walk into CAT with a complete plan, full preparation, and real confidence. No last-minute confusion.",
+      color: "border-emerald-200 bg-emerald-50/80 text-emerald-800",
+      tag: "Exam day ready",
+    },
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-white border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10 lg:mb-14">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider mb-3">
+            Your Structured CAT Path
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Your Journey is Already Planned.
+            <br />
+            <span className="text-[#5B4DFF]">6 Phases. Every Day Mapped.</span>
+          </h2>
+          <p className="mt-3 text-[14px] text-slate-500 max-w-[540px] mx-auto leading-relaxed">
+            TestRightNow is built on 6 transformation phases. Each phase has milestones. Each milestone has daily sessions. Each session has intentionally designed activities. You just follow today&apos;s plan.
+          </p>
+        </div>
+
+        {/* Phase → Milestone → Session → Activity hierarchy label */}
+        <div className="flex items-center justify-center gap-2 mb-8 flex-wrap">
+          {["6 Phases", "→", "10 Milestones", "→", "Daily Sessions", "→", "Activities"].map((item, i) => (
+            item === "→"
+              ? <span key={i} className="text-slate-300 font-bold text-[13px]">→</span>
+              : <span key={i} className={`px-3 py-1 rounded-full text-[11px] font-bold ${i === 0 ? "bg-[#5B4DFF] text-white" : "bg-slate-100 text-slate-600"}`}>{item}</span>
+          ))}
+        </div>
+
+        {/* 6-Phase cards - 2×3 on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          {stages.map((stage, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className={`relative flex flex-col p-5 rounded-[18px] border-2 ${stage.color}`}
+            >
+              <span className="text-[10px] font-black uppercase tracking-widest opacity-50 mb-2">{stage.num}</span>
+              <h4 className="text-[16px] font-extrabold leading-tight mb-2">{stage.title}</h4>
+              <p className="text-[12px] opacity-75 leading-relaxed flex-1">{stage.desc}</p>
+              <span className="mt-3 text-[10px] font-bold opacity-60 border border-current/30 rounded-full px-2.5 py-0.5 self-start">
+                {stage.tag}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Architecture note - the intentional daily mix */}
+        <div className="bg-[#F8FAFC] rounded-[18px] border border-slate-100 px-6 py-5 text-center mb-8">
+          <p className="text-[13px] text-slate-600 leading-relaxed">
+            <span className="font-bold text-slate-900">Every session is intentionally mixed.</span>{" "}
+            Each day you learn new concepts, practise questions, revise previous topics, and apply skills - in the right combination. You never study one subject for weeks straight.
+          </p>
+        </div>
+
+        <div className="text-center">
+          <p className="text-[13px] text-slate-500 mb-4">
+            The system decides the order. You just follow the plan - every day.
+          </p>
+          <button
+            onClick={onOpenPricing}
+            className="inline-flex items-center gap-2 h-11 px-7 rounded-2xl bg-[#5B4DFF] text-white text-[13px] font-bold shadow-[0_6px_20px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] hover:scale-[1.02] active:scale-[0.98] transition-all group"
+          >
+            Begin Your Preparation
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   HOMEPAGE PRICING SECTION
+   Visible without a modal - ₹1,499 → ₹1,000.
+══════════════════════════════════════════════ */
+function HomePricingSection({ onOpenPricing }) {
+  const included = [
+    "Know exactly what to study every single day",
+    "Automatic revision scheduling - nothing falls through",
+    "Understand every mock result in depth",
+    "Practice with purpose, not randomly",
+    "Track your improvement week by week",
+    "Complete guided learning journey - all milestones",
+    "All future CAT 2026 content updates included",
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-[#F8FAFC] border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-indigo-600 bg-indigo-50 rounded-full uppercase tracking-wider mb-3">
+            CAT 2026 Enrollment
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Complete Preparation.
+            <br />
+            <span className="text-[#5B4DFF]">One Honest Price.</span>
+          </h2>
+          <p className="mt-3 text-[14px] text-slate-500">
+            No subscriptions. No hidden fees. No coaching institute markup.
+          </p>
+        </div>
+
+        {/* Pricing card */}
+        <div className="max-w-2xl mx-auto bg-white rounded-[28px] border-2 border-[#5B4DFF]/15 shadow-[0_8px_40px_rgba(91,77,255,0.10)] p-6 sm:p-8 lg:p-10">
+          {/* Price display */}
+          <div className="text-center mb-6 pb-6 border-b border-slate-100">
+            <div className="flex items-baseline justify-center gap-3 mb-1">
+              <span className="text-[20px] text-slate-400 line-through font-semibold">₹1,499</span>
+              <span className="text-[44px] sm:text-[52px] font-extrabold text-slate-900 leading-none">₹1,000</span>
+            </div>
+            <p className="text-[12px] font-semibold text-slate-500 mt-1">
+              Current CAT 2026 Enrollment Pricing &nbsp;·&nbsp; One-Time Payment
+            </p>
+            <div className="mt-3 inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2">
+              <div className="w-2 h-2 rounded-full bg-[#5B4DFF] animate-pulse shrink-0" />
+              <span className="text-[11px] font-bold text-[#5B4DFF]">
+                Instead of ₹30,000–₹80,000 in coaching fees
+              </span>
+            </div>
+          </div>
+
+          {/* What's included */}
+          <div className="mb-6">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">What&apos;s Included</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {included.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <Check size={13} className="text-[#5B4DFF] mt-0.5 shrink-0" strokeWidth={2.5} />
+                  <span className="text-[12px] text-slate-700 font-medium leading-snug">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <button
+            onClick={onOpenPricing}
+            className="w-full py-3.5 rounded-2xl bg-[#5B4DFF] text-white text-[15px] font-bold flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(91,77,255,0.30)] hover:bg-[#4F42F0] hover:scale-[1.01] active:scale-[0.99] transition-all group"
+          >
+            Start Your CAT Journey
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+          <p className="text-center text-[11px] text-slate-400 mt-3">
+            Start free to explore. Upgrade whenever you&apos;re ready.
+          </p>
+
+          {/* Trust badges */}
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-5 pt-4 border-t border-slate-100">
+            {[
+              { icon: ShieldCheck, text: "Secure Payment" },
+              { icon: Clock, text: "One-Time Payment" },
+              { icon: Check, text: "No Hidden Charges" },
+              { icon: GraduationCap, text: "Built by IIM Alumni" },
+            ].map(({ icon: Icon, text }, i) => (
+              <div key={i} className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
+                <Icon size={12} className="text-[#5B4DFF]" strokeWidth={2.5} />
+                <span>{text}</span>
               </div>
             ))}
           </div>
@@ -486,6 +1157,118 @@ function WorkingProfessionalsSection() {
   );
 }
 
+
+
+/* ══════════════════════════════════════════════
+   HOMEPAGE FAQ SECTION
+   Real conversion objections - not product docs.
+══════════════════════════════════════════════ */
+function HomeFAQSection() {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    {
+      q: "I already watch YouTube. Why do I need TESTRIGHTNOW?",
+      a: "YouTube gives content. TESTRIGHTNOW gives a complete preparation system. The student never has to decide what to study next.",
+    },
+    {
+      q: "Can I prepare without joining expensive coaching?",
+      a: "Yes. The platform is designed specifically for students and working professionals who prefer disciplined self-preparation instead of classroom coaching.",
+    },
+    {
+      q: "I'm a complete beginner. Can I still start?",
+      a: "Yes. The six-phase guided journey starts from fundamentals and gradually progresses to CAT-level preparation.",
+    },
+    {
+      q: "I work full-time. Will I get enough time?",
+      a: "Yes. Every session is designed as a manageable daily mission so students can make consistent progress without studying the entire day.",
+    },
+    {
+      q: "Will I have to decide what to study every day?",
+      a: "No. Every day's preparation has already been planned. Simply complete today's session and return tomorrow.",
+    },
+    {
+      q: "Is this just another collection of videos, notes and PDFs?",
+      a: "No. TESTRIGHTNOW is a structured preparation system that combines learning, practice, revision, previous-year questions and mock-based improvement into one guided daily journey.",
+    },
+    {
+      q: "Why is the complete program only ₹1000?",
+      a: "Because quality CAT preparation should be affordable. Our goal is to make structured preparation accessible to students and working professionals instead of charging coaching-level prices.",
+    },
+    {
+      q: "What if I don't know where to begin?",
+      a: "That's exactly why TESTRIGHTNOW exists. Open today's session. We'll guide you through the rest.",
+    },
+  ];
+
+  return (
+    <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-12 bg-[#F8FAFC] border-t border-slate-100">
+      <div className="max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 text-[11px] font-bold text-slate-600 bg-white border border-slate-200 rounded-full uppercase tracking-wider mb-3">
+            Questions Worth Asking
+          </span>
+          <h2 className="text-[22px] sm:text-[28px] lg:text-[34px] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            You&apos;re Probably Wondering...
+          </h2>
+        </div>
+
+        {/* FAQ accordion */}
+        <div className="max-w-3xl mx-auto space-y-3">
+          {faqs.map((faq, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.4, delay: idx * 0.04 }}
+                className="bg-white rounded-[16px] border border-slate-200/80 overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
+              >
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : idx)}
+                  className="w-full flex items-center justify-between p-5 text-left text-[14px] font-bold text-slate-900 hover:text-[#5B4DFF] transition-colors"
+                  aria-expanded={isOpen}
+                >
+                  <span>{faq.q}</span>
+                  <div
+                    className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ml-4 transition-all duration-200 ${
+                      isOpen
+                        ? "bg-indigo-50 border-indigo-100 text-[#5B4DFF]"
+                        : "bg-slate-50 border-slate-200 text-slate-400"
+                    }`}
+                  >
+                    {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </div>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="px-5 pb-5 pt-1 text-[13px] text-slate-600 leading-relaxed border-t border-slate-50">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER - unchanged
+══════════════════════════════════════════════ */
 function Footer({ setCurrentPage }) {
   const handleNav = (page) => {
     setCurrentPage(page);
@@ -518,9 +1301,9 @@ function Footer({ setCurrentPage }) {
     },
   ];
 
-  const CONTACT_PHONE = '+919400325294';
-  const CONTACT_PHONE_DISPLAY = '+91 9400325294';
-  const CONTACT_EMAIL = 'testrightnow.edu@gmail.com';
+  const CONTACT_PHONE = "+919400325294";
+  const CONTACT_PHONE_DISPLAY = "+91 9400325294";
+  const CONTACT_EMAIL = "testrightnow.edu@gmail.com";
 
   return (
     <footer className="bg-[#070B14] pt-8 lg:pt-10 pb-6 px-4 sm:px-6 lg:px-12 border-t border-white/5 z-40 relative">
@@ -581,7 +1364,7 @@ function Footer({ setCurrentPage }) {
                 className="flex items-start gap-2.5 group"
               >
                 <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0 group-hover:bg-indigo-100 transition-colors">
-                  <Mail size={14} className="text-[#5B4DFF] mt-0.5 shrink-0" />
+                  <Mail size={14} className="text-[#5B4DFF]" />
                 </div>
                 <div>
                   <p className="text-[10px] text-slate-500 font-semibold leading-none mb-0.5">Email</p>
@@ -611,16 +1394,7 @@ function Footer({ setCurrentPage }) {
               href="#"
               className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-slate-400 hover:text-white"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />

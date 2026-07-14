@@ -154,7 +154,7 @@ export default function JourneySection() {
               </div>
             </div>
 
-            {/* ══ RIGHT — STAIRCASE JOURNEY ════════════════════════ */}
+            {/* ══ RIGHT - STAIRCASE JOURNEY ════════════════════════ */}
             <div className="relative overflow-hidden min-h-[440px] lg:min-h-[500px]">
 
               {/* Background gradient */}
