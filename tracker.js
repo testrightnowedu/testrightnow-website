@@ -1,7 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
 // Firebase Config (TestRightNow project)
 const firebaseConfig = {
   apiKey: "AIzaSyB2oCVNej7VAU4RYOAibOmB9tvjJOUwTJA",
@@ -12,22 +8,52 @@ const firebaseConfig = {
   appId: "1:886273790862:web:308ed4030f157f7e9b4adf",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+let app, db, auth, setDoc, doc, serverTimestamp, getDoc, onAuthStateChanged;
 
 // --- 1. Bot Filtering ---
 const BOT_REGEX = /GoogleBot|BingBot|Ahrefs|Semrush|YandexBot|DuckDuckBot|Crawler|Spider/i;
-if (BOT_REGEX.test(navigator.userAgent)) {
-  console.log("[Analytics] Bot detected. Tracking disabled.");
-} else {
+
+async function bootstrapAnalytics() {
+  if (BOT_REGEX.test(navigator.userAgent)) {
+    console.log("[Analytics] Bot detected. Tracking disabled.");
+    return;
+  }
+
   try {
+    const [appMod, firestoreMod, authMod] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"),
+      import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js")
+    ]);
+
+    app = appMod.initializeApp(firebaseConfig);
+    db = firestoreMod.getFirestore(app);
+    auth = authMod.getAuth(app);
+    doc = firestoreMod.doc;
+    setDoc = firestoreMod.setDoc;
+    serverTimestamp = firestoreMod.serverTimestamp;
+    getDoc = firestoreMod.getDoc;
+    onAuthStateChanged = authMod.onAuthStateChanged;
+
     initTracker();
   } catch (e) {
-    console.error("[Analytics] Core analytics initialization failed, bypassing to prevent app impact:", e);
+    console.error("[Analytics] Core analytics initialization failed:", e);
   }
 }
+
+const idleCallback = window.requestIdleCallback || function(cb) {
+  const start = Date.now();
+  return setTimeout(function() {
+    cb({
+      didTimeout: false,
+      timeRemaining: function() { return Math.max(0, 50 - (Date.now() - start)); }
+    });
+  }, 1);
+};
+
+idleCallback(() => {
+  bootstrapAnalytics();
+}, { timeout: 2000 });
 
 function initTracker() {
   // --- 1.5. Internal Traffic Filtering ---
