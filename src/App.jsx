@@ -33,13 +33,24 @@ import {
   CollegesPage,
   FinalPremiumCTA,
 } from "./components/ExtendedSections";
-import PricingModal from "./components/PricingModal";
+
 import StickyHelpButton from "./components/StickyHelpButton";
+import { STUDENT_APP_URL } from "./constants";
 
 function App() {
   const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
-  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
+
+  const handleOpenApp = () => {
+    const refSessionId = localStorage.getItem("tr_session_id") || "";
+    if (window.trackEvent) {
+      window.trackEvent("pricing_cta_click", "Navigation");
+    }
+    
+    setTimeout(() => {
+      window.location.href = `${STUDENT_APP_URL}${refSessionId ? `/?refSessionId=${refSessionId}` : ""}`;
+    }, 200);
+  };
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setMounted(true));
@@ -59,7 +70,7 @@ function App() {
       className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-clip transition-opacity duration-500"
       style={{ opacity: mounted ? 1 : 0 }}
     >
-    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={() => setIsPricingModalOpen(true)} />
+    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={handleOpenApp} />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -78,7 +89,7 @@ function App() {
                   <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
                 </div>
                 <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-[100px] lg:pt-[140px] pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
-                  <HeroSection onNavigate={handleNavigate} onOpenPricing={() => setIsPricingModalOpen(true)} />
+                  <HeroSection onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
                   <CredibilitySection />
                 </main>
               </div>
@@ -101,7 +112,7 @@ function App() {
           {currentPage === "colleges" && <CollegesPage />}
 
           {/* Render Premium CTA on all views */}
-          <FinalPremiumCTA onNavigate={handleNavigate} onOpenPricing={() => setIsPricingModalOpen(true)} />
+          <FinalPremiumCTA onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
         </motion.div>
       </AnimatePresence>
 
@@ -110,11 +121,6 @@ function App() {
       {/* Sticky Help Button */}
       <StickyHelpButton />
 
-      <AnimatePresence>
-        {isPricingModalOpen && (
-          <PricingModal isOpen={isPricingModalOpen} onClose={() => setIsPricingModalOpen(false)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
