@@ -1335,115 +1335,170 @@ export function FeaturesPage() {
   const features = [
     {
       title: "Guided Learning",
-      headline: "The system always knows your exact next study action.",
-      purpose: "Provide a direct, step-by-step roadmap from foundations to advanced concept levels.",
-      problem: "Aspirants spend hours planning study calendars, facing heavy decision fatigue.",
-      works: "Algorithmically sequences topics and daily sections based on user accuracy.",
-      benefit: "Eliminates strategist overhead so students focus 100% on learning.",
+      headline: "Never wonder what to study tomorrow.",
+      purpose: "Provides a clear roadmap from foundation to CAT readiness.",
+      problem: "Aspirants waste hours planning study schedules instead of actually studying.",
+      works: "Our algorithm automatically prepares tomorrow's mission based on how you performed today.",
+      benefit: "You focus 100% on learning. We handle the strategy.",
+      customRender: () => (
+        <div className="pt-4 border-t border-slate-900 space-y-5">
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Every day combines concept learning, practice, revision, previous-year questions and CAT application into one guided learning session. You simply complete today's mission, and the system prepares tomorrow.
+          </p>
+          
+          <div className="space-y-2">
+            <span className="text-[9px] font-black uppercase text-[#9B8FFF] tracking-wider block mb-3">The Daily Guided Flow</span>
+            
+            <div className="flex flex-col gap-1.5 pl-2 relative">
+              <div className="absolute left-[13px] top-4 bottom-4 w-px bg-gradient-to-b from-[#5B4DFF]/50 via-purple-500/30 to-[#5B4DFF]/50 animate-dashMove" style={{ strokeDasharray: "4, 4" }}></div>
+              
+              {[
+                { step: "Today's Session", color: "text-white bg-[#5B4DFF]" },
+                { step: "Learn Concepts", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Practice Questions", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Revision", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Previous Year Questions", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Mixed CAT Challenge", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Performance Updated", color: "text-slate-300 bg-slate-800 border border-slate-700" },
+                { step: "Tomorrow's Session", color: "text-white bg-emerald-500" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 relative z-10">
+                  <div className={`w-2.5 h-2.5 rounded-full ${item.color} shadow-sm shadow-black/20`} />
+                  <span className={`text-[11px] sm:text-xs font-bold ${i === 0 || i === 7 ? "text-white" : "text-slate-400"}`}>
+                    {item.step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
     },
     {
       title: "Topic Tests",
-      headline: "Isolate conceptual gaps at the most granular level possible.",
-      purpose: "Target specific, granular concept subdivisions for direct testing.",
-      problem: "Traditional books have massive mixed exercises that hide specific concept errors.",
-      works: "Generates custom 10-15 minute quizzes targeting specific sub-rules (e.g. Compound Interest ratios).",
-      benefit: "Fortifies core arithmetic fundamentals before moving to complex formulas.",
+      headline: "Fix conceptual gaps before they become habits.",
+      purpose: "Target specific, granular concepts for direct practice.",
+      problem: "Massive mixed exercises hide exactly where you are losing marks.",
+      works: "Generates custom, focused quizzes targeting very specific sub-topics.",
+      benefit: "Fortifies your core fundamentals before you move to complex applications.",
     },
     {
       title: "Section Tests",
-      headline: "Master individual slots without full mock exhaustion.",
-      purpose: "Simulate individual exam slots (Quant, VARC, or DILR) under strict timing envelopes.",
-      problem: "Full 2-hour mock tests are draining, making routine segment diagnostics difficult.",
-      works: "Provides dedicated 40-minute slot tests mapping exact section compositions.",
-      benefit: "Allows routine diagnostics without mock exam exhaustion.",
+      headline: "Master section timing without the exhaustion of a full mock.",
+      purpose: "Simulate individual exam slots under strict time limits.",
+      problem: "Taking full 2-hour mocks every day leads to burnout and fatigue.",
+      works: "Provides dedicated 40-minute slot tests that mirror exact section patterns.",
+      benefit: "Allows routine, focused diagnostics without draining your energy.",
     },
     {
       title: "Mock Tests",
-      headline: "Full exam conditions to lock in strategic confidence.",
-      purpose: "Provide slot simulations mimicking national CAT test patterns.",
-      problem: "Unpredictable slot schedules can trigger exam anxiety and time allocation errors.",
-      works: "Simulates full slot boundaries, compiling multi-layered diagnostic reports.",
-      benefit: "Conditions student stamina and verifies overall preparation status.",
+      headline: "Condition your exam stamina and lock in confidence.",
+      purpose: "Provide full-length simulations mimicking national CAT test patterns.",
+      problem: "Unpredictable exam conditions trigger anxiety and poor time management.",
+      works: "Simulates full exam boundaries with deep, multi-layered performance reports.",
+      benefit: "Builds exam stamina and verifies your overall readiness.",
     },
     {
       title: "Performance Analytics",
-      headline: "Deep strategic diagnostics built to expose pacing leaks.",
-      purpose: "Deliver direct diagnostics outlining conceptual accuracy and pace metrics.",
-      problem: "Standard scorecards only show total marks, obscuring conceptual error patterns.",
-      works: "Evaluates time allocation charts and maps errors to specific syllabus sections.",
-      benefit: "Exposes exact strategic blocks hindering score progression.",
+      headline: "Expose exactly where you are losing time and marks.",
+      purpose: "Deliver clear insights outlining your conceptual accuracy and speed.",
+      problem: "Standard scorecards only show total marks, hiding the real reasons behind a low score.",
+      works: "Evaluates your time allocation and maps errors directly to syllabus sections.",
+      benefit: "Identifies the exact strategic blocks that are hindering your percentile.",
     },
     {
       title: "Revision Engine",
-      headline: "Protect hard-earned concepts from memory decay cycles.",
-      purpose: "Protect memory retention using spaced repetition schedules.",
-      problem: "Students study new topics while completely forgetting previous concepts.",
-      works: "Triggers spaced review intervals automatically whenever memory thresholds decline.",
-      benefit: "Protects concepts from memory decay, locking rules into long-term memory.",
+      headline: "Revise concepts right before you forget them.",
+      purpose: "Protect your memory retention using spaced repetition.",
+      problem: "Students study new topics while completely forgetting the ones they learned last month.",
+      works: "Automatically schedules review intervals just as your memory of a concept begins to fade.",
+      benefit: "Locks formulas and rules into your long-term memory permanently.",
     },
     {
       title: "Adaptive Reinforcement",
-      headline: "Practicing complexity that adjusts dynamically to your skill.",
-      purpose: "Automatically customize practicing difficulty parameters in real-time.",
-      problem: "Static exercises are either demoralizingly difficult or boringly easy.",
-      works: "Increases difficulty iteratively as your answers stabilize, scaling down when error spikes occur.",
-      benefit: "Maintains optimal learning flow, reinforcing baseline rules before climbing.",
+      headline: "Practice at the exact difficulty level you need right now.",
+      purpose: "Customize practice difficulty in real-time based on your current skill.",
+      problem: "Static books are either demoralizingly difficult or boringly easy.",
+      works: "Increases difficulty as you improve, and steps back if you start making mistakes.",
+      benefit: "Keeps you in the perfect learning zone, reinforcing basics before climbing higher.",
     },
     {
       title: "Progress Tracking",
-      headline: "Your entire strategically coordinated pathway, visual and clear.",
-      purpose: "Visualize overall syllabus completion and phase benchmarks.",
-      problem: "Aspirants study blindly, unsure if they are close to syllabus mastery.",
-      works: "Compiles a live roadmap tracking finished activities and next milestone requirements.",
-      benefit: "Creates strong motivation loops through clear strategic visibility.",
+      headline: "Always know exactly how close you are to finishing.",
+      purpose: "Visualize your entire syllabus journey and phase benchmarks.",
+      problem: "Aspirants study blindly, unsure if they are actually making meaningful progress.",
+      works: "Maintains a live map of your finished activities and your next milestone.",
+      benefit: "Builds strong motivation by showing you a clear, achievable finish line.",
     },
     {
-      title: "Rewards System",
-      headline: "Premium gamification designed to feed consistency loops.",
-      purpose: "Dopamine trigger mechanics rewarding routine study actions.",
-      problem: "Traditional self-preparation is isolated, causing consistency drops.",
-      works: "Grants platform badges and level-ups on completing daily sections.",
-      benefit: "Leverages habit gamification to keep study momentum high.",
+      title: "Rewards",
+      headline: "Stay motivated through the hardest parts of preparation.",
+      purpose: "Provide engaging milestones that reward your consistency.",
+      problem: "Self-preparation is lonely and it is incredibly easy to lose momentum.",
+      works: "Grants exclusive badges and level-ups as you complete your active tasks.",
+      benefit: "Uses positive reinforcement to keep your study momentum high, even on tough days.",
     },
     {
-      title: "Mission System",
-      headline: "Break syllabus overwhelm into daily actionable milestones.",
-      purpose: "Divide weekly assignments into bite-sized daily milestones.",
-      problem: "Vast syllabi trigger strategic paralysis, preventing routine practice.",
-      works: "Converts weekly goals into specific, actionable daily missions.",
-      benefit: "Maintains clear focus: just open the app and finish today’s checklist.",
+      title: "Mission Objectives",
+      headline: "Complete today's mission. We'll handle the rest.",
+      purpose: "Break overwhelming syllabus goals into manageable tasks.",
+      problem: "Vast syllabi cause strategic paralysis, preventing any real study from happening.",
+      works: "Converts massive weekly goals into specific, actionable steps.",
+      benefit: "Maintains clear focus: just open the app, finish your checklist, and relax.",
     },
     {
-      title: "Streak System",
-      headline: "Visual daily momentum charts that build bulletproof habits.",
-      purpose: "Condition consistency using visual daily streak trackers.",
-      problem: "Prepare inconsistently, leaving weeks of blank spaces between study blocks.",
-      works: "Maintains a live calendar tracking consecutive days with completed sections.",
-      benefit: "Engineers habits by encouraging students to keep the streak chain alive.",
+      title: "Momentum Tracker",
+      headline: "Build a bulletproof study habit.",
+      purpose: "Encourage consistency through visual progress trackers.",
+      problem: "Inconsistent preparation leaves huge gaps between study days.",
+      works: "Maintains a live calendar tracking consecutive days where you completed a section.",
+      benefit: "Engineers a powerful habit by encouraging you to never break the chain.",
     },
     {
       title: "Smart Skipping",
-      headline: "Recognize low-ROI examiner trap questions in 15 seconds.",
-      purpose: "Condition fast question selection during active slot tests.",
-      problem: "Aspirants waste 5-8 minutes attempting difficult trap questions.",
-      works: "Schedules specific speed-filtering exercises to teach time-saving skipping guidelines.",
-      benefit: "Saves valuable minutes, reserving energy for high-ROI questions.",
+      headline: "Learn which questions to leave, not just which ones to solve.",
+      purpose: "Condition fast question selection to maximize your overall score.",
+      problem: "Aspirants waste 5-8 minutes attempting difficult ego-trap questions.",
+      works: "Schedules specific filtering exercises to teach you how to spot traps in 15 seconds.",
+      benefit: "Saves valuable minutes, reserving your energy for high-ROI questions.",
+      customRender: () => (
+        <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
+          <div>
+            <span className="text-[9px] font-black uppercase text-emerald-400 tracking-wider">The Benefit (Why it matters)</span>
+            <p className="text-xs text-[#9B8FFF] font-bold mt-1 leading-relaxed">
+              Saves valuable minutes on exam day, preserving your energy for high-ROI questions.
+            </p>
+          </div>
+          <div>
+            <span className="text-[9px] font-black uppercase text-rose-500 tracking-wider">The Problem</span>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              Aspirants waste 5-8 minutes attempting difficult ego-trap questions, ruining their percentile.
+            </p>
+          </div>
+          <div className="sm:col-span-2 mt-2">
+            <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">How We Fix It (Methodology)</span>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              We schedule specific speed-filtering exercises designed to condition fast question selection, teaching you exactly how to spot and skip an examiner's trap in under 15 seconds.
+            </p>
+          </div>
+        </div>
+      )
     },
     {
       title: "Time Trap Detection",
-      headline: "Flag pace bottlenecks before they compromise slot scores.",
-      purpose: "Flag specific questions where attempts exceeded safe timing envelopes.",
-      problem: "Students ignore time metrics, failing to recognize pacing errors.",
-      works: "Monitors response durations, tagging any attempt >120s without success.",
-      benefit: "Identifies strategic leaks before they ruin slot scores.",
+      headline: "Identify questions that waste your time before they cost you marks.",
+      purpose: "Flag specific questions where your attempts took far too long.",
+      problem: "Students ignore pacing, completely failing to recognize where they lost time.",
+      works: "Monitors your response times, tagging any attempt that exceeded safe limits.",
+      benefit: "Plugs strategic time leaks before they ruin your actual exam score.",
     },
     {
       title: "Expected Percentile Tracking",
-      headline: "Professional mathematical forecasting based on competitive slots.",
-      purpose: "Provide live percentile forecasts based on competitive benchmarks.",
-      problem: "Raw mock scores are difficult to evaluate without comparative metrics.",
-      works: "Maps raw accuracy parameters to current slot statistics.",
-      benefit: "Maintains realistic targets and maps overall performance goals.",
+      headline: "Know exactly where you stand against the competition.",
+      purpose: "Provide realistic percentile forecasts based on competitive benchmarks.",
+      problem: "Raw mock scores are difficult to evaluate without knowing the difficulty level.",
+      works: "Maps your raw accuracy parameters to current competitive statistics.",
+      benefit: "Keeps your targets realistic and helps you map out exactly how to improve.",
     },
   ];
 
@@ -1508,8 +1563,8 @@ export function FeaturesPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[1.05] text-white"
           >
-            The Operating System <br className="hidden sm:inline" />
-            For <span className="bg-gradient-to-r from-[#818CF8] via-[#a78bfa] to-white bg-clip-text text-transparent">CAT Success.</span>
+            A Structured CAT <br className="hidden sm:inline" />
+            <span className="bg-gradient-to-r from-[#818CF8] via-[#a78bfa] to-white bg-clip-text text-transparent">Preparation System.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -1517,7 +1572,7 @@ export function FeaturesPage() {
             transition={{ delay: 0.2 }}
             className="text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
           >
-            Every feature is engineered to remove confusion, build consistency and maximize percentile growth.
+            Know What To Study. Every Single Day. We remove the confusion, build consistency, and guide your daily preparation journey.
           </motion.p>
         </div>
 
@@ -1656,13 +1711,13 @@ export function FeaturesPage() {
       <section className="py-12 bg-slate-950 relative">
         <div className="text-center mb-16 max-w-xl mx-auto px-6">
           <span className="px-3 py-1 text-[10px] font-bold text-[#A5B4FC] bg-[#5B4DFF]/15 border border-[#5B4DFF]/25 rounded-full uppercase tracking-wider">
-            Feature Catalog
+            Preparation Framework
           </span>
           <h2 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight mt-3">
-            Cinematic Feature <span className="text-[#9B8FFF]">Stories</span>
+            The TESTRIGHTNOW <span className="text-[#9B8FFF]">Methodology</span>
           </h2>
           <p className="text-slate-500 text-xs sm:text-sm mt-2">
-            Alternate layouts and deep-dive illustrations highlighting all 14 core components of our strategic framework.
+            Deep-dive explanations of exactly how our system guides your preparation every single day.
           </p>
         </div>
 
@@ -1700,24 +1755,28 @@ export function FeaturesPage() {
                       {item.headline}
                     </h3>
                     
-                    <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
-                      <div>
-                        <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Purpose</span>
-                        <p className="text-xs text-slate-300 mt-1 leading-relaxed">{item.purpose}</p>
+                    {item.customRender ? (
+                      item.customRender()
+                    ) : (
+                      <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
+                        <div>
+                          <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Purpose</span>
+                          <p className="text-xs text-slate-300 mt-1 leading-relaxed">{item.purpose}</p>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-black uppercase text-rose-500 tracking-wider">Core Problem Solved</span>
+                          <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.problem}</p>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">How it Works</span>
+                          <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.works}</p>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-black uppercase text-emerald-400 tracking-wider">Student Outcome</span>
+                          <p className="text-xs text-[#9B8FFF] font-bold mt-1 leading-relaxed">{item.benefit}</p>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-[9px] font-black uppercase text-rose-500 tracking-wider">Core Problem Solved</span>
-                        <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.problem}</p>
-                      </div>
-                      <div>
-                        <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">How it Works</span>
-                        <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.works}</p>
-                      </div>
-                      <div>
-                        <span className="text-[9px] font-black uppercase text-emerald-400 tracking-wider">Student Outcome</span>
-                        <p className="text-xs text-[#9B8FFF] font-bold mt-1 leading-relaxed">{item.benefit}</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Right layout placement */}
@@ -1734,43 +1793,61 @@ export function FeaturesPage() {
         </div>
       </section>
 
-      {/* SECTION 4: HOW EVERYTHING WORKS TOGETHER (SYSTEM FLOW DIAGRAM) */}
+      {/* SECTION 4: THE LEARNING HIERARCHY */}
       <section className="py-24 px-6 md:px-12 bg-slate-900 border-y border-slate-800 relative">
         <div className="max-w-6xl mx-auto text-center space-y-12">
           <div className="max-w-xl mx-auto space-y-4">
             <span className="px-3.5 py-1 text-[10px] font-bold text-[#A5B4FC] bg-[#5B4DFF]/15 border border-[#5B4DFF]/25 rounded-full uppercase tracking-wider">
-              Architecture Blueprint
+              The Learning Hierarchy
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Coordinated Preparation <span className="text-[#9B8FFF]">System Loop</span>
+              A Structured Preparation <span className="text-[#9B8FFF]">System</span>
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-              TESTRIGHTNOW functions as a coordinating system where every activity directly feeds and updates subsequent stages.
+              We are not a content library. We are a completely guided preparation framework. This is how your journey is structured from day one to exam day.
             </p>
           </div>
 
           {/* Flow diagram visual */}
-          <div className="grid sm:grid-cols-4 lg:grid-cols-7 gap-4 pt-8">
+          <div className="max-w-4xl mx-auto grid sm:grid-cols-5 gap-4 pt-8">
             {[
-              { title: "1. Guided Learning", desc: "Linear Phase Maps", bg: "bg-indigo-950/20 border-indigo-900/40 text-indigo-400" },
-              { title: "2. Practice", desc: "Topic & Section Tests", bg: "bg-emerald-950/20 border-emerald-900/40 text-emerald-400" },
-              { title: "3. Revision", desc: "Memory Repetition Calendar", bg: "bg-purple-950/20 border-purple-900/40 text-purple-400" },
-              { title: "4. Mock Slots", desc: "Exam Stamina Simulations", bg: "bg-pink-950/20 border-pink-900/40 text-pink-400" },
-              { title: "5. Analytics", desc: "Pacing & Heatmap Audits", bg: "bg-cyan-950/20 border-cyan-900/40 text-cyan-400" },
-              { title: "6. Reinforcement", desc: "Auxiliary remedial drills", bg: "bg-amber-950/20 border-amber-900/40 text-amber-400" },
-              { title: "7. Higher Readiness", desc: "99+ Percentile Optimization", bg: "bg-rose-950/20 border-rose-900/40 text-rose-400" }
+              { title: "6 Phases", desc: "Foundation to Mastery", bg: "bg-indigo-950/20 border-indigo-900/40 text-indigo-400" },
+              { title: "10 Milestones", desc: "Strategic Checkpoints", bg: "bg-emerald-950/20 border-emerald-900/40 text-emerald-400" },
+              { title: "Daily Sessions", desc: "Your Daily Mission", bg: "bg-purple-950/20 border-purple-900/40 text-purple-400" },
+              { title: "Guided Activities", desc: "Learn, Practice, Revise", bg: "bg-pink-950/20 border-pink-900/40 text-pink-400" },
+              { title: "CAT Ready", desc: "99+ Percentile Stamina", bg: "bg-rose-950/20 border-rose-900/40 text-rose-400" }
             ].map((node, i) => (
               <div 
                 key={i} 
-                className={`p-5 rounded-2xl border flex flex-col justify-between items-center text-center shadow-lg transition-transform hover:scale-103 ${node.bg}`}
+                className={`p-5 rounded-2xl border flex flex-col justify-between items-center text-center shadow-lg transition-transform hover:scale-103 relative ${node.bg}`}
               >
                 <div className="w-8 h-8 rounded-full bg-slate-900 text-white text-xs font-black flex items-center justify-center border border-current shadow-sm shrink-0 mb-4">
                   {i + 1}
                 </div>
                 <div>
-                  <h4 className="text-xs font-black uppercase tracking-wider">{node.title}</h4>
-                  <p className="text-[10px] opacity-75 mt-1 leading-normal">{node.desc}</p>
+                  <h4 className="text-sm font-black uppercase tracking-wider">{node.title}</h4>
+                  <p className="text-[11px] opacity-75 mt-1 leading-normal">{node.desc}</p>
                 </div>
+                
+                {/* Connecting Arrow for Desktop */}
+                {i < 4 && (
+                  <div className="hidden sm:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-slate-700">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </div>
+                )}
+                
+                {/* Connecting Arrow for Mobile */}
+                {i < 4 && (
+                  <div className="block sm:hidden absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-slate-700">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="rotate-90">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -2069,40 +2146,40 @@ export function AboutPage() {
     <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="pt-24 min-h-screen bg-[#F8FAFC]">
       <div className="max-w-5xl mx-auto px-6 py-12 text-center">
         <motion.span variants={fadeUp} className="px-3 py-1 text-xs font-semibold text-purple-600 bg-purple-50 rounded-full uppercase tracking-wider">
-          Company Mission
+          Our Philosophy
         </motion.span>
         <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.08] mt-4 mb-6">
           Why We Built <span className="bg-gradient-to-r from-[#5B4DFF] to-[#9B8FFF] bg-clip-text text-transparent">TESTRIGHTNOW</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
-          A learning-first approach built on absolute transparency, credibility, and verified cognitive science.
+          A learning-first approach built on absolute transparency and how your brain actually retains information.
         </motion.p>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 pb-20 space-y-12">
         {/* Factual origin */}
         <motion.div variants={fadeUp} className="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm space-y-4">
-          <h3 className="text-xl sm:text-2xl font-black text-slate-950">Origins of the Platform</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-slate-950">Why We Built TESTRIGHTNOW</h3>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Traditional CAT preparation systems are broken. Offline coachings group fifty distinct aspirants into rigid batch schedules, ignoring personal accuracy baselines. Furthermore, the market is filled with massive, generic video libraries that encourage passive watching instead of active retrieval. 
+            Today's CAT preparation ecosystem is filled with endless resources, videos, and books. But for self-preparing students, having too much material creates a bigger problem: <strong>"I don't know what I should study today."</strong>
           </p>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            TESTRIGHTNOW was created by IIM Indore and Ahmedabad Crackers who successfully cleared CAT through self-directed, highly strategic schedules. We wanted to build an automated, personalized daily system that acts like a strategist - curating target priorities, scheduling revision reviews, and enforcing skipping mechanics.
+            The preparation strategy behind TESTRIGHTNOW is informed by the experiences and academic guidance of IIM Ahmedabad and IIM Indore alumni who successfully cracked CAT through disciplined self-preparation. We built this platform so you never have to decide what to study. We prepare your daily mission. You simply follow the journey.
           </p>
         </motion.div>
 
         {/* Philosophy grid */}
         <motion.div variants={fadeUp} className="grid sm:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
-            <h4 className="text-base font-bold text-slate-950 mb-2">Our Mission</h4>
+            <h4 className="text-base font-bold text-slate-950 mb-2">Our Promise</h4>
             <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-              Help CAT aspirants maximize their potential through highly intelligent, efficient preparation systems rather than endless study checklists, eliminating strategy burnout.
+              We eliminate your strategy burnout. You focus 100% of your energy on learning, and we will handle the planning, sequencing, and revision scheduling for you.
             </p>
           </div>
           <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
-            <h4 className="text-base font-bold text-slate-950 mb-2">Our Vision</h4>
+            <h4 className="text-base font-bold text-slate-950 mb-2">Our Belief</h4>
             <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-              To establish a transparent, educational preparation environment built on verifiable cognitive sciences - avoiding hyperbolic urgency, unrealistic score promises, and fake marketing claims.
+              CAT success isn't about collecting the most resources. It's about taking the exact right step forward, every single day, with complete strategic clarity.
             </p>
           </div>
         </motion.div>
