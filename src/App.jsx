@@ -1,3 +1,4 @@
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Brain,
@@ -44,7 +45,19 @@ import { STUDENT_APP_URL } from "./constants";
 
 function App() {
   const [mounted, setMounted] = useState(false);
-  const [currentPage, setCurrentPage] = useState("home");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let currentPage = location.pathname.substring(1).replace("_", "-");
+  if (!currentPage) currentPage = "home";
+
+  const handleNavigate = (page) => {
+    if (page === "home" || page === "/") {
+      navigate("/");
+    } else {
+      navigate(`/${page.replace("-", "_")}`);
+    }
+  };
 
   const handleOpenApp = () => {
     const refSessionId = localStorage.getItem("tr_session_id") || "";
@@ -64,95 +77,71 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentPage]);
-
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
-  };
+  }, [location.pathname]);
 
   return (
     <div
       className="bg-[#F8FAFC] min-h-screen font-['Inter'] selection:bg-indigo-100 selection:text-indigo-600 relative overflow-x-clip transition-opacity duration-500"
       style={{ opacity: mounted ? 1 : 0 }}
     >
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} onOpenPricing={handleOpenApp} />
+      <Navbar currentPage={currentPage} setCurrentPage={handleNavigate} onOpenPricing={handleOpenApp} />
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentPage}
+          key={location.pathname}
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.35, ease: "easeInOut" }}
         >
-          {currentPage === "home" && (
-            <>
-              {/* ── FIRST VIEWPORT: Hero + Credibility ── */}
-              <div className="min-h-screen flex flex-col relative">
-                <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                  <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
-                  <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={
+              <>
+                {/* ── FIRST VIEWPORT: Hero + Credibility ── */}
+                <div className="min-h-screen flex flex-col relative">
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                    <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-indigo-200/40 rounded-full blur-[100px]" />
+                    <div className="absolute bottom-[10%] left-[-5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-purple-100/40 rounded-full blur-[80px]" />
+                  </div>
+                  <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-[100px] lg:pt-[140px] pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
+                    <HeroSection onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
+                    <CredibilitySection />
+                  </main>
                 </div>
-                <main className="flex-1 w-full max-w-[1280px] mx-auto flex flex-col pt-[100px] lg:pt-[140px] pb-4 lg:pb-6 z-10 relative px-4 sm:px-6 lg:px-12 gap-6">
-                  <HeroSection onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
-                  <CredibilitySection />
-                </main>
-              </div>
-
-              {/* ── STORY FLOW - BELOW THE FOLD ── */}
-
-              {/* Step 1: Student recognises their pain */}
-              <PainSection />
-
-              {/* Step 2: Student understands why prep feels hard */}
-              <WhySelfPrepFails />
-
-              {/* Step 3: Student identifies themselves */}
-              <WhoThisIsFor onOpenPricing={handleOpenApp} />
-
-              {/* Step 4: Simple visual - random vs structured */}
-              <VisualComparison />
-
-              {/* Step 5: The system that solves it */}
-              <WorkingProfessionalsSection />
-
-              {/* Step 6: The 6-phase journey */}
-              <JourneySection90Day onOpenPricing={handleOpenApp} />
-
-              {/* Step 7: Features in depth */}
-              <GuidedLearningPreview onNavigate={handleNavigate} />
-              <SmartSkippingPreview onNavigate={handleNavigate} />
-              <FeaturesPreview onNavigate={handleNavigate} />
-              <CrossPlatformSection />
-
-              {/* Step 8: Pricing - visible without a modal click */}
-              <HomePricingSection onOpenPricing={handleOpenApp} />
-
-              {/* Step 9: Authentic social proof */}
-
-
-              {/* Step 10: Real objection FAQs */}
-              <HomeFAQSection />
-            </>
-          )}
-
-          {currentPage === "strategy" && <StrategyPage />}
-          {currentPage === "guided-learning" && <GuidedLearningPage />}
-          {currentPage === "how-it-works" && <HowItWorksPage />}
-          {currentPage === "features" && <FeaturesPage />}
-          {currentPage === "knowledge-hub" && <KnowledgeHubPage />}
-          {currentPage === "faq" && <FAQPage />}
-          {currentPage === "about" && <AboutPage />}
-          {currentPage === "colleges" && <CollegesPage />}
-          {currentPage === "privacy-policy" && <PrivacyPolicyPage />}
-          {currentPage === "terms-of-service" && <TermsOfServicePage />}
+                
+                {/* ── STORY FLOW - BELOW THE FOLD ── */}
+                <PainSection />
+                <WhySelfPrepFails />
+                <WhoThisIsFor onOpenPricing={handleOpenApp} />
+                <VisualComparison />
+                <WorkingProfessionalsSection />
+                <JourneySection90Day onOpenPricing={handleOpenApp} />
+                <GuidedLearningPreview onNavigate={handleNavigate} />
+                <SmartSkippingPreview onNavigate={handleNavigate} />
+                <FeaturesPreview onNavigate={handleNavigate} />
+                <CrossPlatformSection />
+                <HomePricingSection onOpenPricing={handleOpenApp} />
+                <HomeFAQSection />
+              </>
+            } />
+            <Route path="/strategy" element={<StrategyPage />} />
+            <Route path="/guided_learning" element={<GuidedLearningPage />} />
+            <Route path="/how_it_works" element={<HowItWorksPage />} />
+            <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/knowledge_hub" element={<KnowledgeHubPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/colleges" element={<CollegesPage />} />
+            <Route path="/privacy_policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms_of_service" element={<TermsOfServicePage />} />
+          </Routes>
 
           {/* Render Premium CTA on all views */}
           <FinalPremiumCTA onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
         </motion.div>
       </AnimatePresence>
 
-      <Footer setCurrentPage={setCurrentPage} />
+      <Footer setCurrentPage={handleNavigate} />
 
       {/* Sticky Help Button */}
       <StickyHelpButton />
