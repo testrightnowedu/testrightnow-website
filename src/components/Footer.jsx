@@ -15,7 +15,7 @@ const socialLinks = [
   { icon: Play, label: 'YouTube', href: '#' },
 ];
 
-export default function Footer() {
+export default function Footer({ setCurrentPage }) {
   return (
     <footer className="bg-[#0F172A] pt-16 lg:pt-20 pb-8">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -79,15 +79,28 @@ export default function Footer() {
             © {new Date().getFullYear()} TestRightNow. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            {['Privacy Policy', 'Terms of Service'].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-slate-500 hover:text-white text-[13px] transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+            <button
+              onClick={() => {
+                if (setCurrentPage) {
+                  setCurrentPage('privacy-policy');
+                  window.scrollTo(0, 0);
+                }
+              }}
+              className="text-slate-500 hover:text-white text-[13px] transition-colors"
+            >
+              Privacy Policy
+            </button>
+            <button
+              onClick={() => {
+                if (setCurrentPage) {
+                  setCurrentPage('terms-of-service');
+                  window.scrollTo(0, 0);
+                }
+              }}
+              className="text-slate-500 hover:text-white text-[13px] transition-colors"
+            >
+              Terms of Service
+            </button>
           </div>
         </div>
       </div>

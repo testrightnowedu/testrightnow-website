@@ -37,6 +37,7 @@ import {
   CollegesPage,
   FinalPremiumCTA,
 } from "./components/ExtendedSections";
+import { PrivacyPolicyPage, TermsOfServicePage } from "./components/LegalPages";
 
 import StickyHelpButton from "./components/StickyHelpButton";
 import { STUDENT_APP_URL } from "./constants";
@@ -143,6 +144,8 @@ function App() {
           {currentPage === "faq" && <FAQPage />}
           {currentPage === "about" && <AboutPage />}
           {currentPage === "colleges" && <CollegesPage />}
+          {currentPage === "privacy-policy" && <PrivacyPolicyPage />}
+          {currentPage === "terms-of-service" && <TermsOfServicePage />}
 
           {/* Render Premium CTA on all views */}
           <FinalPremiumCTA onNavigate={handleNavigate} onOpenPricing={handleOpenApp} />
@@ -1377,7 +1380,13 @@ function Footer({ setCurrentPage }) {
           </div>
         </div>
         <div className="pt-6 border-t border-white/[0.07] flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[13px] text-slate-500">© {new Date().getFullYear()} TestRightNow. All rights reserved.</p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <p className="text-[13px] text-slate-500">© {new Date().getFullYear()} TestRightNow. All rights reserved.</p>
+            <div className="flex items-center gap-6">
+              <button onClick={() => handleNav('privacy-policy')} className="text-[13px] text-slate-500 hover:text-white transition-colors">Privacy Policy</button>
+              <button onClick={() => handleNav('terms-of-service')} className="text-[13px] text-slate-500 hover:text-white transition-colors">Terms of Service</button>
+            </div>
+          </div>
           <div className="flex items-center gap-2 text-slate-400">
             <span className="text-[13px] mr-2 text-slate-500">Connect with us</span>
             {/* Twitter/X */}
