@@ -94,6 +94,8 @@ function initTracker() {
   const now = Date.now();
   let isNewSession = false;
 
+  let sessionStartTime = Number(localStorage.getItem("tr_session_start_time") || 0);
+
   const urlSessionId = urlParams.get("refSessionId");
   
   if (urlSessionId) {
@@ -101,12 +103,16 @@ function initTracker() {
     sessionId = urlSessionId;
     localStorage.setItem("tr_session_id", sessionId);
     localStorage.setItem("tr_session_last_active", String(now));
+    sessionStartTime = now;
+    localStorage.setItem("tr_session_start_time", String(sessionStartTime));
     isNewSession = true; // Flag to check location and create initial record
   } else if (!sessionId || (now - lastActive > SESSION_TIMEOUT)) {
     // Generate new session ID
     sessionId = "sess_" + generateId();
     localStorage.setItem("tr_session_id", sessionId);
     localStorage.setItem("tr_session_last_active", String(now));
+    sessionStartTime = now;
+    localStorage.setItem("tr_session_start_time", String(sessionStartTime));
     isNewSession = true;
   } else {
     // Keep existing session, update last active
@@ -131,10 +137,12 @@ function initTracker() {
   if (utmSource) {
     if (utmSource.toLowerCase().includes("google")) source = "Google Ads";
     else if (utmSource.toLowerCase().includes("facebook") || utmSource.toLowerCase().includes("meta")) source = "Meta Ads";
+    else if (utmSource.toLowerCase().includes("instagram") || utmSource.toLowerCase().includes("ig")) source = "Instagram";
     else if (utmSource.toLowerCase().includes("email")) source = "Email";
     else source = utmSource;
   } else if (isExternalReferrer) {
-    source = "Referral";
+    if (referrer.includes("instagram.com")) source = "Instagram";
+    else source = "Referral";
   }
 
   // Device Signature Info
@@ -160,18 +168,17 @@ function initTracker() {
   window.addEventListener("popstate", () => trackPageView(false));
 
   // Set up Page Visibility and Unload listeners
-  let pageEntryTime = Date.now();
   window.addEventListener("beforeunload", handlePageExit);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
       handlePageExit();
     } else {
-      pageEntryTime = Date.now();
+      updateSessionActivity();
     }
   });
 
-  // Set up 120-second Heartbeat
-  setInterval(sendHeartbeat, 120000);
+  // Set up 30-second Heartbeat (only updates session, no new events)
+  setInterval(sendHeartbeat, 30000);
 
   // Listen to Authentication State
   onAuthStateChanged(auth, async (user) => {
@@ -303,37 +310,59 @@ function initTracker() {
   function trackPageView(isLanding = false) {
     const page = window.location.pathname + window.location.hash;
     
-    // Automatically trigger contextual event logs based on pages loaded
+    // Only track milestone pages
+    const isMeaningful = page === "/" || page.includes("/pricing") || page.includes("/signup") || 
+                         page.includes("/login") || page.includes("/dashboard") || 
+                         page.includes("/mock") || page.includes("/payment") || 
+                         page.includes("/profile") || page.includes("/practice") || 
+                         page.includes("/test") || page.includes("/exam") || page.includes("premium");
+
     if (isLanding) {
       logEvent("landing_page_view", { referrer });
-    } else {
-      logEvent("page_view", { referrer });
     }
+    
+    if (isMeaningful && !isLanding) {
+      if (page.includes("/pricing")) logEvent("pricing_view");
+      else if (page.includes("/payment") || page.includes("premium")) logEvent("payment_page_view");
+      else if (page.includes("/signup")) logEvent("signup_start");
+      else if (page.includes("/practice") || page.includes("/test") || page.includes("/exam") || page.includes("/mock")) logEvent("mock_test_start");
+      else if (page.includes("/dashboard")) logEvent("dashboard_first_open");
+    }
+  }
 
-    if (page.includes("/pricing")) {
-      logEvent("pricing_view");
-    } else if (page.includes("/payment") || page.includes("premium")) {
-      logEvent("payment_page_view");
-    } else if (page.includes("/signup")) {
-      logEvent("signup_start");
-    } else if (page.includes("/practice") || page.includes("/test") || page.includes("/exam")) {
-      logEvent("mock_test_start");
+  let lastHeartbeatTime = Date.now();
+  let lastHeartbeatPage = window.location.pathname + window.location.hash;
+
+  function updateSessionActivity() {
+    const now = Date.now();
+    const durationSeconds = Math.round((now - sessionStartTime) / 1000);
+    const currentPage = window.location.pathname + window.location.hash;
+    
+    // Only update if 30s elapsed or page changed
+    if (now - lastHeartbeatTime > 30000 || currentPage !== lastHeartbeatPage) {
+      lastHeartbeatTime = now;
+      lastHeartbeatPage = currentPage;
+      
+      localStorage.setItem("tr_session_last_active", String(now));
+      
+      try {
+        setDoc(doc(db, "website_sessions", sessionId), {
+          lastActive: serverTimestamp(),
+          currentPage: currentPage,
+          durationSeconds: durationSeconds
+        }, { merge: true });
+      } catch(e) {
+        console.error("[Analytics] Failed to update session:", e);
+      }
     }
   }
 
   function handlePageExit() {
-    const exitTime = Date.now();
-    const timeSpent = Math.round((exitTime - pageEntryTime) / 1000);
-    if (timeSpent > 0) {
-      logEvent("page_exit", {
-        page: window.location.pathname + window.location.hash,
-        durationSeconds: timeSpent
-      });
-    }
+    updateSessionActivity();
   }
 
   function sendHeartbeat() {
-    logEvent("heartbeat");
+    updateSessionActivity();
   }
 
   // --- Utilities ---
@@ -373,7 +402,6 @@ function initTracker() {
     history.pushState = function() {
       handlePageExit();
       pushState.apply(this, arguments);
-      pageEntryTime = Date.now();
       trackPageView(false);
     };
 
@@ -381,7 +409,6 @@ function initTracker() {
     history.replaceState = function() {
       handlePageExit();
       replaceState.apply(this, arguments);
-      pageEntryTime = Date.now();
       trackPageView(false);
     };
   }
