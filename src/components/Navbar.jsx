@@ -43,8 +43,7 @@ export default function Navbar() {
           <img
             src={logo}
             alt="TestRightNow"
-            className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain drop-shadow-sm"
-            style={{ transform: "scale(1.45)", transformOrigin: "left center" }}
+            className="h-[40px] sm:h-[46px] md:h-[52px] lg:h-[56px] w-auto object-contain drop-shadow-sm"
           />
         </motion.a>
 

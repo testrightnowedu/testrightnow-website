@@ -108,7 +108,7 @@ function App() {
                     <CredibilitySection />
                   </main>
                 </div>
-                
+
                 {/* ── STORY FLOW - BELOW THE FOLD ── */}
                 <PainSection />
                 <WhySelfPrepFails />
@@ -179,9 +179,8 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 h-20 lg:h-24 transition-shadow duration-300 ${
-        scrolled ? "shadow-[0_2px_16px_rgba(0,0,0,0.06)]" : ""
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-100 h-20 lg:h-24 transition-shadow duration-300 ${scrolled ? "shadow-[0_2px_16px_rgba(0,0,0,0.06)]" : ""
+        }`}
     >
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-full flex items-center justify-between">
         {/* LOGO */}
@@ -189,8 +188,7 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
           <img
             src={logo}
             alt="TestRightNow"
-            className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain drop-shadow-sm"
-            style={{ transform: "scale(1.45)", transformOrigin: "left center" }}
+            className="h-[40px] sm:h-[46px] md:h-[52px] lg:h-[56px] w-auto object-contain drop-shadow-sm"
           />
         </button>
 
@@ -202,15 +200,13 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
               <button
                 key={page}
                 onClick={() => handleNav(page)}
-                className={`relative text-[13px] font-semibold transition-colors duration-200 group ${
-                  isActive ? "text-indigo-600" : "text-slate-600 hover:text-indigo-600"
-                }`}
+                className={`relative text-[13px] font-semibold transition-colors duration-200 group ${isActive ? "text-indigo-600" : "text-slate-600 hover:text-indigo-600"
+                  }`}
               >
                 {label}
                 <span
-                  className={`absolute -bottom-0.5 left-0 h-[1.5px] bg-indigo-500 rounded-full transition-all duration-300 ${
-                    isActive ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
+                  className={`absolute -bottom-0.5 left-0 h-[1.5px] bg-indigo-500 rounded-full transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
                 />
               </button>
             );
@@ -221,11 +217,10 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               onMouseEnter={() => setDropdownOpen(true)}
-              className={`relative text-[13px] font-semibold transition-colors duration-200 flex items-center gap-1 ${
-                ["knowledge-hub", "faq", "about"].includes(currentPage)
-                  ? "text-indigo-600"
-                  : "text-slate-600 hover:text-indigo-600"
-              }`}
+              className={`relative text-[13px] font-semibold transition-colors duration-200 flex items-center gap-1 ${["knowledge-hub", "faq", "about"].includes(currentPage)
+                ? "text-indigo-600"
+                : "text-slate-600 hover:text-indigo-600"
+                }`}
             >
               Resources
               <ChevronDown size={14} className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
@@ -247,11 +242,10 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
                     <button
                       key={item.page}
                       onClick={() => handleNav(item.page)}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                        currentPage === item.page
-                          ? "bg-indigo-50 text-indigo-600 font-bold"
-                          : "text-slate-700 hover:text-indigo-600 hover:bg-slate-50"
-                      }`}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${currentPage === item.page
+                        ? "bg-indigo-50 text-indigo-600 font-bold"
+                        : "text-slate-700 hover:text-indigo-600 hover:bg-slate-50"
+                        }`}
                     >
                       {item.label}
                     </button>
@@ -272,7 +266,7 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
           </button>
           <button
             onClick={onOpenPricing}
-            className="h-9 px-5 rounded-xl bg-[#5B4DFF] text-white text-[13px] font-semibold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
+            className="hidden sm:block h-9 px-5 rounded-xl bg-[#5B4DFF] text-white text-[13px] font-semibold shadow-[0_6px_16px_rgba(91,77,255,0.25)] hover:bg-[#4F42F0] transition-all"
           >
             Start Your CAT Journey
           </button>
@@ -317,9 +311,8 @@ function Navbar({ currentPage, setCurrentPage, onOpenPricing }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => handleNav(item.page)}
-                className={`text-left py-3 px-2 text-[15px] font-medium border-b border-slate-50 last:border-0 transition-colors ${
-                  currentPage === item.page ? "text-indigo-600 font-semibold" : "text-slate-700 hover:text-indigo-600"
-                }`}
+                className={`text-left py-3 px-2 text-[15px] font-medium border-b border-slate-50 last:border-0 transition-colors ${currentPage === item.page ? "text-indigo-600 font-semibold" : "text-slate-700 hover:text-indigo-600"
+                  }`}
               >
                 {item.label}
               </motion.button>
@@ -526,9 +519,8 @@ function PainSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5, delay: point.delay }}
-              className={`bg-white rounded-[18px] border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-5 flex items-start gap-3 ${
-                i === 4 ? "sm:col-span-2 lg:col-span-1" : ""
-              }`}
+              className={`bg-white rounded-[18px] border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-5 flex items-start gap-3 ${i === 4 ? "sm:col-span-2 lg:col-span-1" : ""
+                }`}
             >
               <div className="w-8 h-8 rounded-xl bg-rose-50 flex items-center justify-center shrink-0 mt-0.5 text-[15px]">
                 🤔
@@ -1226,11 +1218,10 @@ function HomeFAQSection() {
                 >
                   <span>{faq.q}</span>
                   <div
-                    className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ml-4 transition-all duration-200 ${
-                      isOpen
-                        ? "bg-indigo-50 border-indigo-100 text-[#5B4DFF]"
-                        : "bg-slate-50 border-slate-200 text-slate-400"
-                    }`}
+                    className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ml-4 transition-all duration-200 ${isOpen
+                      ? "bg-indigo-50 border-indigo-100 text-[#5B4DFF]"
+                      : "bg-slate-50 border-slate-200 text-slate-400"
+                      }`}
                   >
                     {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                   </div>
@@ -1307,8 +1298,8 @@ function Footer({ setCurrentPage }) {
                 <img
                   src={logo}
                   alt="TestRightNow"
-                  className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain"
-                  style={{ filter: "brightness(0) invert(1)", transform: "scale(1.35)", transformOrigin: "left center" }}
+                  className="h-[40px] sm:h-[46px] md:h-[52px] lg:h-[56px] w-auto object-contain"
+                  style={{ filter: "brightness(0) invert(1)" }}
                 />
               </button>
             </div>

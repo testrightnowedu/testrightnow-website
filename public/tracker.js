@@ -94,6 +94,43 @@ function initTracker() {
   const now = Date.now();
   let isNewSession = false;
 
+  // --- Configuration Management ---
+  const DEFAULT_CONFIG = {
+    version: 0,
+    heartbeat: { intervalMs: 180000, idleTimeoutMs: 300000 },
+    featureFlags: { analyticsEnabled: true, instagramEnabled: true }
+  };
+  
+  let analyticsConfig = { ...DEFAULT_CONFIG };
+  try {
+    const cached = localStorage.getItem("tr_analytics_config");
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      // Check 24 hour expiry
+      if (Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+        analyticsConfig = parsed.config;
+      }
+    }
+  } catch(e) {}
+  
+  async function loadRemoteConfig() {
+    try {
+      const configDoc = await getDoc(doc(db, "system_settings", "analytics"));
+      if (configDoc.exists()) {
+        const remoteConfig = configDoc.data();
+        if (remoteConfig.version > analyticsConfig.version || !localStorage.getItem("tr_analytics_config")) {
+          analyticsConfig = remoteConfig;
+          localStorage.setItem("tr_analytics_config", JSON.stringify({
+            timestamp: Date.now(),
+            config: analyticsConfig
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn("[Analytics] Config fetch failed, using fallback.", e);
+    }
+  }
+
   let sessionStartTime = Number(localStorage.getItem("tr_session_start_time") || 0);
 
   const urlSessionId = urlParams.get("refSessionId");
@@ -137,11 +174,13 @@ function initTracker() {
   if (utmSource) {
     if (utmSource.toLowerCase().includes("google")) source = "Google Ads";
     else if (utmSource.toLowerCase().includes("facebook") || utmSource.toLowerCase().includes("meta")) source = "Meta Ads";
-    else if (utmSource.toLowerCase().includes("instagram") || utmSource.toLowerCase().includes("ig")) source = "Instagram";
+    if (analyticsConfig.featureFlags?.instagramEnabled) {
+      if (utmSource.toLowerCase().includes("instagram") || utmSource.toLowerCase().includes("ig")) source = "Instagram";
+    }
     else if (utmSource.toLowerCase().includes("email")) source = "Email";
     else source = utmSource;
   } else if (isExternalReferrer) {
-    if (referrer.includes("instagram.com")) source = "Instagram";
+    if (analyticsConfig.featureFlags?.instagramEnabled && referrer.includes("instagram.com")) source = "Instagram";
     else source = "Referral";
   }
 
@@ -163,9 +202,28 @@ function initTracker() {
   // Initial page track
   trackPageView(true);
 
+  // Initial config load (async, won't block)
+  loadRemoteConfig();
+
   // Set up SPA tracking listeners
   interceptHistory();
   window.addEventListener("popstate", () => trackPageView(false));
+
+  // --- Idle Detection & Intelligent Heartbeat ---
+  let isIdle = false;
+  let idleTimer = null;
+  
+  function resetIdle() {
+    isIdle = false;
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { isIdle = true; }, analyticsConfig.heartbeat?.idleTimeoutMs || 300000);
+  }
+
+  // Bind activity listeners
+  ["mousemove", "keydown", "scroll", "click"].forEach(evt => 
+    document.addEventListener(evt, resetIdle, { passive: true })
+  );
+  resetIdle();
 
   // Set up Page Visibility and Unload listeners
   window.addEventListener("beforeunload", handlePageExit);
@@ -173,12 +231,18 @@ function initTracker() {
     if (document.visibilityState === "hidden") {
       handlePageExit();
     } else {
-      updateSessionActivity();
+      resetIdle();
+      // Instantly update when returning to tab
+      updateSessionActivity(true);
     }
   });
 
-  // Set up 30-second Heartbeat (only updates session, no new events)
-  setInterval(sendHeartbeat, 30000);
+  // Intelligent Heartbeat (throttled, checks every 30s but only updates if active and interval elapsed)
+  setInterval(() => {
+    if (!isIdle && analyticsConfig.featureFlags?.analyticsEnabled) {
+      updateSessionActivity();
+    }
+  }, 30000);
 
   // Listen to Authentication State
   onAuthStateChanged(auth, async (user) => {
@@ -333,13 +397,14 @@ function initTracker() {
   let lastHeartbeatTime = Date.now();
   let lastHeartbeatPage = window.location.pathname + window.location.hash;
 
-  function updateSessionActivity() {
+  function updateSessionActivity(force = false) {
     const now = Date.now();
     const durationSeconds = Math.round((now - sessionStartTime) / 1000);
     const currentPage = window.location.pathname + window.location.hash;
+    const intervalMs = analyticsConfig.heartbeat?.intervalMs || 180000;
     
-    // Only update if 30s elapsed or page changed
-    if (now - lastHeartbeatTime > 30000 || currentPage !== lastHeartbeatPage) {
+    // Only update if interval elapsed OR page changed OR forced
+    if (force || now - lastHeartbeatTime >= intervalMs || currentPage !== lastHeartbeatPage) {
       lastHeartbeatTime = now;
       lastHeartbeatPage = currentPage;
       
@@ -358,7 +423,7 @@ function initTracker() {
   }
 
   function handlePageExit() {
-    updateSessionActivity();
+    updateSessionActivity(true);
   }
 
   function sendHeartbeat() {
@@ -403,6 +468,7 @@ function initTracker() {
       handlePageExit();
       pushState.apply(this, arguments);
       trackPageView(false);
+      updateSessionActivity(true);
     };
 
     const replaceState = history.replaceState;
@@ -410,6 +476,7 @@ function initTracker() {
       handlePageExit();
       replaceState.apply(this, arguments);
       trackPageView(false);
+      updateSessionActivity(true);
     };
   }
 }

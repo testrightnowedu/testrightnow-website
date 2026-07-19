@@ -27,7 +27,12 @@ export default function Footer({ setCurrentPage }) {
               whileHover={{ scale: 1.02 }}
               className="inline-flex items-center mb-5"
             >
-              <img src={logo} alt="TestRightNow" className="h-[70px] md:h-[90px] lg:h-[110px] w-auto object-contain" style={{ filter: "brightness(0) invert(1)", transform: "scale(1.35)", transformOrigin: "left center" }} />
+              <img
+                src={logo}
+                alt="TestRightNow"
+                className="h-[40px] sm:h-[46px] md:h-[52px] lg:h-[56px] w-auto object-contain"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             </motion.a>
             <p className="text-slate-400 text-[14px] leading-relaxed max-w-[240px]">
               A smarter way to crack CAT.
